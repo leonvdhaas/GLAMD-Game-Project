@@ -7,12 +7,20 @@ using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-	public class TileManager : MonoBehaviour
+	public class TileManager
+		: MonoBehaviour
 	{
-		public Transform startTile;
-		public Transform straightTile;
-		public Transform leftCornerTile;
-		public Transform rightCornerTile;
+		[SerializeField]
+		private Transform startTile;
+
+		[SerializeField]
+		private Transform[] straightTile;
+
+		[SerializeField]
+		private Transform[] leftCornerTile;
+
+		[SerializeField]
+		private Transform[] rightCornerTile;
 
 		private const int MAX_TILES = 10;
 		private const int MAX_CORNERS = 4;
@@ -22,10 +30,12 @@ namespace Assets.Scripts.Managers
 		// Use this for initialization
 		private void Awake()
 		{
-			if (Instance == null) {
+			if (Instance == null)
+			{
 				Instance = this;
 			}
-			else if (Instance != this) {
+			else if (Instance != this)
+			{
 				Destroy(gameObject);
 			}
 
@@ -47,13 +57,15 @@ namespace Assets.Scripts.Managers
 		{
 			get
 			{
-				if (Tiles.Last().GetComponent<Tile>().Type == TileType.Corner) {
+				if (Tiles.Last().GetComponent<Tile>().Type == TileType.Corner)
+				{
 					return false;
 				}
 
 				var reversed = Tiles.Reverse<Tile>().ToArray();
 				if (reversed.Take(MAX_TILES / 2).Count(tile => IsCorner(tile)) >= MAX_CORNERS / 2 ||
-					reversed.Take(MAX_TILES).Count(tile => IsCorner(tile)) >= MAX_CORNERS) {
+					reversed.Take(MAX_TILES).Count(tile => IsCorner(tile)) >= MAX_CORNERS)
+				{
 					return false;
 				}
 
@@ -68,13 +80,16 @@ namespace Assets.Scripts.Managers
 
 		public void ResetTiles()
 		{
-			while (Tiles.Count > 0) {
-				// Actually remove tile from the game.
-				Tiles.RemoveAt(0);
+			while (Tiles.Count > 0)
+			{
+				var removeTile = Tiles[0];
+				Destroy(removeTile.gameObject);
+				Tiles.Remove(removeTile);
 			}
 
 			AddTile(startTile);
-			for (int i = 1; i < MAX_TILES - TILES_BEHIND_PLAYER; i++) {
+			for (int i = 1; i < MAX_TILES - TILES_BEHIND_PLAYER; i++)
+			{
 				AddRandomTile();
 			}
 		}
@@ -82,15 +97,18 @@ namespace Assets.Scripts.Managers
 		public void AddRandomTile()
 		{
 			var previousTile = Tiles.Last();
-			if (RandomUtilities.PercentageChance(MayCreateCorner ? CORNER_CHANCE : 0)) {
+			if (RandomUtilities.PercentageChance(MayCreateCorner ? CORNER_CHANCE : 0))
+			{
 				var randomCorner = RandomUtilities.Pick(leftCornerTile, rightCornerTile);
-				AddTile(randomCorner, previousTile, TileType.Corner);
+				AddTile(randomCorner.Pick(), previousTile, TileType.Corner);
 			}
-			else {
-				AddTile(straightTile, previousTile, TileType.Regular);
+			else
+			{
+				AddTile(straightTile.Pick(), previousTile, TileType.Regular);
 			}
 
-			if (Tiles.Count > MAX_TILES) {
+			if (Tiles.Count > MAX_TILES)
+			{
 				var removeTile = Tiles[0];
 				Destroy(removeTile.gameObject);
 				Tiles.Remove(removeTile);
@@ -100,7 +118,8 @@ namespace Assets.Scripts.Managers
 		public void AddTile(Transform tilePrefab, Tile previousTile = null, TileType? type = null)
 		{
 			var tile = Instantiate(tilePrefab).GetComponent<Tile>();
-			if (previousTile != null && type.HasValue) {
+			if (previousTile != null && type.HasValue)
+			{
 				tile.Construct(previousTile, type.Value);
 			}
 			Tiles.Add(tile);
