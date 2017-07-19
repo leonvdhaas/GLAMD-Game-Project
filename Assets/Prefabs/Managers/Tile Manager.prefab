@@ -53,8 +53,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTile: {fileID: 4997285563036800, guid: 8fc778256bfda0341836ef219a80decc, type: 2}
   straightTile:
-  - {fileID: 4074892411073346, guid: 7e1ba72eb14952e4a9aaeb18d8885d48, type: 2}
+  - {fileID: 4074892411073346, guid: c65477e8b68305a4baa1c4e9c377f065, type: 2}
+  - {fileID: 4074892411073346, guid: 0b2e87065b2bf6744b9ec9ade86c4001, type: 2}
+  - {fileID: 4074892411073346, guid: 0f6c7ab7ff4eaa248a5477533354dfb2, type: 2}
   leftCornerTile:
-  - {fileID: 4354621219766094, guid: a47398b834e16fd4b91c3e0bba9a6db1, type: 2}
+  - {fileID: 4354621219766094, guid: 9ee9d1b9277939446b8a5beb5d933561, type: 2}
+  - {fileID: 4354621219766094, guid: e00150bfbd3c086418c5a7c9cfaeb5cb, type: 2}
+  - {fileID: 4354621219766094, guid: 3a4171009b3d7474cbf4df0bc1befa2c, type: 2}
   rightCornerTile:
-  - {fileID: 4977549205819974, guid: 28f1272a0bb0ab24195986a1b4f49ad1, type: 2}
+  - {fileID: 4977549205819974, guid: 1923caca34b348a46b001b5d154f2375, type: 2}
+  - {fileID: 4977549205819974, guid: ed6ef8ba736aae74d83ca039cffbd1ce, type: 2}
+  - {fileID: 4977549205819974, guid: d89f5e6cc8a5bb34293673a43f604eaa, type: 2}
