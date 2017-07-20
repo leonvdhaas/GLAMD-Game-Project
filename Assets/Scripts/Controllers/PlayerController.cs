@@ -42,8 +42,6 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
-			Move();
-
 			if ((IsOnLeftCorner && Input.GetKeyDown(KeyCode.A)) ||
 				(IsOnRightCorner && Input.GetKeyDown(KeyCode.D)))
 			{
@@ -53,6 +51,8 @@ namespace Assets.Scripts.Controllers
 			{
 				LaneSwapping();
 			}
+
+			Move();
 		}
 
 		public void TakeFailedCorner()
