@@ -30,5 +30,13 @@ namespace Assets.Scripts.Managers
 				return TileManager.Instance;
 			}
 		}
+
+		public static SoundManager SoundManager
+		{
+			get
+			{
+				return SoundManager.Instance;
+			}
+		}
 	}
 }
