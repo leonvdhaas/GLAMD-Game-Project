@@ -1,6 +1,8 @@
-﻿using Assets.Scripts.Enumerations;
+﻿using System;
+using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
+using Assets.Scripts.Utilities;
 
 namespace Assets.Scripts.Models
 {
@@ -8,6 +10,8 @@ namespace Assets.Scripts.Models
 		: MonoBehaviour
 	{
 		private const float TILE_SIZE = 30.0f;
+
+		public Transform[] tileVariations;
 
 		public TileType Type { get; protected set; }
 
@@ -20,7 +24,17 @@ namespace Assets.Scripts.Models
 			SetPosition(previousTile.transform.position);
 			SetRotation();
 
+			if (tileVariations != null && tileVariations.Length > 0)
+			{
+				AddProps();
+			}
+
 			return this;
+		}
+
+		private void AddProps()
+		{
+			Instantiate(tileVariations.Pick(), transform);
 		}
 
 		private void SetOrientation(Tile previousTile)
