@@ -14,13 +14,13 @@ namespace Assets.Scripts.Managers
 		private Transform startTile;
 
 		[SerializeField]
-		private Transform[] straightTile;
+		private Transform straightTile;
 
 		[SerializeField]
-		private Transform[] leftCornerTile;
+		private Transform leftCornerTile;
 
 		[SerializeField]
-		private Transform[] rightCornerTile;
+		private Transform rightCornerTile;
 
 		private const int MAX_TILES = 10;
 		private const int MAX_CORNERS = 4;
@@ -100,11 +100,11 @@ namespace Assets.Scripts.Managers
 			if (RandomUtilities.PercentageChance(MayCreateCorner ? CORNER_CHANCE : 0))
 			{
 				var randomCorner = RandomUtilities.Pick(leftCornerTile, rightCornerTile);
-				AddTile(randomCorner.Pick(), previousTile, TileType.Corner);
+				AddTile(randomCorner, previousTile, TileType.Corner);
 			}
 			else
 			{
-				AddTile(straightTile.Pick(), previousTile, TileType.Regular);
+				AddTile(straightTile, previousTile, TileType.Regular);
 			}
 
 			if (Tiles.Count > MAX_TILES)
