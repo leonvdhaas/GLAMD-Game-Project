@@ -8,8 +8,6 @@ namespace Assets.Scripts.Controllers
 {
 	public class PlayerController : MonoBehaviour
 	{
-		private const int LANE_DISTANCE = 2;
-
 		[SerializeField]
 		private float acceleration;
 
@@ -83,12 +81,12 @@ namespace Assets.Scripts.Controllers
 		{
 			if (lane != Lane.Left && Input.GetKeyDown(KeyCode.LeftArrow))
 			{
-				transform.position += Orientation.GetLeftOrientation().GetDirectionVector3() * LANE_DISTANCE;
+				transform.position += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane--;
 			}
 			else if (lane != Lane.Right && Input.GetKeyDown(KeyCode.RightArrow))
 			{
-				transform.position += Orientation.GetRightOrientation().GetDirectionVector3() * LANE_DISTANCE;
+				transform.position += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane++;
 			}
 		}

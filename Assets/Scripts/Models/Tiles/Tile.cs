@@ -8,7 +8,11 @@ namespace Assets.Scripts.Models
 	public abstract class Tile
 		: MonoBehaviour
 	{
-		private const float TILE_SIZE = 30.0f;
+		public const int LANE_DISTANCE = 2;
+		public const int LANES = 3;
+
+		private const int TILES = 5;
+		private const float TILE_SIZE = TILES * 6.0f;
 
 		public Transform[] tileVariations;
 
