@@ -64,11 +64,18 @@ namespace Assets.Scripts.Controllers
 
 		private void TakeCorner()
 		{
+			// Set position
+			var turningPosition = TurningPositions.OrderBy(x => Vector3.Distance(x.Position, transform.position)).First();
+			transform.position = Orientation == Orientation.North || Orientation == Orientation.South
+				? new Vector3(transform.position.x, transform.position.y, turningPosition.Position.z)
+				: new Vector3(turningPosition.Position.x, transform.position.y, transform.position.z);
+			lane = turningPosition.Lane;
+
+			// Set rotation
 			Orientation = IsOnLeftCorner ? Orientation.GetLeftOrientation() : Orientation.GetRightOrientation();
 			transform.rotation = Quaternion.Euler(0, (int)Orientation * 90, 0);
-			var turningPosition = TurningPositions.OrderBy(x => Vector3.Distance(x.Position, transform.position)).First();
-			transform.position = new Vector3(turningPosition.Position.x, transform.position.y, turningPosition.Position.z);
-			lane = turningPosition.Lane;
+
+			// Reset corner variables.
 			IsOnLeftCorner = IsOnRightCorner = false;
 			TurningPositions = null;
 		}
