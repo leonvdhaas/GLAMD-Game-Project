@@ -2,6 +2,8 @@
 using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
+using System.Linq;
+using Assets.Scripts.Models;
 
 namespace Assets.Scripts.Controllers
 {
@@ -20,37 +22,66 @@ namespace Assets.Scripts.Controllers
 
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
-		private Orientation orientation = Orientation.North;
 		private Animator animator;
 
 		private void Awake()
 		{
 			animator = GetComponent<Animator>();
 			currentSpeed = (maxSpeed + minSpeed) / 2;
+
+			Orientation = Orientation.North;
 		}
+
+		public Orientation Orientation { get; private set; }
+
+		public bool IsOnLeftCorner { get; set; }
+
+		public bool IsOnRightCorner { get; set; }
+
+		private bool IsOnCorner
+		{
+			get
+			{
+				return IsOnLeftCorner || IsOnRightCorner;
+			}
+		}
+
+		public LanePosition[] TurningPositions { get; set; }
 
 		private void Update()
 		{
 			Move();
-			LaneSwap();
-			Rotate();
+
+			if (IsOnCorner)
+			{
+				TakeCorner();
+			}
+			else
+			{
+				LaneSwap();
+			}
 		}
 
-		private void Rotate()
+		private void TakeCorner()
 		{
-			var previousOrientation = orientation;
-			if (Input.GetKeyDown(KeyCode.A))
+			var previousOrientation = Orientation;
+			if (IsOnLeftCorner && Input.GetKeyDown(KeyCode.A))
 			{
-				orientation = orientation.GetLeftOrientation();
+				Orientation = Orientation.GetLeftOrientation();
+				IsOnLeftCorner = false;
 			}
-			else if (Input.GetKeyDown(KeyCode.D))
+			else if (IsOnRightCorner && Input.GetKeyDown(KeyCode.D))
 			{
-				orientation = orientation.GetRightOrientation();
+				Orientation = Orientation.GetRightOrientation();
+				IsOnRightCorner = false;
 			}
 			
-			if (previousOrientation != orientation)
+			if (previousOrientation != Orientation)
 			{
-				transform.rotation = Quaternion.Euler(0, (int)orientation * 90, 0);
+				transform.rotation = Quaternion.Euler(0, (int)Orientation * 90, 0);
+				var turningPosition = TurningPositions.OrderBy(x => Vector3.Distance(x.Position, transform.position)).First();
+				transform.position = new Vector3(turningPosition.Position.x, transform.position.y, turningPosition.Position.z);
+				lane = turningPosition.Lane;
 			}
 		}
 
@@ -58,12 +89,12 @@ namespace Assets.Scripts.Controllers
 		{
 			if (lane != Lane.Left && Input.GetKeyDown(KeyCode.LeftArrow))
 			{
-				transform.position += orientation.GetLeftOrientation().GetDirectionVector3() * LANE_DISTANCE;
+				transform.position += Orientation.GetLeftOrientation().GetDirectionVector3() * LANE_DISTANCE;
 				lane--;
 			}
 			else if (lane != Lane.Right && Input.GetKeyDown(KeyCode.RightArrow))
 			{
-				transform.position += orientation.GetRightOrientation().GetDirectionVector3() * LANE_DISTANCE;
+				transform.position += Orientation.GetRightOrientation().GetDirectionVector3() * LANE_DISTANCE;
 				lane++;
 			}
 		}
@@ -76,7 +107,7 @@ namespace Assets.Scripts.Controllers
 				animator.SetFloat("Speed", currentSpeed);
 			}
 			
-			transform.position += orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
+			transform.position += Orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
 		}
 	}
 }

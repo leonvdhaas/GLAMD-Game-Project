@@ -18,10 +18,12 @@ namespace Assets.Scripts.Utilities
 
 		public static bool PercentageChance(double percentage)
 		{
-			if (percentage <= 0) {
+			if (percentage <= 0)
+			{
 				return false;
 			}
-			else if (percentage >= 100) {
+			else if (percentage >= 100)
+			{
 				return true;
 			}
 
@@ -47,8 +49,10 @@ namespace Assets.Scripts.Utilities
 		{
 			int totalWeight = weightedCollection.Sum(x => x.Weight);
 			int randomNumber = RNG.Next(totalWeight);
-			foreach (var item in weightedCollection) {
-				if (randomNumber < item.Weight) {
+			foreach (var item in weightedCollection)
+			{
+				if (randomNumber < item.Weight)
+				{
 					return item.Value;
 				}
 

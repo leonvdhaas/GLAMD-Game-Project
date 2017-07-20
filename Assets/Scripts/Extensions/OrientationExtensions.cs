@@ -8,7 +8,8 @@ namespace Assets.Scripts.Extensions
 	{
 		public static Orientation GetLeftOrientation(this Orientation orientation)
 		{
-			switch (orientation) {
+			switch (orientation)
+			{
 				case Orientation.North: return Orientation.West;
 				case Orientation.East: return Orientation.North;
 				case Orientation.South: return Orientation.East;
@@ -19,7 +20,8 @@ namespace Assets.Scripts.Extensions
 
 		public static Orientation GetRightOrientation(this Orientation orientation)
 		{
-			switch (orientation) {
+			switch (orientation)
+			{
 				case Orientation.North: return Orientation.East;
 				case Orientation.East: return Orientation.South;
 				case Orientation.South: return Orientation.West;
@@ -30,7 +32,7 @@ namespace Assets.Scripts.Extensions
 
 		public static Vector3 GetDirectionVector3(this Orientation orientation)
 		{
-			switch(orientation)
+			switch (orientation)
 			{
 				case Orientation.North: return Vector3.forward;
 				case Orientation.East: return Vector3.right;
