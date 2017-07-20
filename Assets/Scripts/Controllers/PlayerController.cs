@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Enumerations;
+﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
 using System.Linq;
