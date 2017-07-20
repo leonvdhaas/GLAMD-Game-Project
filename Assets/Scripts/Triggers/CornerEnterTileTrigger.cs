@@ -8,7 +8,7 @@ namespace Assets.Scripts.Models.Triggers
 	public class CornerEnterTileTrigger
 		: MonoBehaviour
 	{
-		private const float TRIGGER_SIZE = 3.0f;
+		private const float TRIGGER_OFFSET = 1.5f;
 
 		private void OnTriggerEnter(Collider other)
 		{
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Models.Triggers
 					turningPositions[i] = new LanePosition
 					{
 						Lane = (Lane)(player.IsOnLeftCorner ? i : 2 - i),
-						Position = transform.position + player.Orientation.GetDirectionVector3() * (TRIGGER_SIZE / 2 + i * Tile.LANE_DISTANCE)
+						Position = transform.position + player.Orientation.GetDirectionVector3() * (TRIGGER_OFFSET + i * Tile.LANE_DISTANCE)
 					};
 				}
 
