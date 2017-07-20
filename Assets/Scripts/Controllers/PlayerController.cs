@@ -38,54 +38,42 @@ namespace Assets.Scripts.Controllers
 
 		public bool IsOnRightCorner { get; set; }
 
-		private bool IsOnCorner
-		{
-			get
-			{
-				return IsOnLeftCorner || IsOnRightCorner;
-			}
-		}
-
 		public LanePosition[] TurningPositions { get; set; }
 
 		private void Update()
 		{
 			Move();
 
-			if (IsOnCorner)
+			if ((IsOnLeftCorner && Input.GetKeyDown(KeyCode.A)) ||
+				(IsOnRightCorner && Input.GetKeyDown(KeyCode.D)))
 			{
 				TakeCorner();
 			}
 			else
 			{
-				LaneSwap();
+				LaneSwapping();
 			}
+		}
+
+		public void TakeFailedCorner()
+		{
+			// Failed corner behavior.
+
+			TakeCorner();
 		}
 
 		private void TakeCorner()
 		{
-			var previousOrientation = Orientation;
-			if (IsOnLeftCorner && Input.GetKeyDown(KeyCode.A))
-			{
-				Orientation = Orientation.GetLeftOrientation();
-				IsOnLeftCorner = false;
-			}
-			else if (IsOnRightCorner && Input.GetKeyDown(KeyCode.D))
-			{
-				Orientation = Orientation.GetRightOrientation();
-				IsOnRightCorner = false;
-			}
-			
-			if (previousOrientation != Orientation)
-			{
-				transform.rotation = Quaternion.Euler(0, (int)Orientation * 90, 0);
-				var turningPosition = TurningPositions.OrderBy(x => Vector3.Distance(x.Position, transform.position)).First();
-				transform.position = new Vector3(turningPosition.Position.x, transform.position.y, turningPosition.Position.z);
-				lane = turningPosition.Lane;
-			}
+			Orientation = IsOnLeftCorner ? Orientation.GetLeftOrientation() : Orientation.GetRightOrientation();
+			transform.rotation = Quaternion.Euler(0, (int)Orientation * 90, 0);
+			var turningPosition = TurningPositions.OrderBy(x => Vector3.Distance(x.Position, transform.position)).First();
+			transform.position = new Vector3(turningPosition.Position.x, transform.position.y, turningPosition.Position.z);
+			lane = turningPosition.Lane;
+			IsOnLeftCorner = IsOnRightCorner = false;
+			TurningPositions = null;
 		}
 
-		private void LaneSwap()
+		private void LaneSwapping()
 		{
 			if (lane != Lane.Left && Input.GetKeyDown(KeyCode.LeftArrow))
 			{
@@ -106,7 +94,7 @@ namespace Assets.Scripts.Controllers
 				currentSpeed += acceleration;
 				animator.SetFloat("Speed", currentSpeed);
 			}
-			
+
 			transform.position += Orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
 		}
 	}

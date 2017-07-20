@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models.Triggers
 {
-	class TileEnterTrigger
+	public class TileEnterTrigger
 		: MonoBehaviour
 	{
 		private void OnTriggerEnter(Collider other)
