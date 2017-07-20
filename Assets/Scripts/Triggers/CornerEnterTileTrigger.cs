@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models.Triggers
 {
-	class CornerTileTrigger
+	public class CornerEnterTileTrigger
 		: MonoBehaviour
 	{
 		private void OnTriggerEnter(Collider other)
