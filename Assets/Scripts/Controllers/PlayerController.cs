@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enumerations;
+﻿using System;
+using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
 
@@ -6,43 +7,76 @@ namespace Assets.Scripts.Controllers
 {
 	public class PlayerController : MonoBehaviour
 	{
-		[SerializeField]
-		private int speed;
+		private const int LANE_DISTANCE = 2;
 
+		[SerializeField]
+		private float acceleration;
+
+		[SerializeField]
+		private float minSpeed;
+
+		[SerializeField]
+		private float maxSpeed;
+
+		private float currentSpeed;
+		private Lane lane = Lane.Middle;
 		private Orientation orientation = Orientation.North;
+		private Animator animator;
+
+		private void Awake()
+		{
+			animator = GetComponent<Animator>();
+			currentSpeed = (maxSpeed + minSpeed) / 2;
+		}
 
 		private void Update()
 		{
-			// Movement
-			if (Input.GetKey(KeyCode.W)) {
-				Vector3 movement = Vector3.zero;
-				switch (orientation) {
-					case Orientation.North:
-						movement = Vector3.forward;
-						break;
-					case Orientation.East:
-						movement = Vector3.right;
-						break;
-					case Orientation.South:
-						movement = Vector3.back;
-						break;
-					case Orientation.West:
-						movement = Vector3.left;
-						break;
-				}
+			Move();
+			LaneSwap();
+			Rotate();
+		}
 
-				transform.position += movement * speed * Time.deltaTime;
-			}
-
-			// Rotation
-			if (Input.GetKeyDown(KeyCode.A)) {
+		private void Rotate()
+		{
+			var previousOrientation = orientation;
+			if (Input.GetKeyDown(KeyCode.A))
+			{
 				orientation = orientation.GetLeftOrientation();
 			}
-			else if (Input.GetKeyDown(KeyCode.D)) {
+			else if (Input.GetKeyDown(KeyCode.D))
+			{
 				orientation = orientation.GetRightOrientation();
 			}
+			
+			if (previousOrientation != orientation)
+			{
+				transform.rotation = Quaternion.Euler(0, (int)orientation * 90, 0);
+			}
+		}
 
-			transform.rotation = Quaternion.Euler(0, (int)orientation * 90, 0);
+		private void LaneSwap()
+		{
+			if (lane != Lane.Left && Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				transform.position += orientation.GetLeftOrientation().GetDirectionVector3() * LANE_DISTANCE;
+				lane--;
+			}
+			else if (lane != Lane.Right && Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				transform.position += orientation.GetRightOrientation().GetDirectionVector3() * LANE_DISTANCE;
+				lane++;
+			}
+		}
+
+		private void Move()
+		{
+			if (currentSpeed < maxSpeed)
+			{
+				currentSpeed += acceleration;
+				animator.SetFloat("Speed", currentSpeed);
+			}
+			
+			transform.position += orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
 		}
 	}
 }

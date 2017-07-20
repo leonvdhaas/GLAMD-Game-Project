@@ -18,7 +18,7 @@ namespace Assets.Scripts.Managers
 				Destroy(gameObject);
 			}
 
-				DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(gameObject);
 		}
 
 		public static GameManager Instance { get; private set; }

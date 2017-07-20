@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
 using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Extensions
 {
@@ -23,6 +24,18 @@ namespace Assets.Scripts.Extensions
 				case Orientation.East: return Orientation.South;
 				case Orientation.South: return Orientation.West;
 				case Orientation.West: return Orientation.North;
+				default: throw new ArgumentException("Invalid orientation provided.");
+			}
+		}
+
+		public static Vector3 GetDirectionVector3(this Orientation orientation)
+		{
+			switch(orientation)
+			{
+				case Orientation.North: return Vector3.forward;
+				case Orientation.East: return Vector3.right;
+				case Orientation.South: return Vector3.back;
+				case Orientation.West: return Vector3.left;
 				default: throw new ArgumentException("Invalid orientation provided.");
 			}
 		}
