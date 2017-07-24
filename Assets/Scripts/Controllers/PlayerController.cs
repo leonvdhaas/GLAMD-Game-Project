@@ -98,7 +98,7 @@ namespace Assets.Scripts.Controllers
 
 			// Set rotation
 			Orientation = IsOnLeftCorner ? Orientation.GetLeftOrientation() : Orientation.GetRightOrientation();
-			transform.rotation = Quaternion.Euler(0, (int)Orientation * 90, 0);
+			iTween.RotateTo(gameObject, new Vector3(0, (int)Orientation * 90, 0), IsDamaged ? 1.5f : 0.5f);
 
 			// Reset corner variables.
 			IsOnLeftCorner = IsOnRightCorner = false;
