@@ -71,7 +71,7 @@ namespace Assets.Scripts.Controllers
 
 		public void TakeFailedCorner()
 		{
-			if (IsOnCorner)
+			if (!IsOnCorner)
 			{
 				throw new InvalidOperationException("Tried to take invalid corner.");
 			}
