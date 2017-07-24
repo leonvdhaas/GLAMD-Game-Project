@@ -33,11 +33,19 @@ namespace Assets.Scripts.Controllers
 
 		public Orientation Orientation { get; private set; }
 
+		public LanePosition[] TurningPositions { get; set; }
+
 		public bool IsOnLeftCorner { get; set; }
 
 		public bool IsOnRightCorner { get; set; }
 
-		public LanePosition[] TurningPositions { get; set; }
+		public bool IsOnCorner
+		{
+			get
+			{
+				return (IsOnLeftCorner || IsOnRightCorner) && TurningPositions != null && TurningPositions.Length > 0;
+			}
+		}
 
 		public bool IsDamaged { get; private set; }
 
@@ -63,7 +71,7 @@ namespace Assets.Scripts.Controllers
 
 		public void TakeFailedCorner()
 		{
-			if (TurningPositions == null || TurningPositions.Length == 0)
+			if (!IsOnCorner)
 			{
 				throw new InvalidOperationException("Tried to take invalid corner.");
 			}
