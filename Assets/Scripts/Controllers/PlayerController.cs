@@ -3,6 +3,8 @@ using Assets.Scripts.Extensions;
 using UnityEngine;
 using System.Linq;
 using Assets.Scripts.Models;
+using System;
+using System.Collections;
 
 namespace Assets.Scripts.Controllers
 {
@@ -36,9 +38,15 @@ namespace Assets.Scripts.Controllers
 		public bool IsOnRightCorner { get; set; }
 
 		public LanePosition[] TurningPositions { get; set; }
+		public bool IsWary { get; private set; }
 
 		private void Update()
 		{
+			if (IsWary)
+			{
+				return;
+			}
+
 			if ((IsOnLeftCorner && Input.GetKeyDown(KeyCode.A)) ||
 				(IsOnRightCorner && Input.GetKeyDown(KeyCode.D)))
 			{
@@ -54,9 +62,28 @@ namespace Assets.Scripts.Controllers
 
 		public void TakeFailedCorner()
 		{
-			// Failed corner behavior.
+			if (TurningPositions == null || TurningPositions.Length == 0)
+			{
+				throw new InvalidOperationException("Tried to take invalid corner.");
+			}
+
+			IsWary = true;
+			animator.SetFloat("Speed", 0.0f);
+			currentSpeed = minSpeed;
+			animator.Play("Damage");
+
+			StartCoroutine(PerformAfterDelay(0.5f, () =>
+			{
+				IsWary = false;
+			}));
 
 			TakeCorner();
+		}
+
+		private IEnumerator PerformAfterDelay(float delay, Action action)
+		{
+			yield return new WaitForSeconds(delay);
+			action();
 		}
 
 		private void TakeCorner()
