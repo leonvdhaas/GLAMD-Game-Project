@@ -8,7 +8,7 @@ namespace Assets.Scripts.Models.Triggers
 	public class CornerEnterTileTrigger
 		: MonoBehaviour
 	{
-		private const float TRIGGER_OFFSET = 1.5f;
+		private const float TRIGGER_OFFSET = 2.5f;
 
 		private void OnTriggerEnter(Collider other)
 		{
