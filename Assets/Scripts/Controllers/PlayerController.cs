@@ -38,11 +38,12 @@ namespace Assets.Scripts.Controllers
 		public bool IsOnRightCorner { get; set; }
 
 		public LanePosition[] TurningPositions { get; set; }
-		public bool IsWary { get; private set; }
+
+		public bool IsDamaged { get; private set; }
 
 		private void Update()
 		{
-			if (IsWary)
+			if (IsDamaged)
 			{
 				return;
 			}
@@ -67,14 +68,14 @@ namespace Assets.Scripts.Controllers
 				throw new InvalidOperationException("Tried to take invalid corner.");
 			}
 
-			IsWary = true;
+			IsDamaged = true;
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
 			animator.Play("Damage");
 
 			StartCoroutine(PerformAfterDelay(0.5f, () =>
 			{
-				IsWary = false;
+				IsDamaged = false;
 			}));
 
 			TakeCorner();
@@ -97,7 +98,7 @@ namespace Assets.Scripts.Controllers
 
 			// Set rotation
 			Orientation = IsOnLeftCorner ? Orientation.GetLeftOrientation() : Orientation.GetRightOrientation();
-			transform.rotation = Quaternion.Euler(0, (int)Orientation * 90, 0);
+			iTween.RotateTo(gameObject, new Vector3(0, (int)Orientation * 90, 0), IsDamaged ? 1.5f : 0.5f);
 
 			// Reset corner variables.
 			IsOnLeftCorner = IsOnRightCorner = false;
