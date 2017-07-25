@@ -10,6 +10,8 @@ namespace Assets.Scripts.Controllers
 {
 	public class PlayerController : MonoBehaviour
 	{
+		private const float GRAVITY = 9.8f;
+		private const float GRAVITY_MULTIPLIER = 2.5f;
 		[SerializeField]
 		private float acceleration;
 
@@ -19,12 +21,18 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private float maxSpeed;
 
+		[SerializeField]
+		private float jumpSpeed;
+
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
+		private CharacterController characterController;
+		private float verticalSpeed = 0.0f;
 
 		private void Awake()
 		{
+			characterController = GetComponent<CharacterController>();
 			animator = GetComponent<Animator>();
 			currentSpeed = (maxSpeed + minSpeed) / 2;
 
@@ -66,7 +74,38 @@ namespace Assets.Scripts.Controllers
 				LaneSwapping();
 			}
 
+			Jump();
 			Move();
+		}
+
+		private void Jump()
+		{
+			if (IsAllowedToJump())
+			{
+				if (Input.GetKeyDown(KeyCode.Space))
+				{
+					verticalSpeed = jumpSpeed;
+				}
+				else
+				{
+					return;
+				}
+			}
+
+			var velocity = Vector3.zero;
+			verticalSpeed -= GRAVITY_MULTIPLIER * GRAVITY * Time.deltaTime;
+			velocity.y = verticalSpeed;
+			characterController.Move(velocity * Time.deltaTime);
+		}
+
+		private bool IsAllowedToJump()
+		{
+			return IsTouchingGround(new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z));
+		}
+
+		private bool IsTouchingGround(Vector3 rayOrigin)
+		{
+			return Physics.Raycast(rayOrigin, Vector3.down, 0.2f);
 		}
 
 		public void TakeFailedCorner()
