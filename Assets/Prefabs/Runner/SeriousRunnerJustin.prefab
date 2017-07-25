@@ -3142,6 +3142,7 @@ MonoBehaviour:
   acceleration: 0.01
   minSpeed: 15
   maxSpeed: 25
+  jumpSpeed: 12.5
 --- !u!124 &124178190749472908
 Behaviour:
   m_ObjectHideFlags: 1
