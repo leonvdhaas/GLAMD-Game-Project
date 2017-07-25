@@ -94,15 +94,13 @@ namespace Assets.Scripts.Controllers
 				}
 			}
 
-			var velocity = Vector3.zero;
 			verticalSpeed -= gravityMultiplier * GRAVITY * Time.deltaTime;
-			velocity.y = verticalSpeed;
-			characterController.Move(velocity * Time.deltaTime);
+			characterController.Move(verticalSpeed * Vector3.up * Time.deltaTime);
 		}
 
 		private bool IsAllowedToJump()
 		{
-			return IsTouchingGround(new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z));
+			return IsTouchingGround(transform.position + Vector3.up * 0.6f);
 		}
 
 		private bool IsTouchingGround(Vector3 rayOrigin)
