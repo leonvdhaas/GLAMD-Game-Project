@@ -11,7 +11,7 @@ namespace Assets.Scripts.Controllers
 	public class PlayerController : MonoBehaviour
 	{
 		private const float GRAVITY = 9.8f;
-		private const float GRAVITY_MULTIPLIER = 2.5f;
+
 		[SerializeField]
 		private float acceleration;
 
@@ -80,6 +80,8 @@ namespace Assets.Scripts.Controllers
 
 		private void Jump()
 		{
+			const float gravityMultiplier = 2.5f;
+
 			if (IsAllowedToJump())
 			{
 				if (Input.GetKeyDown(KeyCode.Space))
@@ -93,7 +95,7 @@ namespace Assets.Scripts.Controllers
 			}
 
 			var velocity = Vector3.zero;
-			verticalSpeed -= GRAVITY_MULTIPLIER * GRAVITY * Time.deltaTime;
+			verticalSpeed -= gravityMultiplier * GRAVITY * Time.deltaTime;
 			velocity.y = verticalSpeed;
 			characterController.Move(velocity * Time.deltaTime);
 		}
