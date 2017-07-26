@@ -11,14 +11,13 @@ namespace Assets.Scripts.Managers
 			if (Instance == null)
 			{
 				Instance = this;
+				DontDestroyOnLoad(gameObject);
 
 			}
 			else if (Instance != this)
 			{
 				Destroy(gameObject);
 			}
-
-			DontDestroyOnLoad(gameObject);
 		}
 
 		public static GameManager Instance { get; private set; }
@@ -36,6 +35,14 @@ namespace Assets.Scripts.Managers
 			get
 			{
 				return SoundManager.Instance;
+			}
+		}
+
+		public static ApiManager ApiManager
+		{
+			get
+			{
+				return ApiManager.Instance;
 			}
 		}
 	}

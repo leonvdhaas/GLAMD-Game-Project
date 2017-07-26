@@ -2,16 +2,16 @@
 
 namespace Assets.Scripts.Managers
 {
-	public class SoundManager
+	public class ApiManager
 		: MonoBehaviour
 	{
-		// Use this for initialization
 		private void Awake()
 		{
 			if (Instance == null)
 			{
 				Instance = this;
 				DontDestroyOnLoad(gameObject);
+
 			}
 			else if (Instance != this)
 			{
@@ -19,6 +19,6 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		public static SoundManager Instance { get; private set; }
+		public static ApiManager Instance { get; private set; }
 	}
 }
