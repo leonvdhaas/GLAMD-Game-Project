@@ -120,11 +120,7 @@ namespace Assets.Scripts.Controllers
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
 			animator.Play("Damage");
-
-			StartCoroutine(CoroutineHelper.Delay(0.5f, () =>
-			{
-				IsDamaged = false;
-			}));
+			StartCoroutine(CoroutineHelper.Delay(0.5f, () => IsDamaged = false));
 
 			TakeCorner();
 		}
