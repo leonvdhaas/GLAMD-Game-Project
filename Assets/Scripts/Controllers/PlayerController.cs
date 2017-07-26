@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.Scripts.Models;
 using System;
 using System.Collections;
+using Assets.Scripts.Helpers;
 
 namespace Assets.Scripts.Controllers
 {
@@ -120,18 +121,12 @@ namespace Assets.Scripts.Controllers
 			currentSpeed = minSpeed;
 			animator.Play("Damage");
 
-			StartCoroutine(PerformAfterDelay(0.5f, () =>
+			StartCoroutine(CoroutineHelper.Delay(0.5f, () =>
 			{
 				IsDamaged = false;
 			}));
 
 			TakeCorner();
-		}
-
-		private IEnumerator PerformAfterDelay(float delay, Action action)
-		{
-			yield return new WaitForSeconds(delay);
-			action();
 		}
 
 		private void TakeCorner()

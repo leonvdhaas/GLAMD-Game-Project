@@ -9,7 +9,16 @@ namespace Assets.Scripts.Helpers
 	{
 		public const double PERCENT = 1.0;
 		public const double HUNDRED_PERCENT = 100 * PERCENT;
-		private static readonly Random RNG = new Random();
+
+		private static Random RNG = new Random();
+
+		public static int Seed
+		{
+			set
+			{
+				RNG = new Random(value);
+			}
+		}
 
 		public static double FractureAsPercentage(int x, int y)
 		{
