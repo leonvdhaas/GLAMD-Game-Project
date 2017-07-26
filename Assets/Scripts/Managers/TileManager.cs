@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Models;
-using Assets.Scripts.Utilities;
+using Assets.Scripts.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Managers
 		private const int MAX_TILES = 10;
 		private const int MAX_CORNERS = 4;
 		private const int TILES_BEHIND_PLAYER = 2;
-		private const double CORNER_CHANCE = RandomUtilities.HUNDRED_PERCENT * 2 / 3;
+		private const double CORNER_CHANCE = RandomHelper.HUNDRED_PERCENT * 2 / 3;
 
 		// Use this for initialization
 		private void Awake()
@@ -97,9 +97,9 @@ namespace Assets.Scripts.Managers
 		public void AddRandomTile()
 		{
 			var previousTile = Tiles.Last();
-			if (RandomUtilities.PercentageChance(MayCreateCorner ? CORNER_CHANCE : 0))
+			if (RandomHelper.PercentageChance(MayCreateCorner ? CORNER_CHANCE : 0))
 			{
-				var randomCorner = RandomUtilities.Pick(leftCornerTile, rightCornerTile);
+				var randomCorner = RandomHelper.Pick(leftCornerTile, rightCornerTile);
 				AddTile(randomCorner, previousTile, TileType.Corner);
 			}
 			else

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.Utilities
+namespace Assets.Scripts.Helpers
 {
-	public static class RandomUtilities
+	public static class RandomHelper
 	{
 		public const double PERCENT = 1.0;
 		public const double HUNDRED_PERCENT = 100 * PERCENT;

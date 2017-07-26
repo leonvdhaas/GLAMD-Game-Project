@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Utilities
+namespace Assets.Scripts
 {
 	public class Loader
 		: MonoBehaviour
