@@ -21,29 +21,5 @@ namespace Assets.Scripts.Managers
 		}
 
 		public static GameManager Instance { get; private set; }
-
-		public static TileManager TileManager
-		{
-			get
-			{
-				return TileManager.Instance;
-			}
-		}
-
-		public static SoundManager SoundManager
-		{
-			get
-			{
-				return SoundManager.Instance;
-			}
-		}
-
-		public static ApiManager ApiManager
-		{
-			get
-			{
-				return ApiManager.Instance;
-			}
-		}
 	}
 }
