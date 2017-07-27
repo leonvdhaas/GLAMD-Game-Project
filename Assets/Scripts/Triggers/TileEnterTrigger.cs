@@ -12,6 +12,7 @@ namespace Assets.Scripts.Models.Triggers
 			if (other.GetComponent<PlayerController>() != null)
 			{
 				TileManager.Instance.AddRandomTile();
+				GetComponent<Collider>().enabled = false;
 			}
 		}
 	}

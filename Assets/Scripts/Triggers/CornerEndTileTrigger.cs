@@ -11,6 +11,7 @@ namespace Assets.Scripts.Triggers
 			var player = other.GetComponent<PlayerController>();
 			if (player != null) {
 				player.TakeFailedCorner();
+				GetComponent<Collider>().enabled = false;
 			}
 		}
 	}

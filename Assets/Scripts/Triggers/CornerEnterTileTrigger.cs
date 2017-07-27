@@ -35,6 +35,7 @@ namespace Assets.Scripts.Models.Triggers
 				}
 
 				player.TurningPositions = turningPositions;
+				GetComponent<Collider>().enabled = false;
 			}
 		}
 	}
