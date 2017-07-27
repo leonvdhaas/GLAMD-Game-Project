@@ -59,6 +59,7 @@ namespace Assets.Scripts.Controllers
 		}
 
 		public bool IsDamaged { get; private set; }
+		public int Inhalers { get; internal set; }
 
 		public int Coins { get; set; }
 
@@ -80,7 +81,7 @@ namespace Assets.Scripts.Controllers
 			{
 				LaneSwapping();
 			}
-
+			
 			Jump();
 			Move();
 		}
@@ -107,7 +108,7 @@ namespace Assets.Scripts.Controllers
 
 		private bool IsAllowedToJump()
 		{
-			return IsTouchingGround(transform.position + Vector3.up * 0.6f) && !IsOnCorner;
+			return IsTouchingGround(transform.position + Vector3.up * 0.6f) && !IsOnCorner && verticalSpeed <= 0;
 		}
 
 		private bool IsTouchingGround(Vector3 rayOrigin)
