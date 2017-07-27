@@ -6,6 +6,7 @@ using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Managers;
 
 namespace Assets.Scripts.Controllers
 {
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Controllers
 			animator = GetComponent<Animator>();
 			currentSpeed = (maxSpeed + minSpeed) / 2;
 
+			GameManager.Instance.Player = this;
 			Orientation = Orientation.North;
 		}
 
@@ -57,6 +59,10 @@ namespace Assets.Scripts.Controllers
 		}
 
 		public bool IsDamaged { get; private set; }
+
+		public int Coins { get; set; }
+
+		public bool IsCoinDoublerActive { get; set; }
 
 		private void Update()
 		{

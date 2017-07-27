@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Controllers;
+using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
@@ -21,5 +22,8 @@ namespace Assets.Scripts.Managers
 		}
 
 		public static GameManager Instance { get; private set; }
+
+		public PlayerController Player { get; set; }
+
 	}
 }
