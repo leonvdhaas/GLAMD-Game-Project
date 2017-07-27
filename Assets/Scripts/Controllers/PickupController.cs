@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Helpers;
-using Assets.Scripts.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +18,12 @@ namespace Assets.Scripts.Controllers
 
 		[SerializeField]
 		private Pickup pickupType;
+
+		private const ushort MAX_NUMBER_OF_INHALERS = 6;
+
+		private const float SLOWMOTION_TIME = 5.0f;
+
+		private const float SLOWMOTION_FACTOR = 0.5f;
 
 		private void FixedUpdate()
 		{
@@ -41,8 +46,12 @@ namespace Assets.Scripts.Controllers
 						player.Coins += 1 * multiplier;
 						break;
 					case Pickup.Slowmotion:
+						Time.timeScale = SLOWMOTION_FACTOR;
+						StartCoroutine(CoroutineHelper.Delay(SLOWMOTION_TIME, () => Time.timeScale = 1.0f));
 						break;
 					case Pickup.Inhaler:
+						if (!(player.Inhalers >= MAX_NUMBER_OF_INHALERS))
+							player.Inhalers++;
 						break;
 					case Pickup.CoinDoubler:
 						player.IsCoinDoublerActive = true;
