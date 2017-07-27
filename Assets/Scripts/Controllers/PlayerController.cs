@@ -71,12 +71,12 @@ namespace Assets.Scripts.Controllers
 				return;
 			}
 
-			if ((IsOnLeftCorner && Input.GetKeyDown(KeyCode.A)) ||
-				(IsOnRightCorner && Input.GetKeyDown(KeyCode.D)))
+			if ((IsOnLeftCorner && InputHelper.CornerLeft()) ||
+				(IsOnRightCorner && InputHelper.CornerRight()))
 			{
 				TakeCorner();
 			}
-			else
+			else if (!IsOnCorner)
 			{
 				LaneSwapping();
 			}
@@ -91,7 +91,7 @@ namespace Assets.Scripts.Controllers
 
 			if (IsAllowedToJump())
 			{
-				if (Input.GetKeyDown(KeyCode.Space))
+				if (InputHelper.Jump())
 				{
 					verticalSpeed = jumpSpeed;
 				}
@@ -107,7 +107,7 @@ namespace Assets.Scripts.Controllers
 
 		private bool IsAllowedToJump()
 		{
-			return IsTouchingGround(transform.position + Vector3.up * 0.6f);
+			return IsTouchingGround(transform.position + Vector3.up * 0.6f) && !IsOnCorner;
 		}
 
 		private bool IsTouchingGround(Vector3 rayOrigin)
@@ -151,12 +151,12 @@ namespace Assets.Scripts.Controllers
 
 		private void LaneSwapping()
 		{
-			if (lane != Lane.Left && Input.GetKeyDown(KeyCode.LeftArrow))
+			if (lane != Lane.Left && InputHelper.LaneSwapLeft())
 			{
 				transform.position += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane--;
 			}
-			else if (lane != Lane.Right && Input.GetKeyDown(KeyCode.RightArrow))
+			else if (lane != Lane.Right && InputHelper.LaneSwapRight())
 			{
 				transform.position += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane++;
