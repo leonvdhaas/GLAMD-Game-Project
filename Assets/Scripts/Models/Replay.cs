@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Extensions;
+using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Models
@@ -27,7 +29,7 @@ namespace Assets.Scripts.Models
 
 		public Queue<Orientation> GetOrientationQueue()
 		{
-			return new Queue<Orientation>(dataPoints.Select(x => x.Orientation));
+			return new Queue<Orientation>(dataPoints.OrderBy(x => x.Index).Select(x => x.Orientation));
 		}
 
 		public Vector3[] Path
@@ -48,7 +50,9 @@ namespace Assets.Scripts.Models
 
 		public override string ToString()
 		{
-			return string.Join("_", dataPoints.OrderBy(x => x.Index).Select(x => x.ToString()).ToArray());
+			var sb = new StringBuilder();
+			sb.Join("_", dataPoints.Select(x => x.ToString()).ToArray());
+			return sb.ToString();
 		}
 	}
 }

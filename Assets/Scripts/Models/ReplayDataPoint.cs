@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-	public class ReplayDataPoint
+	public struct ReplayDataPoint
 	{
 		public int Index { get; set; }
 		public Vector3 Position { get; set; }
@@ -14,7 +14,10 @@ namespace Assets.Scripts.Models
 		{
 			string[] data = info.Split(',');
 			Index = Convert.ToInt32(data[0]);
-			Position = new Vector3(x: Convert.ToSingle(data[1]), y: Convert.ToSingle(data[2]), z: Convert.ToSingle(data[3]));
+			Position = new Vector3(
+				x: Convert.ToSingle(data[1]),
+				y: Convert.ToSingle(data[2]),
+				z: Convert.ToSingle(data[3]));
 			Orientation = (Orientation)Convert.ToByte(data[4]);
 		}
 
