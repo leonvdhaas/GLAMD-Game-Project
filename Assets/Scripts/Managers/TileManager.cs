@@ -27,17 +27,20 @@ namespace Assets.Scripts.Managers
 		private const int TILES_BEHIND_PLAYER = 2;
 		private const double CORNER_CHANCE = RandomHelper.HUNDRED_PERCENT * 2 / 3;
 
-		// Use this for initialization
 		private void Awake()
 		{
-			Instance = this;
-		}
+			if (Instance == null)
+			{
+				Instance = this;
+				DontDestroyOnLoad(gameObject);
 
-		// Use this for initialization
-		void Start()
-		{
-			Tiles = new List<Tile>(MAX_TILES + 1);
-			ResetTiles();
+				Tiles = new List<Tile>(MAX_TILES + 1);
+				ResetTiles();
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
 		}
 
 		public static TileManager Instance { get; private set; }

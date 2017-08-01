@@ -11,6 +11,7 @@ namespace Assets.Scripts.Models.Triggers
 		{
 			if (other.GetComponent<PlayerController>() != null)
 			{
+				GameManager.Instance.Player.CurrentTile = GetComponentInParent<Tile>();
 				TileManager.Instance.AddRandomTile();
 				GetComponent<Collider>().enabled = false;
 			}

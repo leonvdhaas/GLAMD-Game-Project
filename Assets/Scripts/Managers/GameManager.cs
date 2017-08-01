@@ -6,7 +6,6 @@ namespace Assets.Scripts.Managers
 	public class GameManager
 		: MonoBehaviour
 	{
-		// Use this for initialization
 		private void Awake()
 		{
 			if (Instance == null)
@@ -15,7 +14,7 @@ namespace Assets.Scripts.Managers
 				DontDestroyOnLoad(gameObject);
 
 			}
-			else if (Instance != this)
+			else
 			{
 				Destroy(gameObject);
 			}
