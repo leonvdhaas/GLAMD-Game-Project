@@ -117,7 +117,13 @@ namespace Assets.Scripts.Controllers
 
 		private bool IsTouchingGround()
 		{
-			return Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.2f);
+			var touching = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.2f);
+			if (touching)
+			{
+				verticalSpeed = 0;
+			}
+
+			return touching;
 		}
 
 		public void TakeFailedCorner()
