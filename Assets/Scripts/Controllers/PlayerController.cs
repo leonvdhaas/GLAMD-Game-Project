@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Assets.Scripts.Models;
 using System;
-using System.Collections;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.Managers;
 
