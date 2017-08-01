@@ -32,5 +32,11 @@ namespace Assets.Scripts.Helpers
 
 			finish();
 		}
+
+		public static IEnumerator WaitUntil(Func<bool> predicate, Action action)
+		{
+			yield return new WaitUntil(predicate);
+			action();
+		}
 	}
 }
