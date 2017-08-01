@@ -39,6 +39,7 @@ namespace Assets.Scripts.Controllers
 
 			GameManager.Instance.Player = this;
 			Orientation = Orientation.North;
+			CurrentTile = TileManager.Instance.Tiles.First();
 		}
 
 		public Orientation Orientation { get; private set; }
@@ -57,7 +58,10 @@ namespace Assets.Scripts.Controllers
 			}
 		}
 
+		public Tile CurrentTile { get; set; }
+
 		public bool IsDamaged { get; private set; }
+
 		public int Inhalers { get; internal set; }
 
 		public int Coins { get; set; }
@@ -66,6 +70,8 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
+			ApplyGravity();
+
 			if (IsDamaged)
 			{
 				return;
@@ -80,39 +86,38 @@ namespace Assets.Scripts.Controllers
 			{
 				LaneSwapping();
 			}
-			
-			Jump();
+
 			Move();
+			Jump();
 		}
 
 		private void Jump()
 		{
-			const float gravityMultiplier = 2.5f;
-
-			if (IsAllowedToJump())
+			if (InputHelper.Jump() && IsAllowedToJump())
 			{
-				if (InputHelper.Jump())
-				{
-					verticalSpeed = jumpSpeed;
-				}
-				else
-				{
-					return;
-				}
+				verticalSpeed = jumpSpeed;
 			}
+		}
 
-			verticalSpeed -= gravityMultiplier * GRAVITY * Time.deltaTime;
-			characterController.Move(verticalSpeed * Vector3.up * Time.deltaTime);
+		private void ApplyGravity()
+		{
+			const float gravityMultiplier = 7.5f;
+
+			if (verticalSpeed > 0 || !IsTouchingGround())
+			{
+				verticalSpeed -= gravityMultiplier * GRAVITY * Time.deltaTime;
+				characterController.Move(verticalSpeed * Vector3.up * Time.deltaTime);
+			}
 		}
 
 		private bool IsAllowedToJump()
 		{
-			return IsTouchingGround(transform.position + Vector3.up * 0.6f) && !IsOnCorner && verticalSpeed <= 0;
+			return !IsOnCorner && verticalSpeed <= 0 && IsTouchingGround();
 		}
 
-		private bool IsTouchingGround(Vector3 rayOrigin)
+		private bool IsTouchingGround()
 		{
-			return Physics.Raycast(rayOrigin, Vector3.down, 0.2f);
+			return Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.2f);
 		}
 
 		public void TakeFailedCorner()
@@ -125,10 +130,15 @@ namespace Assets.Scripts.Controllers
 			IsDamaged = true;
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
-			animator.Play("Damage");
-			StartCoroutine(CoroutineHelper.Delay(0.5f, () => IsDamaged = false));
 
-			TakeCorner();
+			// Wait until player lands.
+			StartCoroutine(CoroutineHelper.WaitUntil(() => IsTouchingGround(), () =>
+			{
+				animator.Play("Damage");
+				StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
+
+				TakeCorner();
+			}));
 		}
 
 		private void TakeCorner()
