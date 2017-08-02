@@ -15,10 +15,14 @@ ExportedObj/
 bin/
 obj/
 packages/
+BuildTest/
+apk/
 *.svd
 *.userprefs
 GLAMD-Game-Project.csproj
 GLAMD-Game-Project.Plugins.csproj
+Assembly-CSharp.csproj
+Assembly-CSharp-firstpass.csproj
 *.pidb
 *.suo
 GLAMD-Game-Project.sln
