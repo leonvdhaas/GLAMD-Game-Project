@@ -28,5 +28,10 @@ namespace Assets.Scripts.Helpers
 		{
 			return Input.GetKeyDown(KeyCode.D);
 		}
+
+		public static bool ActivateInhaler()
+		{
+			return Input.GetKeyDown(KeyCode.Return);
+		}
 	}
 }
