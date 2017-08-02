@@ -31,6 +31,9 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private float inhalerTime;
 
+		[SerializeField]
+		private ushort lives;
+
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
@@ -152,14 +155,18 @@ namespace Assets.Scripts.Controllers
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
 
-			// Wait until player lands.
-			StartCoroutine(CoroutineHelper.WaitUntil(() => IsTouchingGround(), () =>
+			lives--;
+			if (lives != ushort.MinValue)
 			{
-				animator.Play("Damage");
-				StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
+				// Wait until player lands.
+				StartCoroutine(CoroutineHelper.WaitUntil(() => IsTouchingGround(), () =>
+				{
+					animator.Play("Damage");
+					StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
 
-				TakeCorner();
-			}));
+					TakeCorner();
+				}));
+			}
 		}
 
 		private void TakeCorner()
@@ -225,10 +232,14 @@ namespace Assets.Scripts.Controllers
 		public void TakeObstacleDamage()
 		{
 			IsDamaged = true;
-			StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
+			lives--;
+			if(lives != ushort.MinValue)
+			{
+				animator.Play("Damage");
+				StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
+			}			
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
-			animator.Play("Damage");
 		}
 	}
 }
