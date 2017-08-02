@@ -14,6 +14,7 @@ ExportedObj/
 .vs/
 bin/
 obj/
+packages/
 *.svd
 *.userprefs
 GLAMD-Game-Project.csproj
