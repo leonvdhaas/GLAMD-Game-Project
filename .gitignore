@@ -16,10 +16,11 @@ bin/
 obj/
 *.svd
 *.userprefs
-*.csproj
+GLAMD-Game-Project.csproj
+GLAMD-Game-Project.Plugins.csproj
 *.pidb
 *.suo
-*.sln
+GLAMD-Game-Project.sln
 *.user
 *.unityproj
 *.booproj
