@@ -25,6 +25,12 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private float jumpSpeed;
 
+		[SerializeField]
+		private float inhalerSpeedBonus;
+
+		[SerializeField]
+		private float inhalerTime;
+
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
@@ -67,6 +73,14 @@ namespace Assets.Scripts.Controllers
 		public int Coins { get; set; }
 
 		public bool IsCoinDoublerActive { get; set; }
+		public bool InhalerUsable
+		{
+			get
+			{
+				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS;
+			}
+		}
+		public bool IsInvincible { get; set; }
 
 		private void Update()
 		{
@@ -89,6 +103,7 @@ namespace Assets.Scripts.Controllers
 
 			Move();
 			Jump();
+			ActivateInhaler();
 		}
 
 		private void Jump()
@@ -188,6 +203,32 @@ namespace Assets.Scripts.Controllers
 			}
 
 			transform.position += Orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
+		}
+
+		private void ActivateInhaler()
+		{
+			if (InhalerUsable && InputHelper.ActivateInhaler())
+			{
+				IsInvincible = true;
+				StartCoroutine(CoroutineHelper.Repeat(
+					inhalerTime / PickupController.MAX_NUMBER_OF_INHALERS,
+					() => Inhalers--,
+					() => Inhalers > 0,
+					() =>
+					{
+						maxSpeed -= inhalerSpeedBonus;
+						IsInvincible = false;
+					}));
+			}
+		}
+
+		public void TakeObstacleDamage()
+		{
+			IsDamaged = true;
+			StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
+			animator.SetFloat("Speed", 0.0f);
+			currentSpeed = minSpeed;
+			animator.Play("Damage");
 		}
 	}
 }

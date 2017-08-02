@@ -16,7 +16,7 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private Pickup pickupType;
 
-		private const ushort MAX_NUMBER_OF_INHALERS = 6;
+		public const ushort MAX_NUMBER_OF_INHALERS = 6;
 
 		private const float SLOWMOTION_TIME = 5.0f;
 
@@ -47,8 +47,14 @@ namespace Assets.Scripts.Controllers
 						StartCoroutine(CoroutineHelper.Delay(SLOWMOTION_TIME, () => Time.timeScale = 1.0f));
 						break;
 					case Pickup.Inhaler:
-						if (!(player.Inhalers >= MAX_NUMBER_OF_INHALERS))
+						if (player.Inhalers < MAX_NUMBER_OF_INHALERS)
+						{
 							player.Inhalers++;
+						}							
+						else if (player.IsInvincible)
+						{
+							// TODO: add points
+						}
 						break;
 					case Pickup.CoinDoubler:
 						player.IsCoinDoublerActive = true;
