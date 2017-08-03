@@ -49,6 +49,7 @@ namespace Assets.Scripts.Controllers
 			GameManager.Instance.Player = this;
 			Orientation = Orientation.North;
 			CurrentTile = TileManager.Instance.Tiles.First();
+			Inhalers = 6;
 		}
 
 		public Orientation Orientation { get; private set; }
