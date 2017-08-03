@@ -34,11 +34,15 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private ushort lives;
 
+		[SerializeField]
+		private float laneSwapSpeed;
+
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
 		private CharacterController characterController;
 		private float verticalSpeed = 0.0f;
+		private Vector3 targetLanePos;
 
 		private void Awake()
 		{
@@ -178,6 +182,9 @@ namespace Assets.Scripts.Controllers
 				? new Vector3(transform.position.x, transform.position.y, turningPosition.Position.z)
 				: new Vector3(turningPosition.Position.x, transform.position.y, transform.position.z);
 			lane = turningPosition.Lane;
+			targetLanePos = Orientation == Orientation.North || Orientation == Orientation.South
+				? Vector3.forward.Multiply(transform.position)
+				: Vector3.right.Multiply(transform.position);
 
 			// Set rotation
 			Orientation = IsOnLeftCorner ? Orientation.GetLeftOrientation() : Orientation.GetRightOrientation();
@@ -190,15 +197,27 @@ namespace Assets.Scripts.Controllers
 
 		private void LaneSwapping()
 		{
+			// Setting target position
 			if (lane != Lane.Left && InputHelper.LaneSwapLeft())
 			{
-				transform.position += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
+				
+				targetLanePos += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane--;
 			}
 			else if (lane != Lane.Right && InputHelper.LaneSwapRight())
 			{
-				transform.position += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
+				targetLanePos += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane++;
+			}
+			
+			// Moving to target position
+			if (Orientation == Orientation.North || Orientation == Orientation.South)
+			{
+				transform.position = transform.position.CreateNew(x: Mathf.MoveTowards(transform.position.x, targetLanePos.x, laneSwapSpeed * Time.deltaTime));
+			}
+			else
+			{
+				transform.position = transform.position.CreateNew(z: Mathf.MoveTowards(transform.position.z, targetLanePos.z, laneSwapSpeed * Time.deltaTime));
 			}
 		}
 
