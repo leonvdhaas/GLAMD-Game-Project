@@ -13,5 +13,15 @@ namespace Assets.Scripts.Extensions
 				z = z.HasValue ? z.Value : vector.z
 			};
 		}
+
+		public static Vector3 Multiply(this Vector3 value, Vector3 other)
+		{
+			return new Vector3
+			{
+				x = value.x * other.x,
+				y = value.y * other.y,
+				z = value.z * other.z
+			};
+		}
 	}
 }
