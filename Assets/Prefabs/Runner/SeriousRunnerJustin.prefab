@@ -3140,9 +3140,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 0.01
-  minSpeed: 15
-  maxSpeed: 25
-  jumpSpeed: 12.5
+  minSpeed: 10
+  maxSpeed: 20
+  jumpSpeed: 15
+  inhalerSpeedBonus: 0
+  inhalerTime: 0
+  lives: 0
 --- !u!124 &124178190749472908
 Behaviour:
   m_ObjectHideFlags: 1
