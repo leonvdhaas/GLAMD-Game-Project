@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.Enumerations;
+using Assets.Scripts.Managers;
 using UnityEngine;
 
 namespace Assets.Scripts.Triggers
@@ -12,6 +14,7 @@ namespace Assets.Scripts.Triggers
 			if (player != null) {
 				player.TakeFailedCorner();
 				GetComponent<Collider>().enabled = false;
+				SoundManager.Instance.PlaySound(Sound.Thud);
 			}
 		}
 	}

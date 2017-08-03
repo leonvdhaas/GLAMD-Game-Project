@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.Enumerations;
+using Assets.Scripts.Managers;
 using UnityEngine;
 
 namespace Assets.Scripts.Triggers
@@ -12,7 +14,14 @@ namespace Assets.Scripts.Triggers
 			if (player != null)
 			{
 				if (!player.IsInvincible)
+				{
+					SoundManager.Instance.PlaySound(Sound.Thud);
 					player.TakeObstacleDamage();
+				}
+				else
+				{
+					SoundManager.Instance.PlaySound(Sound.BoxInvincibleBreak);
+				}
 				gameObject.SetActive(false);
 				//TODO: Add points
 			}

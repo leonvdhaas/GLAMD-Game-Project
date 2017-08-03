@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Managers;
 using System;
 using UnityEngine;
 
@@ -41,10 +42,12 @@ namespace Assets.Scripts.Controllers
 						break;
 					case Pickup.Coin:
 						player.Coins += 1 * multiplier;
+						SoundManager.Instance.PlaySound(Sound.Coin);
 						break;
 					case Pickup.Slowmotion:
 						Time.timeScale = SLOWMOTION_FACTOR;
 						StartCoroutine(CoroutineHelper.Delay(SLOWMOTION_TIME, () => Time.timeScale = 1.0f));
+						SoundManager.Instance.PlaySound(Sound.Slowmotion);
 						break;
 					case Pickup.Inhaler:
 						if (player.Inhalers < MAX_NUMBER_OF_INHALERS)
@@ -55,6 +58,7 @@ namespace Assets.Scripts.Controllers
 						{
 							// TODO: add points
 						}
+						SoundManager.Instance.PlaySound(Sound.Inhaler);
 						break;
 					case Pickup.CoinDoubler:
 						player.IsCoinDoublerActive = true;
