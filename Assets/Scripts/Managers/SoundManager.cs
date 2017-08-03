@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
+using Assets.Scripts.Helpers;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Managers
@@ -20,36 +22,48 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		private AudioSource audioSource;
-		private AudioClip audioClip;
+		[SerializeField]
+		private AudioClip coin;
+
+		[SerializeField]
+		private AudioClip slowmotion;
+
+		[SerializeField]
+		private AudioClip inhaler;
+
+		[SerializeField]
+		private AudioClip thud;
+
+		[SerializeField]
+		private AudioClip boxBreak;
 
 		public static SoundManager Instance { get; private set; }
 
 		public void PlaySound(Sound sound)
 		{
-			audioSource = gameObject.AddComponent<AudioSource>();
+			var audioSource = gameObject.AddComponent<AudioSource>();
 			switch (sound)
 			{
 				case Sound.Coin:
-					audioClip = (AudioClip)Resources.Load("SFX/coin");
+					audioSource.clip = coin;
 					break;
 				case Sound.Slowmotion:
-					audioClip = (AudioClip)Resources.Load("SFX/slowmotion");
+					audioSource.clip = slowmotion;
 					break;
 				case Sound.Inhaler:
-					audioClip = (AudioClip)Resources.Load("SFX/inhaler");
+					audioSource.clip = inhaler;
 					break;
 				case Sound.Thud:
-					audioClip = (AudioClip)Resources.Load("SFX/thud");
+					audioSource.clip = thud;
 					break;
 				case Sound.BoxInvincibleBreak:
-					audioClip = (AudioClip)Resources.Load("SFX/box_break");
+					audioSource.clip = boxBreak;
 					break;
 				default:
-					break;
+					throw new InvalidOperationException("Invalid sound type.");
 			}
-			audioSource.clip = audioClip;
 			audioSource.Play();
+			StartCoroutine(CoroutineHelper.Delay(audioSource.clip.length, () => Destroy(audioSource)));
 		}
 	}
 }
