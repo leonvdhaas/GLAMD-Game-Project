@@ -14,6 +14,31 @@ namespace GLAMD_Api.Controllers
 		public async Task<ActionResult> Get(Guid id) => await Get(id, db => db.Users, user => new UserViewModel(user)).ConfigureAwait(false);
 
 		[HttpGet]
+		public ActionResult Exists(string username)
+		{
+			using (var db = new GLAMD_DbContext())
+			{
+				return Json(db.Users.Any(x => x.Username == username));
+			}
+		}
+
+		[HttpGet]
+		public ActionResult Login(string username, string password)
+		{
+			using (var db = new GLAMD_DbContext())
+			{
+				var user = db.Users.FirstOrDefault(x => x.Username == username && x.Password == password);
+
+				if (user == null)
+				{
+					return Json(user);
+				}
+
+				return Json(new UserViewModel(user));
+			}
+		}
+
+		[HttpGet]
 		public ActionResult Friends(Guid id)
 		{
 			using (var db = new GLAMD_DbContext())

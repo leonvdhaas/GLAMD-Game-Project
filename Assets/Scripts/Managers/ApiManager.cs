@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Models;
+﻿using Assets.Scripts.Enumerations;
+using Assets.Scripts.Models;
+using Assets.Scripts.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -16,10 +18,111 @@ namespace Assets.Scripts.Managers
 
 		private static Dictionary<string, WWW> activeCalls = new Dictionary<string, WWW>();
 
-		public static bool LoggingEnabled { get; set; }
+		public static LogLevel LogLevel { get; set; }
+
+		public static class MatchCalls
+		{
+			public static IEnumerator Create(int seed, Guid opponentId, Guid creatorId, int creatorScore, Action<Match> action)
+			{
+				var call = Call("Match/Create", new Dictionary<string, string>
+				{
+					{ "seed", seed.ToString() },
+					{ "opponentId", opponentId.ToString() },
+					{ "creatorId", creatorId.ToString() },
+					{ "creatorScore", creatorScore.ToString() },
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator Update(Guid id, int opponentScore, Action<Match> action)
+			{
+				var call = Call("Match/Update", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() },
+					{ "opponentScore", opponentScore.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+		}
+
+		public static class FriendCalls
+		{
+			public static IEnumerator Invite(Guid userId, Guid invitedId, Action<Friend> action)
+			{
+				var call = Call("Friend/Invite", new Dictionary<string, string>
+				{
+					{ "userId", userId.ToString() },
+					{ "invitedId", invitedId.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator Accept(Guid id, Action<Friend> action)
+			{
+				var call = Call("Friend/Accept", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+		}
+
+		public static class ReplayCalls
+		{
+			public static IEnumerator GetReplay(Guid id, Action<string> action)
+			{
+				var call = Call("Replay/Get", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator CreateReplay(Guid matchId, string data, Action<Guid> action)
+			{
+				var call = Call("Replay/Get", new Dictionary<string, string>
+				{
+					{ "matchId", matchId.ToString() },
+					{ "data", data }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+		}
 
 		public static class UserCalls
 		{
+			public static IEnumerator LoginUser(string username, string password, Action<User> action)
+			{
+				var call = Call("User/Login", new Dictionary<string, string>
+				{
+					{ "username", username },
+					{ "password", Hasher.Hash(password) }
+				});
+
+				yield return call;
+				Log(call);
+
+				HandleFinishedCall(call, action);
+			}
+
 			public static IEnumerator GetUser(Guid id, Action<User> action)
 			{
 				var call = Call("User/Get", new Dictionary<string, string>
@@ -28,10 +131,70 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-				Log(call.text);
 
-				var user = JsonConvert.DeserializeObject<User>(call.text);
-				action(user);
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator CreateUser(string username, string password, Action<User> action)
+			{
+				var call = Call("User/Create", new Dictionary<string, string>
+				{
+					{ "username", username },
+					{ "password", Hasher.Hash(password) }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator UserExists(string username, Action<bool> action)
+			{
+				var call = Call("User/Exists", new Dictionary<string, string>
+				{
+					{ "username", username }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator UserFriends(Guid id, Action<Friend[]> action)
+			{
+				var call = Call("User/Friends", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator UserInvites(Guid id, Action<Friend[]> action)
+			{
+				var call = Call("User/Invites", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
+			}
+
+			public static IEnumerator UserMatches(Guid id, Action<Match[]> action)
+			{
+				var call = Call("User/Matches", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+
+				HandleFinishedCall(call, action);
 			}
 		}
 
@@ -45,6 +208,12 @@ namespace Assets.Scripts.Managers
 				throw new InvalidOperationException(String.Format("Multiple calls were requested for URI '{0}'", uri));
 			}
 			return activeCalls[uri] = new WWW(uri);
+		}
+
+		private static void HandleFinishedCall<T>(WWW call, Action<T> action)
+		{
+			Log(call);
+			action(JsonConvert.DeserializeObject<T>(call.text));
 		}
 
 		private static void RemoveDeactiveCalls()
@@ -66,11 +235,21 @@ namespace Assets.Scripts.Managers
 			return sb.ToString().TrimEnd('&');
 		}
 
-		private static void Log(string message)
+		private static void Log(WWW www)
 		{
-			if (LoggingEnabled)
+			if (LogLevel == LogLevel.Basic)
 			{
-				Debug.Log(message);
+				Debug.LogFormat("API Call made for URI: {0}", www.url);
+			}
+
+			if (LogLevel == LogLevel.Full)
+			{
+				foreach (var header in www.responseHeaders)
+				{
+					Debug.LogFormat("Response Header: {0} - {1}", header.Key, header.Value);
+				}
+
+				Debug.LogFormat("Response: {0}", www.text);
 			}
 		}
 	}

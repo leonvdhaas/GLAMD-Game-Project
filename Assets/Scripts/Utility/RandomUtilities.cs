@@ -3,22 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.Helpers
+namespace Assets.Scripts.Utility
 {
-	public static class RandomHelper
+	public static class RandomUtilities
 	{
 		public const double PERCENT = 1.0;
 		public const double HUNDRED_PERCENT = 100 * PERCENT;
 
-		private static Random RNG = new Random();
+		static RandomUtilities()
+		{
+			Generator = new Random();
+		}
 
 		public static int Seed
 		{
 			set
 			{
-				RNG = new Random(value);
+				Generator = new Random(value);
 			}
 		}
+
+		public static Random Generator { get; set; }
 
 		public static double FractureAsPercentage(int x, int y)
 		{
@@ -36,7 +41,7 @@ namespace Assets.Scripts.Helpers
 				return true;
 			}
 
-			return percentage >= RNG.NextDouble() * HUNDRED_PERCENT;
+			return percentage >= Generator.NextDouble() * HUNDRED_PERCENT;
 		}
 
 		public static T Pick<T>(params T[] collection)
@@ -46,7 +51,7 @@ namespace Assets.Scripts.Helpers
 
 		public static T Pick<T>(this IEnumerable<T> collection)
 		{
-			return collection.ElementAt(RNG.Next(collection.Count()));
+			return collection.ElementAt(Generator.Next(collection.Count()));
 		}
 
 		public static T WeightedPick<T>(params WeightedItem<T>[] weightedCollection)
@@ -57,7 +62,7 @@ namespace Assets.Scripts.Helpers
 		public static T WeightedPick<T>(this IEnumerable<WeightedItem<T>> weightedCollection)
 		{
 			int totalWeight = weightedCollection.Sum(x => x.Weight);
-			int randomNumber = RNG.Next(totalWeight);
+			int randomNumber = Generator.Next(totalWeight);
 			foreach (var item in weightedCollection)
 			{
 				if (randomNumber < item.Weight)

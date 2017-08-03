@@ -14,7 +14,7 @@ namespace GLAMD_Api.Controllers
 		: BaseController
     {
 		[HttpGet]
-		public async Task<ActionResult> Get(Guid id) => await Get(id, db => db.Replays);
+		public async Task<ActionResult> Get(Guid id) => await Get(id, db => db.Replays, replay => replay.Data);
 
 		[HttpGet]
 		public async Task<ActionResult> Create(Guid matchId, string data)
@@ -44,7 +44,7 @@ namespace GLAMD_Api.Controllers
 				match.Status = Status.Open;
 				await db.SaveChangesAsync().ConfigureAwait(false);
 
-				return Json(new ReplayViewModel(replay));
+				return Json(replay.Id);
 			}
 		}
 

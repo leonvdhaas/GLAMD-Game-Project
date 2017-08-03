@@ -5,7 +5,7 @@ namespace Assets.Scripts.Utility
 {
 	public static class Hasher
 	{
-		public static string Encrypt(string input)
+		public static string Hash(string input)
 		{
 			using (SHA512 algorithm = SHA512.Create())
 			{

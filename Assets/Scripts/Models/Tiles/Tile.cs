@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
-using Assets.Scripts.Helpers;
+using Assets.Scripts.Utility;
 
 namespace Assets.Scripts.Models
 {
