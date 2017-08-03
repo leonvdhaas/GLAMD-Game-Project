@@ -19,16 +19,16 @@ BuildTest/
 apk/
 *.svd
 *.userprefs
-GLAMD-Game-Project.csproj
-GLAMD-Game-Project.Plugins.csproj
-GLAMD-Game-Project.sln
-Assembly-CSharp.csproj
-Assembly-CSharp-firstpass.csproj
+*.sln
+*.csproj
 *.pidb
 *.suo
 *.user
 *.unityproj
 *.booproj
+
+!*/GLAMD-Api.csproj
+!*/GLAMD-Api.sln
 
 # ============ #
 # OS generated #
