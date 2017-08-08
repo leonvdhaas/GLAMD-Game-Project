@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Assets.Scripts.Utilities;
+using Assets.Scripts.Helpers;
 
 namespace Assets.Scripts.Managers
 {
@@ -85,10 +86,7 @@ namespace Assets.Scripts.Managers
 			}
 
 			AddTile(startTile);
-			for (int i = 1; i < MAX_TILES - TILES_BEHIND_PLAYER; i++)
-			{
-				AddRandomTile();
-			}
+			StartCoroutine(CoroutineHelper.RepeatFor(0.2f, MAX_TILES - TILES_BEHIND_PLAYER - 1, x => AddRandomTile()));
 		}
 
 		public void AddRandomTile()
