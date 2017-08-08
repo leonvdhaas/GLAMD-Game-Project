@@ -2,7 +2,7 @@
 using System.IO.Compression;
 using System.Text;
 
-namespace Assets.Scripts.Utility
+namespace Assets.Scripts.Utilities
 {
 	public static class Compressor
 	{

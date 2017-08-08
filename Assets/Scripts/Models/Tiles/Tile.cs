@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
-using Assets.Scripts.Utility;
+using Assets.Scripts.Utilities;
 
 namespace Assets.Scripts.Models
 {
@@ -29,13 +29,13 @@ namespace Assets.Scripts.Models
 
 			if (tileVariations != null && tileVariations.Length > 0)
 			{
-				AddProps();
+				AddTileVariation();
 			}
 
 			return this;
 		}
 
-		private void AddProps()
+		private void AddTileVariation()
 		{
 			Instantiate(tileVariations.Pick(), transform);
 		}

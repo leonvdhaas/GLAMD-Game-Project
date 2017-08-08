@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Assets.Scripts.Utility
+namespace Assets.Scripts.Utilities
 {
 	public static class Hasher
 	{
