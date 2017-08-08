@@ -54,6 +54,9 @@ namespace Assets.Scripts.Controllers
 			Orientation = Orientation.North;
 			CurrentTile = TileManager.Instance.Tiles.First();
 			Inhalers = 6;
+
+			Frozen = true;
+			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
 		}
 
 		public Orientation Orientation { get; private set; }
@@ -88,10 +91,18 @@ namespace Assets.Scripts.Controllers
 				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS;
 			}
 		}
+
 		public bool IsInvincible { get; set; }
+
+		public bool Frozen { get; private set; }
 
 		private void Update()
 		{
+			if (Frozen)
+			{
+				return;
+			}
+
 			ApplyGravity();
 
 			if (IsDamaged)
@@ -200,7 +211,6 @@ namespace Assets.Scripts.Controllers
 			// Setting target position
 			if (lane != Lane.Left && InputHelper.LaneSwapLeft())
 			{
-				
 				targetLanePos += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane--;
 			}

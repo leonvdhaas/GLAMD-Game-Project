@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Models;
-using Assets.Scripts.Utility;
+using Assets.Scripts.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections;

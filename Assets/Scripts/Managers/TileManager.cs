@@ -3,7 +3,8 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Assets.Scripts.Utility;
+using Assets.Scripts.Utilities;
+using Assets.Scripts.Helpers;
 
 namespace Assets.Scripts.Managers
 {
@@ -34,6 +35,7 @@ namespace Assets.Scripts.Managers
 				Instance = this;
 				DontDestroyOnLoad(gameObject);
 
+				TilePopulator = GetComponent<TilePopulator>();
 				Tiles = new List<Tile>(MAX_TILES + 1);
 				ResetTiles();
 			}
@@ -67,6 +69,8 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
+		public TilePopulator TilePopulator { get; private set; }
+
 		private bool IsCorner(Tile tile)
 		{
 			return tile.Type == TileType.Corner;
@@ -82,10 +86,7 @@ namespace Assets.Scripts.Managers
 			}
 
 			AddTile(startTile);
-			for (int i = 1; i < MAX_TILES - TILES_BEHIND_PLAYER; i++)
-			{
-				AddRandomTile();
-			}
+			StartCoroutine(CoroutineHelper.RepeatFor(0.2f, MAX_TILES - TILES_BEHIND_PLAYER - 1, x => AddRandomTile()));
 		}
 
 		public void AddRandomTile()

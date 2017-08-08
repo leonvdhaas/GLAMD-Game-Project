@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Extensions;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -30,13 +31,29 @@ namespace Assets.Scripts.Helpers
 				action();
 			}
 
-			finish();
+			finish.NullSafeOperation(x => x.Invoke());
 		}
 
 		public static IEnumerator WaitUntil(Func<bool> predicate, Action action)
 		{
 			yield return new WaitUntil(predicate);
 			action();
+		}
+
+		public static IEnumerator RepeatFor(float interval, int amount, Action<int> action)
+		{
+			return RepeatFor(interval, amount, action, null);
+		}
+
+		public static IEnumerator RepeatFor(float interval, int amount, Action<int> action, Action finish)
+		{
+			for (int i = 0; i < amount; i++)
+			{
+				yield return new WaitForSeconds(interval);
+				action(i);
+			}
+
+			finish.NullSafeOperation(x => x.Invoke());
 		}
 	}
 }

@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4575646614837438}
   - component: {fileID: 114678888870017530}
+  - component: {fileID: 114680215178036582}
   m_Layer: 0
   m_Name: Tile Manager
   m_TagString: Untagged
@@ -58,3 +59,24 @@ MonoBehaviour:
     type: 2}
   rightCornerTile: {fileID: 4354621219766094, guid: 9ee9d1b9277939446b8a5beb5d933561,
     type: 2}
+--- !u!114 &114680215178036582
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1846174691816692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85ee689e7eb73a42873182f11cff89c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cartoonCar: {fileID: 129892, guid: b7f262220eb08454cb74573cb40cd9e6, type: 2}
+  jeep: {fileID: 149270, guid: 3f1a81100d0d7674dbd0c2d94e6d0c3b, type: 2}
+  box: {fileID: 154496, guid: 0d194ddaf516e5e46b54f439d19175bf, type: 2}
+  hotdogTruck: {fileID: 100008, guid: 4d54456f28c5642498222e5464a3596d, type: 2}
+  pizzaTruck: {fileID: 105954, guid: 6b689d5ba6d2be94aafb7b71d42f1619, type: 2}
+  doubleCoins: {fileID: 1293149959539180, guid: 87c626787f796344a8713d675eac49de,
+    type: 2}
+  inhaler: {fileID: 1817109485504760, guid: f024e9b4a78e64d4ea421afe09e9a6a8, type: 2}
+  coin: {fileID: 1808094086244918, guid: 4d86168916e2723488f6aae1a1dc13d7, type: 2}
+  diamond: {fileID: 1305004186348554, guid: 22b15716d5d43734380eb1369d1375e6, type: 2}
