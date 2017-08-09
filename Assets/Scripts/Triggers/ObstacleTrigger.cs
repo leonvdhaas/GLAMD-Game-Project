@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.Triggers
 {
-	class ObstacleTrigger
+	public class ObstacleTrigger
 		: MonoBehaviour
 	{
+		private const int OBSTACLE_DESTROY_SCORE = 5;
+
 		private void OnTriggerEnter(Collider other)
 		{
 			var player = other.GetComponent<PlayerController>();
@@ -17,6 +19,7 @@ namespace Assets.Scripts.Triggers
 				{
 					SoundManager.Instance.PlaySound(Sound.Thud);
 					player.TakeObstacleDamage();
+					player.Points += OBSTACLE_DESTROY_SCORE;
 				}
 				else
 				{

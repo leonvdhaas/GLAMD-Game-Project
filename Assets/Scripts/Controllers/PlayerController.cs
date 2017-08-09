@@ -57,6 +57,13 @@ namespace Assets.Scripts.Controllers
 
 			Frozen = true;
 			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
+			StartCoroutine(CoroutineHelper.Repeat(1, () =>
+			{
+				if (!Frozen)
+				{
+					Points++;
+				}
+			}, () => lives == 0));
 		}
 
 		public Orientation Orientation { get; private set; }
@@ -95,6 +102,8 @@ namespace Assets.Scripts.Controllers
 		public bool IsInvincible { get; set; }
 
 		public bool Frozen { get; private set; }
+
+		public int Points { get; set; }
 
 		private void Update()
 		{
