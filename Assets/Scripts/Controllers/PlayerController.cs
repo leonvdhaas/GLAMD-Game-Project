@@ -37,12 +37,21 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private float laneSwapSpeed;
 
+		[SerializeField]
+		private float maximumSwipeTime;
+
+		[SerializeField]
+		private float minimumSwipeDistance;
+
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
 		private CharacterController characterController;
 		private float verticalSpeed = 0.0f;
 		private Vector3 targetLanePos;
+		private Vector2 touchOrigin = -Vector2.one;
+		private float fingerStartTime = 0.0f;
+
 
 		private void Awake()
 		{
@@ -94,21 +103,22 @@ namespace Assets.Scripts.Controllers
 
 		public bool IsInvincible { get; set; }
 
+		public int HorizontalSwipeDirection { get; set; }
+
+		public int VerticalSwipeDirection { get; set; }
+
 		public bool Frozen { get; private set; }
 
 		private void Update()
 		{
-			if (Frozen)
-			{
-				return;
-			}
-
 			ApplyGravity();
 
-			if (IsDamaged)
+			if (IsDamaged || Frozen)
 			{
 				return;
 			}
+
+			GetTouchInput();
 
 			if ((IsOnLeftCorner && InputHelper.CornerLeft()) ||
 				(IsOnRightCorner && InputHelper.CornerRight()))
@@ -270,6 +280,57 @@ namespace Assets.Scripts.Controllers
 			}			
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
+		}
+
+		private void GetTouchInput()
+		{
+			if (Input.touchCount > 0)
+			{
+				Touch myTouch = Input.GetTouch(0);
+
+				switch (myTouch.phase)
+				{
+					case TouchPhase.Began:
+						touchOrigin = myTouch.position;
+						fingerStartTime = Time.time;
+						break;
+					case TouchPhase.Moved:
+					case TouchPhase.Ended:
+					case TouchPhase.Canceled:
+						SetSwipeDirection(myTouch);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		private void SetSwipeDirection(Touch myTouch)
+		{
+			if (touchOrigin.x >= 0)
+			{
+				Vector2 touchEnd = myTouch.position;
+
+				Vector2 direction = touchEnd - touchOrigin;
+
+				float gestureDistance = direction.magnitude;
+				float gestureTime = Time.time - fingerStartTime;
+
+				touchOrigin.x = -1;
+
+				if (gestureTime < maximumSwipeTime && gestureDistance > minimumSwipeDistance && direction.x != 0 && direction.y != 0)
+				{
+					if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+					{
+						HorizontalSwipeDirection = direction.x > 0 ? 1 : -1;
+					}
+					else
+					{
+						VerticalSwipeDirection = direction.y > 0 ? 1 : -1;
+					}
+				}
+
+			}
 		}
 	}
 }
