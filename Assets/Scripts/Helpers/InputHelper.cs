@@ -1,32 +1,44 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.Managers;
+using UnityEngine;
 
 namespace Assets.Scripts.Helpers
 {
-	public class InputHelper
+	public static class InputHelper
 	{
 		public static bool Jump()
 		{
-			return Input.GetKeyDown(KeyCode.Space);
+			bool jumped = Input.GetKeyDown(KeyCode.Space) || GameManager.Instance.Player.Vertical == 1;
+			GameManager.Instance.Player.Vertical = 0;
+			return jumped;
 		}
 
 		public static bool LaneSwapLeft()
 		{
-			return Input.GetKeyDown(KeyCode.A);
+			bool swappedLeft = Input.GetKeyDown(KeyCode.A) || GameManager.Instance.Player.Horizontal == -1;
+			GameManager.Instance.Player.Horizontal = 0;
+			return swappedLeft;
 		}
 
 		public static bool LaneSwapRight()
 		{
-			return Input.GetKeyDown(KeyCode.D);
+			bool swappedRight = Input.GetKeyDown(KeyCode.D) || GameManager.Instance.Player.Horizontal == 1;
+			GameManager.Instance.Player.Horizontal = 0;
+			return swappedRight;
 		}
 
 		public static bool CornerLeft()
 		{
-			return Input.GetKeyDown(KeyCode.A);
+			bool tookLeftCorner = Input.GetKeyDown(KeyCode.A) || GameManager.Instance.Player.Horizontal == -1;
+			GameManager.Instance.Player.Horizontal = 0;
+			return tookLeftCorner;
 		}
 
 		public static bool CornerRight()
 		{
-			return Input.GetKeyDown(KeyCode.D);
+			bool tookRightCorner = Input.GetKeyDown(KeyCode.D) || GameManager.Instance.Player.Horizontal == 1;
+			GameManager.Instance.Player.Horizontal = 0;
+			return tookRightCorner;
 		}
 
 		public static bool ActivateInhaler()
