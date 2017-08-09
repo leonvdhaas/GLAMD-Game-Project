@@ -52,17 +52,18 @@ namespace Assets.Scripts.Controllers
 		private Vector2 touchOrigin = -Vector2.one;
 		private float fingerStartTime = 0.0f;
 
+		private void Start()
+		{
+			GameManager.Instance.Player = this;
+			CurrentTile = TileManager.Instance.Tiles.First();
+		}
 
 		private void Awake()
 		{
 			characterController = GetComponent<CharacterController>();
 			animator = GetComponent<Animator>();
 			currentSpeed = (maxSpeed + minSpeed) / 2;
-
-			GameManager.Instance.Player = this;
 			Orientation = Orientation.North;
-			CurrentTile = TileManager.Instance.Tiles.First();
-			Inhalers = 6;
 
 			Frozen = true;
 			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
