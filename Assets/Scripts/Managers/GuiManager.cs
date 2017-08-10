@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -128,3 +128,4 @@ namespace Assets.Scripts.Managers
 		}
 	}
 }
+

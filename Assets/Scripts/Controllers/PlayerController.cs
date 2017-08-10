@@ -73,7 +73,7 @@ namespace Assets.Scripts.Controllers
 				{
 					Points++;
 				}
-			}, () => lives == 0));
+			}, () => lives > 0));
 		}
 
 		public Orientation Orientation { get; private set; }
