@@ -32,9 +32,6 @@ namespace Assets.Scripts.Controllers
 		private float inhalerTime;
 
 		[SerializeField]
-		private ushort lives;
-
-		[SerializeField]
 		private float laneSwapSpeed;
 
 		[SerializeField]
@@ -73,7 +70,46 @@ namespace Assets.Scripts.Controllers
 				{
 					Points++;
 				}
-			}, () => lives > 0));
+			}, () => Lives > 0));
+		}
+
+		private int _lives = 3;
+		public int Lives
+		{
+			get
+			{
+				return _lives;
+			}
+			set
+			{
+				GameManager.Instance.GuiManager.UpdateLives(_lives = value);
+			}
+		}
+
+		private int _points = 0;
+		public int Points
+		{
+			get
+			{
+				return _points;
+			}
+			set
+			{
+				GameManager.Instance.GuiManager.UpdatePoints(_points = value);
+			}
+		}
+
+		private int _coins = 0;
+		public int Coins
+		{
+			get
+			{
+				return _coins;
+			}
+			set
+			{
+				GameManager.Instance.GuiManager.UpdateCoins(_coins = value);
+			}
 		}
 
 		public Orientation Orientation { get; private set; }
@@ -84,31 +120,13 @@ namespace Assets.Scripts.Controllers
 
 		public bool IsOnRightCorner { get; set; }
 
-		public bool IsOnCorner
-		{
-			get
-			{
-				return (IsOnLeftCorner || IsOnRightCorner) && TurningPositions != null && TurningPositions.Length > 0;
-			}
-		}
-
 		public Tile CurrentTile { get; set; }
 
 		public bool IsDamaged { get; private set; }
 
 		public int Inhalers { get; internal set; }
 
-		public int Coins { get; set; }
-
 		public bool IsCoinDoublerActive { get; set; }
-
-		public bool InhalerUsable
-		{
-			get
-			{
-				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS;
-			}
-		}
 
 		public bool IsInvincible { get; set; }
 
@@ -118,7 +136,21 @@ namespace Assets.Scripts.Controllers
 
 		public bool Frozen { get; private set; }
 
-		public int Points { get; set; }
+		public bool InhalerUsable
+		{
+			get
+			{
+				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS;
+			}
+		}
+
+		public bool IsOnCorner
+		{
+			get
+			{
+				return (IsOnLeftCorner || IsOnRightCorner) && TurningPositions != null && TurningPositions.Length > 0;
+			}
+		}
 
 		private void Update()
 		{
@@ -193,8 +225,8 @@ namespace Assets.Scripts.Controllers
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
 
-			lives--;
-			if (lives != ushort.MinValue)
+			Lives--;
+			if (Lives != ushort.MinValue)
 			{
 				// Wait until player lands.
 				StartCoroutine(CoroutineHelper.WaitUntil(() => IsTouchingGround(), () =>
@@ -285,8 +317,8 @@ namespace Assets.Scripts.Controllers
 		public void TakeObstacleDamage()
 		{
 			IsDamaged = true;
-			lives--;
-			if(lives != ushort.MinValue)
+			Lives--;
+			if(Lives != ushort.MinValue)
 			{
 				animator.Play("Damage");
 				StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));

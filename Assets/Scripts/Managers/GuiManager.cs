@@ -47,6 +47,11 @@ namespace Assets.Scripts.Managers
 		private float targetCoinDoublerMeter = 1.0f;
 		private float targetInhalerMeter = 1.0f;
 
+		private void Start()
+		{
+			GameManager.Instance.GuiManager = this;
+		}
+
 		private void OnGUI()
 		{
 			float screenScaleX = Screen.width / 1200.0f;
@@ -99,12 +104,12 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		private void UpdatePoints(int points)
+		public void UpdatePoints(int points)
 		{
 			pointsText.text = points.ToString().PadLeft(6, '0');
 		}
 
-		private void UpdateLives(int lives)
+		public void UpdateLives(int lives)
 		{
 			switch (lives)
 			{
@@ -127,9 +132,9 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		private void UpdateCoins(int coins)
+		public void UpdateCoins(int coins)
 		{
-			coinsText.text = String.Format("× {0}", coins.ToString().PadLeft('0', '3'));
+			coinsText.text = String.Format("× {0}", coins.ToString().PadLeft(3, '0'));
 		}
 	}
 }

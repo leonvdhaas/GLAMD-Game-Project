@@ -24,5 +24,6 @@ namespace Assets.Scripts.Managers
 
 		public PlayerController Player { get; set; }
 
+		public GuiManager GuiManager { get; set; }
 	}
 }
