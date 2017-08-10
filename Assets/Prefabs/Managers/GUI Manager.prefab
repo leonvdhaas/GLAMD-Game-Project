@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4845332978459040}
+  - component: {fileID: 114207868590160148}
   m_Layer: 0
   m_Name: GUI Manager
   m_TagString: Untagged
@@ -39,3 +40,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114207868590160148
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1082755296891694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83c6e36d0c4fe094c863128e04b3b5da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsText: {fileID: 0}
+  pointsText: {fileID: 0}
+  leftHeart: {fileID: 0}
+  middleHeart: {fileID: 0}
+  rightHeart: {fileID: 0}
+  position: {x: 5, y: 500}
+  size: {x: 90, y: 20}
+  spaceBetweenMeter: 100
+  emptyTexture: {fileID: 0}
+  fullTexture: {fileID: 2800000, guid: 8cc1ce6eea8b3fa47b1d0601d5ba8e5c, type: 3}
