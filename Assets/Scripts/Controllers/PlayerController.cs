@@ -101,6 +101,7 @@ namespace Assets.Scripts.Controllers
 		public int Coins { get; set; }
 
 		public bool IsCoinDoublerActive { get; set; }
+
 		public bool InhalerUsable
 		{
 			get
@@ -128,6 +129,7 @@ namespace Assets.Scripts.Controllers
 				return;
 			}
 
+			MoveToCorrectLane();
 			GetTouchInput();
 
 			if ((IsOnLeftCorner && InputHelper.CornerLeft()) ||
@@ -137,7 +139,7 @@ namespace Assets.Scripts.Controllers
 			}
 			else if (!IsOnCorner)
 			{
-				LaneSwapping();
+				CheckForLaneSwap();
 			}
 
 			Move();
@@ -226,9 +228,8 @@ namespace Assets.Scripts.Controllers
 			TurningPositions = null;
 		}
 
-		private void LaneSwapping()
+		private void CheckForLaneSwap()
 		{
-			// Setting target position
 			if (lane != Lane.Left && InputHelper.LaneSwapLeft())
 			{
 				targetLanePos += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
@@ -239,8 +240,10 @@ namespace Assets.Scripts.Controllers
 				targetLanePos += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane++;
 			}
-			
-			// Moving to target position
+		}
+
+		private void MoveToCorrectLane()
+		{
 			if (Orientation == Orientation.North || Orientation == Orientation.South)
 			{
 				transform.position = transform.position.CreateNew(x: Mathf.MoveTowards(transform.position.x, targetLanePos.x, laneSwapSpeed * Time.deltaTime));

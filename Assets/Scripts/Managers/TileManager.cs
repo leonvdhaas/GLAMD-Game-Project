@@ -86,7 +86,7 @@ namespace Assets.Scripts.Managers
 			}
 
 			AddTile(startTile);
-			StartCoroutine(CoroutineHelper.RepeatFor(0.2f, MAX_TILES - TILES_BEHIND_PLAYER - 1, x => AddRandomTile()));
+			StartCoroutine(CoroutineHelper.RepeatFor(0.2f, 0, MAX_TILES - TILES_BEHIND_PLAYER - 1, x => AddRandomTile()));
 		}
 
 		public void AddRandomTile()

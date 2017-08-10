@@ -40,20 +40,29 @@ namespace Assets.Scripts.Helpers
 			action();
 		}
 
-		public static IEnumerator RepeatFor(float interval, int amount, Action<int> action)
+		public static IEnumerator RepeatFor(float interval, int start, int limit, Action<int> action)
 		{
-			return RepeatFor(interval, amount, action, null);
+			return RepeatFor(interval, start, limit, action, null);
 		}
 
-		public static IEnumerator RepeatFor(float interval, int amount, Action<int> action, Action finish)
+		public static IEnumerator RepeatFor(float interval, int start, int limit, Action<int> action, Action finish)
 		{
-			for (int i = 0; i < amount; i++)
+			for (int i = start; i < limit; i++)
 			{
 				yield return new WaitForSeconds(interval);
 				action(i);
 			}
 
 			finish.NullSafeOperation(x => x.Invoke());
+		}
+
+		public static IEnumerator ActionQueue(float interval, params Action[] actions)
+		{
+			for (int i = 0; i < actions.Length; i++)
+			{
+				yield return new WaitForSeconds(interval);
+				actions[i]();
+			}
 		}
 	}
 }
