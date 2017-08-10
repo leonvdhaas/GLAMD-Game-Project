@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -399,6 +399,73 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 646ec5af49eaf1742b99ced52215de27, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &899178542
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4845332978459040, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114330321629881678, guid: e07c98f545778904aa7e3d2cd8f64aac,
+        type: 2}
+      propertyPath: coinsText
+      value: 
+      objectReference: {fileID: 1698571779}
+    - target: {fileID: 114330321629881678, guid: e07c98f545778904aa7e3d2cd8f64aac,
+        type: 2}
+      propertyPath: pointsText
+      value: 
+      objectReference: {fileID: 1827478770}
+    - target: {fileID: 114330321629881678, guid: e07c98f545778904aa7e3d2cd8f64aac,
+        type: 2}
+      propertyPath: leftHeart
+      value: 
+      objectReference: {fileID: 1430713850}
+    - target: {fileID: 114330321629881678, guid: e07c98f545778904aa7e3d2cd8f64aac,
+        type: 2}
+      propertyPath: middleHeart
+      value: 
+      objectReference: {fileID: 388403694}
+    - target: {fileID: 114330321629881678, guid: e07c98f545778904aa7e3d2cd8f64aac,
+        type: 2}
+      propertyPath: rightHeart
+      value: 
+      objectReference: {fileID: 1952871015}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: e07c98f545778904aa7e3d2cd8f64aac, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &903144284
 GameObject:
@@ -1392,51 +1459,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1981871327}
---- !u!1 &2077377005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2077377007}
-  - component: {fileID: 2077377006}
-  m_Layer: 0
-  m_Name: GUI Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2077377006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2077377005}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c86abd940aef6264488d5a78c2164bc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinsText: {fileID: 0}
-  pointsText: {fileID: 1827478770}
-  leftHeart: {fileID: 1430713850}
-  middleHeart: {fileID: 388403694}
-  rightHeart: {fileID: 1952871015}
---- !u!4 &2077377007
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2077377005}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 319.7878, y: 502.74713, z: 1537.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2079893840
 Prefab:
   m_ObjectHideFlags: 0
