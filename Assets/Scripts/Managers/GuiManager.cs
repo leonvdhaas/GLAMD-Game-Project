@@ -49,6 +49,11 @@ namespace Assets.Scripts.Managers
 
 		private void OnGUI()
 		{
+			float screenScaleX = (float)(Screen.width) / 1200.0f;
+			float screenScaleY = (float)(Screen.height) / 800.0f;
+
+			GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(screenScaleX, screenScaleY, 1));
+
 			var displayBars = new float[] { inhalerMeter, coinDoublerMeter, slowmotionMeter };
 			for (int i = 0; i < 3; i++)
 			{
