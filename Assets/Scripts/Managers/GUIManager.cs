@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Managers
 {
-	public class GUIManager
+	public class GuiManager
 		: MonoBehaviour
 	{
 		private const float METER_DELTA = 0.01f;
