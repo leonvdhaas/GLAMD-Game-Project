@@ -49,12 +49,12 @@ namespace Assets.Scripts.Managers
 
 		private void OnGUI()
 		{
-			float screenScaleX = (float)(Screen.width) / 1200.0f;
-			float screenScaleY = (float)(Screen.height) / 800.0f;
+			float screenScaleX = Screen.width / 1200.0f;
+			float screenScaleY = Screen.height / 800.0f;
 
-			GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(screenScaleX, screenScaleY, 1));
+			GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(screenScaleX, screenScaleY, 1));
 
-			var displayBars = new float[] { inhalerMeter, coinDoublerMeter, slowmotionMeter };
+			var meters = new float[] { inhalerMeter, coinDoublerMeter, slowmotionMeter };
 			for (int i = 0; i < 3; i++)
 			{
 				//bar background
@@ -62,7 +62,7 @@ namespace Assets.Scripts.Managers
 				GUI.Box(new Rect(0, 0, size.x, size.y), emptyTexture);
 
 				//bar filling part
-				GUI.BeginGroup(new Rect(0, 0, size.x * displayBars[i], size.y));
+				GUI.BeginGroup(new Rect(0, 0, size.x * meters[i], size.y));
 				GUI.Box(new Rect(0, 0, size.x, size.y), fullTexture);
 				GUI.EndGroup();
 				GUI.EndGroup();
