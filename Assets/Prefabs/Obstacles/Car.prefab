@@ -26,7 +26,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445180}
   m_Layer: 0
-  m_Name: CarGoed
+  m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -400,11 +400,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 182416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a47d0382349cd9458541822a40a2840, type: 3}
+  m_Script: {fileID: 11500000, guid: d459b02a269a347459c4cfffa5e5cdf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageFX: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
-  audio: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
