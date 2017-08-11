@@ -46,8 +46,23 @@ public class SwipeControl : MonoBehaviour
 	private LineRenderer m_lLineRenderer;
 	private int m_iNumberOfPoints = 0;
 	private int m_iInputMouse = 0;
+
 	private float m_fHeightSensibility = 0.2f;
 	private float m_fWidthSensibility = 0.2f;
+
+	// Custom Implementations
+	private float fingerStartTime;
+	private Vector2 fingerStartPos;
+
+	[SerializeField]
+	private float maxSwipeTime;
+
+	[SerializeField]
+	private float minSwipeDist;
+
+	[SerializeField]
+	[Range(0.0f, 10.0f)]
+	private float instantSwipeDistance;
 
 	/* This method allow you to set the callback. 
 	 * When a Swipe gesture is done, the input callback
@@ -254,7 +269,7 @@ public class SwipeControl : MonoBehaviour
 				m_vEndSwipePos = Input.mousePosition;
 				m_vSwipeDirection = m_vEndSwipePos - m_vStarSwipePos;
 
-				if (m_vSwipeDirection.sqrMagnitude > 1.0f)
+				if (m_vSwipeDirection.sqrMagnitude > instantSwipeDistance * 1000.0f)
 				{
 					m_bSwipePressed = false;
 
@@ -266,6 +281,75 @@ public class SwipeControl : MonoBehaviour
 					{
 						CheckAndComputeDirection();
 					}
+				}
+			}
+		}
+	}
+
+	private void CallCallback(SWIPE_DIRECTION direction, Touch touch)
+	{
+		fingerStartTime = Time.time;
+		fingerStartPos = touch.position;
+		m_cCallback(direction);
+	}
+
+	private void UpdateMobileTouchBasedControlThatActuallyWorks()
+	{
+		if (Input.touchCount > 0)
+		{
+			foreach (Touch touch in Input.touches)
+			{
+				switch (touch.phase)
+				{
+					case TouchPhase.Began:
+						fingerStartTime = Time.time;
+						fingerStartPos = touch.position;
+						break;
+					case TouchPhase.Ended:
+					case TouchPhase.Moved:
+						float gestureTime = Time.time - fingerStartTime;
+						float gestureDist = (touch.position - fingerStartPos).magnitude;
+						if (gestureTime < maxSwipeTime && gestureDist > minSwipeDist)
+						{
+							Vector2 direction = touch.position - fingerStartPos;
+							Vector2 swipeType = Vector2.zero;
+
+							if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+							{
+								//horizontal swipe
+								swipeType = Vector2.right * Mathf.Sign(direction.x);
+							}
+							else
+							{
+								swipeType = Vector2.up * Mathf.Sign(direction.y);
+							}
+
+							if (swipeType.x != 0.0f)
+							{
+								if (swipeType.x > 0.0f)
+								{
+									CallCallback(SWIPE_DIRECTION.SD_RIGHT, touch);
+								}
+								else
+								{
+									CallCallback(SWIPE_DIRECTION.SD_LEFT, touch);
+								}
+							}
+
+							if (swipeType.y != 0.0f)
+							{
+								if (swipeType.y > 0.0f)
+								{
+									CallCallback(SWIPE_DIRECTION.SD_UP, touch);
+								}
+								else
+								{
+									CallCallback(SWIPE_DIRECTION.SD_DOWN,  touch);
+								}
+							}
+						}
+
+						break;
 				}
 			}
 		}
@@ -303,7 +387,7 @@ public class SwipeControl : MonoBehaviour
 
 		if (m_bMobileTouchBased)
 		{
-			UpdateMobileTouchBasedControl();
+			UpdateMobileTouchBasedControlThatActuallyWorks();
 		}
 		else
 		{
