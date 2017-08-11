@@ -264,10 +264,23 @@ namespace Assets.Scripts.Controllers
 		{
 			if (lane != Lane.Left && InputHelper.LaneSwapLeft())
 			{
+				LaneSwap("Left");
+			}
+			else if (lane != Lane.Right && InputHelper.LaneSwapRight())
+			{
+				LaneSwap("Right");
+			}
+		}
+
+		private void LaneSwap(string swapType)
+		{
+			// TO-DO: Replace string with LaneSwap.Left and LaneSwap.Right
+			if (swapType == "Left")
+			{
 				targetLanePos += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane--;
 			}
-			else if (lane != Lane.Right && InputHelper.LaneSwapRight())
+			else if (swapType == "Right")
 			{
 				targetLanePos += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane++;
@@ -302,6 +315,8 @@ namespace Assets.Scripts.Controllers
 			if (InhalerUsable && InputHelper.ActivateInhaler())
 			{
 				IsInvincible = true;
+
+				// TO-DO: Replace with RepeatFor and call GuiManager's UpdateInhalers(percentage).
 				StartCoroutine(CoroutineHelper.Repeat(
 					inhalerTime / PickupController.MAX_NUMBER_OF_INHALERS,
 					() => Inhalers--,
