@@ -39,13 +39,13 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Texture2D fullTexture;
 
-		private float inhalerMeter = 1.0f;
-		private float coinDoublerMeter = 1.0f;
-		private float slowmotionMeter = 1.0f;
+		private float inhalerMeter;
+		private float coinDoublerMeter;
+		private float slowmotionMeter;
 
-		private float targetSlowmotionMeter = 1.0f;
-		private float targetCoinDoublerMeter = 1.0f;
-		private float targetInhalerMeter = 1.0f;
+		private float targetSlowmotionMeter;
+		private float targetCoinDoublerMeter;
+		private float targetInhalerMeter;
 
 		private void Start()
 		{

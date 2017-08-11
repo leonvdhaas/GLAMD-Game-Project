@@ -34,25 +34,18 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private float laneSwapSpeed;
 
-		[SerializeField]
-		private float maximumSwipeTime;
-
-		[SerializeField]
-		private float minimumSwipeDistance;
-
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
 		private CharacterController characterController;
 		private float verticalSpeed = 0.0f;
 		private Vector3 targetLanePos;
-		private Vector2 touchOrigin = -Vector2.one;
-		private float fingerStartTime = 0.0f;
 
 		private void Start()
 		{
 			GameManager.Instance.Player = this;
 			CurrentTile = TileManager.Instance.Tiles.First();
+			GetComponentInChildren<SwipeControl>().SetMethodToCall(OnSwipe);
 		}
 
 		private void Awake()
@@ -64,11 +57,11 @@ namespace Assets.Scripts.Controllers
 
 			Frozen = true;
 			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
-			StartCoroutine(CoroutineHelper.Repeat(1, () =>
+			StartCoroutine(CoroutineHelper.Repeat(1.5f, () =>
 			{
 				if (!Frozen)
 				{
-					Points++;
+					Points += 2;
 				}
 			}, () => Lives > 0));
 		}
@@ -162,26 +155,64 @@ namespace Assets.Scripts.Controllers
 			}
 
 			MoveToCorrectLane();
-			GetTouchInput();
 
-			if ((IsOnLeftCorner && InputHelper.CornerLeft()) ||
-				(IsOnRightCorner && InputHelper.CornerRight()))
+			if ((IsOnLeftCorner && Input.GetKeyDown(KeyCode.A)) ||
+				(IsOnRightCorner && Input.GetKeyDown(KeyCode.D)))
 			{
 				TakeCorner();
 			}
-			else if (!IsOnCorner)
+			else
 			{
-				CheckForLaneSwap();
+				CheckForLaneSwap(Swipe.None);
 			}
 
 			Move();
-			Jump();
+			CheckForJump(Swipe.None);
 			ActivateInhaler();
 		}
 
-		private void Jump()
+		private void OnSwipe(SwipeControl.SWIPE_DIRECTION direction)
 		{
-			if (InputHelper.Jump() && IsAllowedToJump())
+			if (IsDamaged || Frozen)
+			{
+				return;
+			}
+
+			switch (direction)
+			{
+				case SwipeControl.SWIPE_DIRECTION.SD_UP:
+					CheckForJump(Swipe.Up);
+					break;
+				case SwipeControl.SWIPE_DIRECTION.SD_LEFT:
+					if (IsOnLeftCorner)
+					{
+						TakeCorner();
+					}
+					else
+					{
+						CheckForLaneSwap(Swipe.Left);
+					}
+
+					break;
+				case SwipeControl.SWIPE_DIRECTION.SD_RIGHT:
+					if (IsOnRightCorner)
+					{
+						TakeCorner();
+					}
+					else
+					{
+						CheckForLaneSwap(Swipe.Right);
+					}
+
+					break;
+				default:
+					break;
+			}
+		}
+
+		private void CheckForJump(Swipe swipe)
+		{
+			if ((swipe == Swipe.Up || Input.GetKeyDown(KeyCode.Space)) && IsAllowedToJump())
 			{
 				verticalSpeed = jumpSpeed;
 			}
@@ -260,27 +291,19 @@ namespace Assets.Scripts.Controllers
 			TurningPositions = null;
 		}
 
-		private void CheckForLaneSwap()
+		private void CheckForLaneSwap(Swipe swipe)
 		{
-			if (lane != Lane.Left && InputHelper.LaneSwapLeft())
+			if (IsOnCorner)
 			{
-				LaneSwap("Left");
+				return;
 			}
-			else if (lane != Lane.Right && InputHelper.LaneSwapRight())
-			{
-				LaneSwap("Right");
-			}
-		}
 
-		private void LaneSwap(string swapType)
-		{
-			// TO-DO: Replace string with LaneSwap.Left and LaneSwap.Right
-			if (swapType == "Left")
+			if (lane != Lane.Left && (swipe == Swipe.Left || Input.GetKeyDown(KeyCode.A)))
 			{
 				targetLanePos += Orientation.GetLeftOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane--;
 			}
-			else if (swapType == "Right")
+			else if (lane != Lane.Right && (swipe == Swipe.Right || Input.GetKeyDown(KeyCode.D)))
 			{
 				targetLanePos += Orientation.GetRightOrientation().GetDirectionVector3() * Tile.LANE_DISTANCE;
 				lane++;
@@ -312,15 +335,19 @@ namespace Assets.Scripts.Controllers
 
 		private void ActivateInhaler()
 		{
-			if (InhalerUsable && InputHelper.ActivateInhaler())
+			const int steps = 25;
+
+			if (InhalerUsable)
 			{
 				IsInvincible = true;
-
-				// TO-DO: Replace with RepeatFor and call GuiManager's UpdateInhalers(percentage).
-				StartCoroutine(CoroutineHelper.Repeat(
-					inhalerTime / PickupController.MAX_NUMBER_OF_INHALERS,
-					() => Inhalers--,
-					() => Inhalers > 0,
+				StartCoroutine(CoroutineHelper.RepeatFor(
+					inhalerTime / steps,
+					0,
+					steps,
+					i =>
+					{
+						GameManager.Instance.GuiManager.UpdateInhalerMeter(1.0f - 1.0f / steps * i);
+					},
 					() =>
 					{
 						maxSpeed -= inhalerSpeedBonus;
@@ -340,57 +367,6 @@ namespace Assets.Scripts.Controllers
 			}			
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
-		}
-
-		private void GetTouchInput()
-		{
-			if (Input.touchCount > 0)
-			{
-				Touch myTouch = Input.GetTouch(0);
-
-				switch (myTouch.phase)
-				{
-					case TouchPhase.Began:
-						touchOrigin = myTouch.position;
-						fingerStartTime = Time.time;
-						break;
-					case TouchPhase.Moved:
-					case TouchPhase.Ended:
-					case TouchPhase.Canceled:
-						SetSwipeDirection(myTouch);
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		private void SetSwipeDirection(Touch myTouch)
-		{
-			if (touchOrigin.x >= 0)
-			{
-				Vector2 touchEnd = myTouch.position;
-
-				Vector2 direction = touchEnd - touchOrigin;
-
-				float gestureDistance = direction.magnitude;
-				float gestureTime = Time.time - fingerStartTime;
-
-				touchOrigin.x = -1;
-
-				if (gestureTime < maximumSwipeTime && gestureDistance > minimumSwipeDistance && direction.x != 0 && direction.y != 0)
-				{
-					if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-					{
-						HorizontalSwipeDirection = direction.x > 0 ? 1 : -1;
-					}
-					else
-					{
-						VerticalSwipeDirection = direction.y > 0 ? 1 : -1;
-					}
-				}
-
-			}
 		}
 	}
 }
