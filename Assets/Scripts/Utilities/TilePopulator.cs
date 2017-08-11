@@ -146,29 +146,6 @@ namespace Assets.Scripts.Utilities
 
 				Fill(tilePopulation);
 			}));
-
-			return;
-
-			for (int o = 1; o <= 5; o++)
-			{
-				for (int i = 0; i < 3; i++)
-				{
-					tilePopulation.SpawnObstacles[0, i] = new SpawnObject();
-					tilePopulation.SpawnObstacles[0, i].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/Obstacles/SpawnObstacle{1}", o, i + 1));
-					tilePopulation.AirSpawns[0, i] = new SpawnObject();
-					tilePopulation.AirSpawns[0, i].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/AirSpawns/AirSpawn{1}", o, i + 1));
-
-					for (int e = 0; e < 5; e++)
-					{
-						tilePopulation.GroundSpawns[i, e] = new SpawnObject();
-						tilePopulation.GroundSpawns[i, e].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/GroundSpawns/Line {1}/GroundSpawn{2}", o, i + 1, e + 1));
-						tilePopulation.JumpOverObstacles[i, e] = new SpawnObject();
-						tilePopulation.JumpOverObstacles[i, e].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/JumpOverObstacle/Line {1}/AirObstacleSpawn{2}", o, i + 1, e + 1));
-					}
-				}
-
-				Fill(tilePopulation);
-			}
 		}
 
 		private void Fill(TilePopulation tilePopulation)
