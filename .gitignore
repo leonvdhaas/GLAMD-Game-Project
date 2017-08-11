@@ -27,9 +27,6 @@ apk/
 *.unityproj
 *.booproj
 
-!*/GLAMD-Api.csproj
-!*/GLAMD-Api.sln
-
 # ============ #
 # OS generated #
 # ============ #
