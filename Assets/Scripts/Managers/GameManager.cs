@@ -25,5 +25,7 @@ namespace Assets.Scripts.Managers
 		public PlayerController Player { get; set; }
 
 		public GuiManager GuiManager { get; set; }
+
+		public bool Paused { get; internal set; }
 	}
 }

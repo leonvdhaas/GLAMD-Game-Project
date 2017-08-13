@@ -59,7 +59,7 @@ namespace Assets.Scripts.Controllers
 			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
 			StartCoroutine(CoroutineHelper.Repeat(1.5f, () =>
 			{
-				if (!Frozen)
+				if (!Frozen && !GameManager.Instance.Paused)
 				{
 					Points += 2;
 				}
@@ -147,6 +147,11 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
+			if (GameManager.Instance.Paused)
+			{
+				return;
+			}
+
 			ApplyGravity();
 
 			if (IsDamaged || Frozen)

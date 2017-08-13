@@ -11,10 +11,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-	public class ApiManager
-		: MonoBehaviour
+	public static class ApiManager
 	{
-		private const string ENDPOINT = "http://localhost:35218";
+		private const string ENDPOINT = "http://localhost:61102/api";
 
 		private static Dictionary<string, WWW> activeCalls = new Dictionary<string, WWW>();
 
@@ -22,7 +21,7 @@ namespace Assets.Scripts.Managers
 
 		public static class MatchCalls
 		{
-			public static IEnumerator Create(int seed, Guid opponentId, Guid creatorId, int creatorScore, Action<Match> action)
+			public static IEnumerator Create(int seed, Guid opponentId, Guid creatorId, int creatorScore, Action<Match> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Match/Create", new Dictionary<string, string>
 				{
@@ -33,11 +32,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator Update(Guid id, int opponentScore, Action<Match> action)
+			public static IEnumerator Update(Guid id, int opponentScore, Action<Match> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Match/Update", new Dictionary<string, string>
 				{
@@ -46,14 +44,13 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 		}
 
 		public static class FriendCalls
 		{
-			public static IEnumerator Invite(Guid userId, Guid invitedId, Action<Friend> action)
+			public static IEnumerator Invite(Guid userId, Guid invitedId, Action<Friend> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Friend/Invite", new Dictionary<string, string>
 				{
@@ -62,11 +59,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator Accept(Guid id, Action<Friend> action)
+			public static IEnumerator Accept(Guid id, Action<Friend> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Friend/Accept", new Dictionary<string, string>
 				{
@@ -74,14 +70,13 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 		}
 
 		public static class ReplayCalls
 		{
-			public static IEnumerator GetReplay(Guid id, Action<string> action)
+			public static IEnumerator GetReplay(Guid id, Action<string> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Replay/Get", new Dictionary<string, string>
 				{
@@ -89,11 +84,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator CreateReplay(Guid matchId, string data, Action<Guid> action)
+			public static IEnumerator CreateReplay(Guid matchId, string data, Action<Guid> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Replay/Get", new Dictionary<string, string>
 				{
@@ -102,14 +96,13 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 		}
 
 		public static class UserCalls
 		{
-			public static IEnumerator LoginUser(string username, string password, Action<User> action)
+			public static IEnumerator LoginUser(string username, string password, Action<User> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Login", new Dictionary<string, string>
 				{
@@ -118,12 +111,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-				Log(call);
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator GetUser(Guid id, Action<User> action)
+			public static IEnumerator GetUser(Guid id, Action<User> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Get", new Dictionary<string, string>
 				{
@@ -131,12 +122,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator CreateUser(string username, string password, Action<User> action)
+			public static IEnumerator CreateUser(string username, string password, Action<User> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Create", new Dictionary<string, string>
 				{
@@ -145,11 +134,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserExists(string username, Action<bool> action)
+			public static IEnumerator UserExists(string username, Action<bool> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Exists", new Dictionary<string, string>
 				{
@@ -157,11 +145,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserFriends(Guid id, Action<Friend[]> action)
+			public static IEnumerator UserFriends(Guid id, Action<Friend[]> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Friends", new Dictionary<string, string>
 				{
@@ -169,11 +156,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserInvites(Guid id, Action<Friend[]> action)
+			public static IEnumerator UserInvites(Guid id, Action<Friend[]> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Invites", new Dictionary<string, string>
 				{
@@ -181,11 +167,10 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserMatches(Guid id, Action<Match[]> action)
+			public static IEnumerator UserMatches(Guid id, Action<Match[]> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Matches", new Dictionary<string, string>
 				{
@@ -193,8 +178,7 @@ namespace Assets.Scripts.Managers
 				});
 
 				yield return call;
-
-				HandleFinishedCall(call, action);
+				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 		}
 
@@ -210,10 +194,37 @@ namespace Assets.Scripts.Managers
 			return activeCalls[uri] = new WWW(uri);
 		}
 
-		private static void HandleFinishedCall<T>(WWW call, Action<T> action)
+		private static void HandleFinishedCall<T>(WWW call, Action<T> onSuccess, Action<Error> onFailure)
 		{
 			Log(call);
-			action(JsonConvert.DeserializeObject<T>(call.text));
+
+			var statusCode = GetStatusCode(call);
+			if (statusCode == HttpStatusCode.OK)
+			{
+				onSuccess(JsonConvert.DeserializeObject<T>(call.text));
+			}
+			else if (statusCode == HttpStatusCode.ServiceUnavailable)
+			{
+				onFailure(new Error
+				{
+					Message = "The server is currently unavailable."
+				});
+			}
+			else
+			{
+				onFailure(JsonConvert.DeserializeObject<Error>(call.text));
+			}
+		}
+
+		private static HttpStatusCode GetStatusCode(WWW call)
+		{
+			if (!call.responseHeaders.ContainsKey("STATUS"))
+			{
+				return HttpStatusCode.ServiceUnavailable;
+			}
+
+			var statusSegments = call.responseHeaders["STATUS"].Split(' ');
+			return (HttpStatusCode)Int32.Parse(statusSegments[(int)HttpStatusCodeSegment.Code]);
 		}
 
 		private static void RemoveDeactiveCalls()
