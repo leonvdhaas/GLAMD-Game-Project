@@ -7,6 +7,7 @@ using System;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.Managers;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Utilities;
 
 namespace Assets.Scripts.Controllers
 {
@@ -42,11 +43,27 @@ namespace Assets.Scripts.Controllers
 		private float verticalSpeed = 0.0f;
 		private Vector3 targetLanePos;
 
+		private Replay replay = new Replay();
+
 		private void Start()
 		{
 			GameManager.Instance.Player = this;
 			CurrentTile = TileManager.Instance.Tiles.First();
 			GetComponentInChildren<SwipeControl>().SetMethodToCall(OnSwipe);
+			StartCoroutine(CoroutineHelper.Repeat(0.2f,
+				() =>
+				{
+					if (!GameManager.Instance.Paused)
+					{
+						replay.Add(new ReplayDataPoint
+						{
+							Index = replay.Count,
+							Orientation = Orientation,
+							Position = transform.position
+						});
+					}
+				},
+				() => Lives > 0));
 		}
 
 		private void Awake()
@@ -58,13 +75,16 @@ namespace Assets.Scripts.Controllers
 
 			Frozen = true;
 			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
-			StartCoroutine(CoroutineHelper.Repeat(1.5f, () =>
-			{
-				if (!Frozen && !GameManager.Instance.Paused)
+			StartCoroutine(CoroutineHelper.Repeat(
+				1.5f,
+				() =>
 				{
-					Points += 2;
-				}
-			}, () => Lives > 0));
+					if (!Frozen && !GameManager.Instance.Paused)
+					{
+						Points += 2;
+					}
+				},
+				() => Lives > 0));
 		}
 
 		private int _lives = 3;
@@ -77,7 +97,7 @@ namespace Assets.Scripts.Controllers
 			set
 			{
 				GameManager.Instance.GuiManager.UpdateLives(_lives = value);
-				if (value == 0)
+				if (value <= 0)
 				{
 					StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
 				}

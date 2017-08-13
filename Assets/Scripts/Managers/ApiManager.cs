@@ -13,7 +13,7 @@ namespace Assets.Scripts.Managers
 {
 	public static class ApiManager
 	{
-		private const string ENDPOINT = "http://localhost:61102/api";
+		private const string ENDPOINT = "http://glamd.mikevdongen.nl/api";
 
 		private static Dictionary<string, WWW> activeCalls = new Dictionary<string, WWW>();
 

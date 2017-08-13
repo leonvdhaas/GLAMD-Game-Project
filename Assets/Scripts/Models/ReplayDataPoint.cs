@@ -30,7 +30,7 @@ namespace Assets.Scripts.Models
 
 		public override string ToString()
 		{
-			return String.Format("{0},{1:0.0},{2:0.0},{3:0.0},{4}", Index, Position.x, Position.y, Position.z, (int)Orientation);
+			return String.Format("{0},{1:0.0},{2:0.00},{3:0.0},{4}", Index, Position.x, Position.y, Position.z, (int)Orientation);
 		}
 	}
 }

@@ -27,8 +27,8 @@ namespace Assets.Scripts.Helpers
 		{
 			while (predicate())
 			{
-				yield return new WaitForSeconds(interval);
 				action();
+				yield return new WaitForSeconds(interval);
 			}
 
 			finish.NullSafeOperation(x => x.Invoke());
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Helpers
 			action();
 		}
 
-		public static IEnumerator RepeatFor(float interval, int start, int limit, Action<int> action)
+		public static IEnumerator For(float interval, int start, int limit, Action<int> action)
 		{
 			return RepeatFor(interval, start, limit, action, null);
 		}
@@ -49,8 +49,8 @@ namespace Assets.Scripts.Helpers
 		{
 			for (int i = start; i < limit; i++)
 			{
-				yield return new WaitForSeconds(interval);
 				action(i);
+				yield return new WaitForSeconds(interval);
 			}
 
 			finish.NullSafeOperation(x => x.Invoke());
@@ -60,8 +60,8 @@ namespace Assets.Scripts.Helpers
 		{
 			for (int i = 0; i < actions.Length; i++)
 			{
-				yield return new WaitForSeconds(interval);
 				actions[i]();
+				yield return new WaitForSeconds(interval);
 			}
 		}
 	}

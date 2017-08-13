@@ -126,7 +126,7 @@ namespace Assets.Scripts.Utilities
 		{
 			// assign each spawnobject to corresponding transform
 
-			StartCoroutine(CoroutineHelper.RepeatFor(0.1f, 1, 6, o =>
+			StartCoroutine(CoroutineHelper.For(0.1f, 1, 6, o =>
 			{
 				for (int i = 0; i < 3; i++)
 				{

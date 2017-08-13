@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Extensions;
 using System.Text;
 using UnityEngine;
+using Assets.Scripts.Utilities;
 
 namespace Assets.Scripts.Models
 {
@@ -18,7 +19,8 @@ namespace Assets.Scripts.Models
 
 		public Replay(string data)
 		{
-			dataPoints = data.Split('_').Select(info => new ReplayDataPoint(info)).OrderBy(x => x.Index).ToList();
+			var replayData = Compressor.Unzip(Base64.Decode(data));
+			dataPoints = replayData.Split('_').Select(info => new ReplayDataPoint(info)).OrderBy(x => x.Index).ToList();
 		}
 
 		public void Add(ReplayDataPoint info)
@@ -51,7 +53,7 @@ namespace Assets.Scripts.Models
 		{
 			var sb = new StringBuilder();
 			sb.Join("_", dataPoints.Select(x => x.ToString()).ToArray());
-			return sb.ToString();
+			return Base64.Encode(Compressor.Zip(sb.ToString()));
 		}
 	}
 }
