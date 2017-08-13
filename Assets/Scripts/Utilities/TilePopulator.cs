@@ -90,7 +90,7 @@ namespace Assets.Scripts.Utilities
 		static TilePopulator()
 		{
 			Chances = new Generator();
-			Chances.Fill(45, 20, 10, 15);
+			Chances.Fill(30, 20, 10, 40);
 		}
 
 		// Chance Generator
