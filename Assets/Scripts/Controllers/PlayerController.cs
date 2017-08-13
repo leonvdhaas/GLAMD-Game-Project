@@ -322,13 +322,20 @@ namespace Assets.Scripts.Controllers
 
 		private void MoveToCorrectLane()
 		{
+			var delta = currentSpeed / maxSpeed * laneSwapSpeed * Time.deltaTime;
 			if (Orientation == Orientation.North || Orientation == Orientation.South)
 			{
-				transform.position = transform.position.CreateNew(x: Mathf.MoveTowards(transform.position.x, targetLanePos.x, laneSwapSpeed * Time.deltaTime));
+				transform.position = transform.position.CreateNew(x: Mathf.MoveTowards(
+					transform.position.x,
+					targetLanePos.x,
+					delta));
 			}
 			else
 			{
-				transform.position = transform.position.CreateNew(z: Mathf.MoveTowards(transform.position.z, targetLanePos.z, laneSwapSpeed * Time.deltaTime));
+				transform.position = transform.position.CreateNew(z: Mathf.MoveTowards(
+					transform.position.z,
+					targetLanePos.z,
+					delta));
 			}
 		}
 
