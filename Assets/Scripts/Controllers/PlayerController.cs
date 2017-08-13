@@ -6,6 +6,7 @@ using Assets.Scripts.Models;
 using System;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.Managers;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Controllers
 {
@@ -76,6 +77,10 @@ namespace Assets.Scripts.Controllers
 			set
 			{
 				GameManager.Instance.GuiManager.UpdateLives(_lives = value);
+				if (value == 0)
+				{
+					StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
+				}
 			}
 		}
 

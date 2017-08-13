@@ -30,19 +30,11 @@ namespace Assets.Scripts.Managers
 
 		private void Awake()
 		{
-			if (Instance == null)
-			{
-				Instance = this;
-				DontDestroyOnLoad(gameObject);
+			Instance = this;
 
-				TilePopulator = GetComponent<TilePopulator>();
-				Tiles = new List<Tile>(MAX_TILES + 1);
-				ResetTiles();
-			}
-			else
-			{
-				Destroy(gameObject);
-			}
+			TilePopulator = GetComponent<TilePopulator>();
+			Tiles = new List<Tile>(MAX_TILES + 1);
+			ResetTiles();
 		}
 
 		public static TileManager Instance { get; private set; }
