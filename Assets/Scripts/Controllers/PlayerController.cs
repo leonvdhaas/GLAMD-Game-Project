@@ -144,7 +144,7 @@ namespace Assets.Scripts.Controllers
 
 		public int Inhalers { get; internal set; }
 
-		public bool IsCoinDoublerActive { get; set; }
+		public bool IsCoinDoublerActive { get; private set; }
 
 		public bool IsInvincible { get; set; }
 
@@ -391,6 +391,18 @@ namespace Assets.Scripts.Controllers
 						IsInvincible = false;
 					}));
 			}
+		}
+
+		public void SetSlowmotionActive(float duration, float slowmotionFactor)
+		{
+			Time.timeScale = slowmotionFactor;
+			StartCoroutine(CoroutineHelper.Delay(duration, () => Time.timeScale = 1.0f));
+		}
+
+		public void SetCoinDoublerActive(float duration)
+		{
+			IsCoinDoublerActive = true;
+			StartCoroutine(CoroutineHelper.Delay(duration, () => IsCoinDoublerActive = false));
 		}
 
 		public void TakeObstacleDamage()

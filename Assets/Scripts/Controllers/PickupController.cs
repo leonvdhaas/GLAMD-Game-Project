@@ -23,6 +23,8 @@ namespace Assets.Scripts.Controllers
 
 		private const float SLOWMOTION_FACTOR = 0.5f;
 
+		private const float COINDOUBLER_TIME = 2.5f;
+
 		private void FixedUpdate()
 		{
 			transform.Rotate(Vector3.up * rotateSpeed);
@@ -45,27 +47,22 @@ namespace Assets.Scripts.Controllers
 						SoundManager.Instance.PlaySound(Sound.Coin);
 						break;
 					case Pickup.Slowmotion:
-						Time.timeScale = SLOWMOTION_FACTOR;
-						StartCoroutine(CoroutineHelper.Delay(SLOWMOTION_TIME, () => Time.timeScale = 1.0f));
+						player.SetSlowmotionActive(SLOWMOTION_TIME, SLOWMOTION_FACTOR);
 						SoundManager.Instance.PlaySound(Sound.Slowmotion);
 						break;
 					case Pickup.Inhaler:
 						if (player.Inhalers < MAX_NUMBER_OF_INHALERS)
 						{
 							player.Inhalers++;
-						}							
+						}
 						else if (player.IsInvincible)
 						{
-							// TODO: add points
+							// TO-DO: add points
 						}
 						SoundManager.Instance.PlaySound(Sound.Inhaler);
 						break;
 					case Pickup.CoinDoubler:
-						player.IsCoinDoublerActive = true;
-						StartCoroutine(CoroutineHelper.Delay(2.5f, () =>
-						{
-							player.IsCoinDoublerActive = false;
-						}));
+						player.SetCoinDoublerActive(COINDOUBLER_TIME);
 						break;
 					default:
 						throw new InvalidOperationException("Invalid Pickup type.");
