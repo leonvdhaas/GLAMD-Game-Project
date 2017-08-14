@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Assets.Scripts.Helpers;
+using Assets.Scripts.Utilities;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +9,17 @@ namespace Assets.Scripts.Managers
 	public class ButtonManager
 		: MonoBehaviour
 	{
+		[Header("Panels")]
+		[SerializeField]
+		private GameObject homePanel;
+
+		[SerializeField]
+		private GameObject registerPanel;
+
+		[SerializeField]
+		private GameObject loginPanel;
+
+		[Header("Input Fields")]
 		[SerializeField]
 		private InputField loginUsername;
 
@@ -22,6 +35,7 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private InputField registerConfirmPassword;
 
+		[Header("Text Fields")]
 		[SerializeField]
 		private Text lblErrorLogin;
 
@@ -34,47 +48,69 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text lblErrorConfirmPassword;
 
+		private bool waitingForLogin;
+		private bool waitingForRegister;
+
 		public void StartGameBtn()
 		{
 			SceneManager.LoadScene("Main");
 		}
 
-		public void ExitGameBtn()
-		{
-			Application.Quit();
-		}
-
-		private bool ValidChars(string input)
-		{
-			const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-			return !input.Any(x => !validChars.Contains(x));
-		}
-
-		private void SetError(Text errorLabel, string value)
-		{
-			errorLabel.text = value;
-			errorLabel.enabled = true;
-		}
-
 		public void LoginButton()
 		{
+			if (waitingForLogin)
+			{
+				return;
+			}
+
+			waitingForLogin = true;
 			lblErrorLogin.enabled = false;
 
 			var username = loginUsername.text;
 			var password = loginPassword.text;
 
-			if (false /* Try to login */)
+			if (username.Length == 0 || password.Length == 0)
 			{
-				// Login
+				SetError(lblErrorLogin, "Vul uw login gegevens in");
+				waitingForLogin = true;
+				return;
 			}
-			else
-			{
-				SetError(lblErrorLogin, "Incorrecte login gegevens");
-			}
+
+			StartCoroutine(ApiManager.UserCalls.LoginUser(
+				username,
+				Hasher.Hash(password),
+				onSuccess: user =>
+				{
+					GameManager.Instance.User = user;
+
+					loginPanel.SetActive(false);
+					homePanel.SetActive(true);
+
+					waitingForLogin = false;
+				},
+				onFailure: error =>
+				{
+					if (error.Message.Contains("Invalid"))
+					{
+						SetError(lblErrorLogin, "Incorrecte login gegevens");
+					}
+					else
+					{
+						SetError(lblErrorLogin, "Er is iets fout gegaan");
+					}
+
+					waitingForLogin = false;
+				}));
 		}
 
 		public void RegisterButton()
 		{
+			if (waitingForRegister)
+			{
+				return;
+			}
+
+			waitingForRegister = true;
 			lblErrorUsername.enabled = lblErrorPassword.enabled = lblErrorConfirmPassword.enabled = false;
 
 			var username = registerUsername.text;
@@ -93,10 +129,6 @@ namespace Assets.Scripts.Managers
 			{
 				SetError(lblErrorUsername, "Alleen A-Z, a-z en 0-9");
 			}
-			else if (false /* Check if username exists */)
-			{
-
-			}
 
 			if (password.Length < 6)
 			{
@@ -108,13 +140,60 @@ namespace Assets.Scripts.Managers
 				SetError(lblErrorConfirmPassword, "Wachtwoorden komen niet overeen");
 			}
 
-			if (
-				!lblErrorUsername.enabled &&
-				!lblErrorPassword.enabled &&
-				!lblErrorConfirmPassword.enabled)
+			if (lblErrorUsername.enabled ||
+				lblErrorPassword.enabled ||
+				lblErrorConfirmPassword.enabled)
 			{
-				// Register
+				waitingForRegister = false;
+				return;
 			}
+
+			StartCoroutine(ApiManager.UserCalls.UserExists(
+				username,
+				onSuccess: exists =>
+				{
+					if (exists)
+					{
+						SetError(lblErrorUsername, "Gebruikersnaam is al in gebruik");
+						waitingForRegister = false;
+					}
+					else
+					{
+						StartCoroutine(ApiManager.UserCalls.CreateUser(
+							username,
+							Hasher.Hash(password),
+							onSuccess: user =>
+							{
+								GameManager.Instance.User = user;
+
+								registerPanel.SetActive(false);
+								homePanel.SetActive(true);
+								waitingForRegister = false;
+							},
+							onFailure: error =>
+							{
+								SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
+								waitingForRegister = false;
+							}));
+					}
+				},
+				onFailure: error =>
+				{
+					SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
+					waitingForRegister = false;
+				}));
+		}
+
+		private bool ValidChars(string input)
+		{
+			const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			return !input.Any(x => !validChars.Contains(x));
+		}
+
+		private void SetError(Text errorLabel, string value)
+		{
+			errorLabel.text = value;
+			errorLabel.enabled = true;
 		}
 	}
 }

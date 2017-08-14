@@ -13,7 +13,8 @@ namespace Assets.Scripts.Managers
 {
 	public static class ApiManager
 	{
-		private const string ENDPOINT = "http://glamd.mikevdongen.nl/api";
+		//private const string ENDPOINT = "http://glamd.mikevdongen.nl/api";
+		private const string ENDPOINT = "http://localhost:61102/api";
 
 		private static Dictionary<string, WWW> activeCalls = new Dictionary<string, WWW>();
 
@@ -229,9 +230,13 @@ namespace Assets.Scripts.Managers
 
 		private static void RemoveDeactiveCalls()
 		{
-			foreach (var deactiveCall in activeCalls.Where(x => x.Value.isDone))
+			var deactiveCallKeys = activeCalls
+				.Where(x => x.Value.isDone)
+				.Select(x => x.Key)
+				.ToArray();
+			foreach (var deactiveCallKey in deactiveCallKeys)
 			{
-				activeCalls.Remove(deactiveCall.Key);
+				activeCalls.Remove(deactiveCallKey);
 			}
 		}
 
@@ -248,12 +253,12 @@ namespace Assets.Scripts.Managers
 
 		private static void Log(WWW www)
 		{
-			if (LogLevel == LogLevel.Basic)
+			if (LogLevel >= LogLevel.Basic)
 			{
 				Debug.LogFormat("API Call made for URI: {0}", www.url);
 			}
 
-			if (LogLevel == LogLevel.Full)
+			if (LogLevel >= LogLevel.Full)
 			{
 				foreach (var header in www.responseHeaders)
 				{

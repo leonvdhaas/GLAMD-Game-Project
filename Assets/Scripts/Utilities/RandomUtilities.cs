@@ -12,7 +12,7 @@ namespace Assets.Scripts.Utilities
 
 		static RandomUtilities()
 		{
-			Generator = new Random();
+			Generator = new Random(123);
 		}
 
 		public static int Seed

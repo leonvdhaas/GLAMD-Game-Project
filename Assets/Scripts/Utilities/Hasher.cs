@@ -7,11 +7,11 @@ namespace Assets.Scripts.Utilities
 	{
 		public static string Hash(string input)
 		{
-			using (SHA512 algorithm = SHA512.Create())
+			using (var algorithm = SHA512.Create())
 			{
 				var bytes = Encoding.UTF8.GetBytes(input);
 				var hash = algorithm.ComputeHash(bytes);
-				return Encoding.UTF8.GetString(hash);
+				return Base64.Encode(hash);
 			}
 		}
 	}
