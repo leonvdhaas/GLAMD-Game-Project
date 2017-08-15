@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayfulSystems.ProgressBar {
-[RequireComponent(typeof(RectTransform))]
+namespace PlayfulSystems.ProgressBar
+{
+	[RequireComponent(typeof(RectTransform))]
 public class BarViewPosImageFill : ProgressBarProView {
 
 		[SerializeField] RectTransform rectTrans;

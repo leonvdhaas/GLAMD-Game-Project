@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-namespace PlayfulSystems.ProgressBar {
+namespace PlayfulSystems.ProgressBar
+{
 	[RequireComponent(typeof(Text))]
 	public class BarViewValueText : ProgressBarProView {
 

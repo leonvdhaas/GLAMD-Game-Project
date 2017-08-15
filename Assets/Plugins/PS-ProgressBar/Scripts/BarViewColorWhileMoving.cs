@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-namespace PlayfulSystems.ProgressBar {
-    [RequireComponent(typeof(Graphic))]
+namespace PlayfulSystems.ProgressBar
+{
+	[RequireComponent(typeof(Graphic))]
     public class BarViewColorWhileMoving : ProgressBarProView {
 
         [SerializeField]

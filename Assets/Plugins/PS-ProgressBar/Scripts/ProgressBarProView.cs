@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace PlayfulSystems.ProgressBar { 
-    public abstract class ProgressBarProView : MonoBehaviour {
+namespace PlayfulSystems.ProgressBar
+{
+	public abstract class ProgressBarProView : MonoBehaviour {
         /// <summary>
         /// Method is called when the value on the bar is changed
         /// </summary>

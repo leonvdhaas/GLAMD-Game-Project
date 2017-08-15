@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-namespace PlayfulSystems.ProgressBar {
-    [RequireComponent(typeof(Image))]
+namespace PlayfulSystems.ProgressBar
+{
+	[RequireComponent(typeof(Image))]
     public class BarViewSizeAnchorsShadow : BarViewSizeAnchors {
 
         public enum ShadowType { Gaining, Losing }

@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System;
 
-namespace PlayfulSystems.ProgressBar {
-    [RequireComponent(typeof(Image))]
+namespace PlayfulSystems.ProgressBar
+{
+	[RequireComponent(typeof(Image))]
     public class BarViewSizeImageFill : ProgressBarProView {
         
         [SerializeField] protected Image image;

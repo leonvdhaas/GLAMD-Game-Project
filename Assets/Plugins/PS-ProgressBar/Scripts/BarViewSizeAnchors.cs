@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
-namespace PlayfulSystems.ProgressBar {
+namespace PlayfulSystems.ProgressBar
+{
 	[RequireComponent(typeof(RectTransform))]
     public class BarViewSizeAnchors : ProgressBarProView {
 

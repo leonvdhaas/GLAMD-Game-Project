@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace PlayfulSystems.ProgressBar {
+namespace PlayfulSystems.ProgressBar
+{
 	public static class Utils {
 
 		public static float EaseSinInOut(float lerp, float start, float change) { 
