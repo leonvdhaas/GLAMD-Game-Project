@@ -7,7 +7,7 @@ namespace Assets.Scripts.Managers
 	public class GuiManager
 		: MonoBehaviour
 	{
-		private const float METER_DELTA = 0.01f;
+		private const float METER_DELTA = 0.1f;
 
 		[SerializeField]
 		private Text coinsText;

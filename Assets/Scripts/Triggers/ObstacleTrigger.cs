@@ -8,25 +8,25 @@ namespace Assets.Scripts.Triggers
 	public class ObstacleTrigger
 		: MonoBehaviour
 	{
-		private const int OBSTACLE_DESTROY_SCORE = 5;
+		private const int OBSTACLE_DESTROY_SCORE = 3;
 
 		private void OnTriggerEnter(Collider other)
 		{
 			var player = other.GetComponent<PlayerController>();
 			if (player != null)
 			{
-				if (!player.IsInvincible)
+				if (player.IsInvincible)
 				{
-					SoundManager.Instance.PlaySound(Sound.Thud);
-					player.TakeObstacleDamage();
+					SoundManager.Instance.PlaySound(Sound.BoxInvincibleBreak);
 					player.Points += OBSTACLE_DESTROY_SCORE;
 				}
 				else
 				{
-					SoundManager.Instance.PlaySound(Sound.BoxInvincibleBreak);
+					SoundManager.Instance.PlaySound(Sound.Thud);
+					player.TakeObstacleDamage();
 				}
-				gameObject.SetActive(false);
-				//TODO: Add points
+
+				Destroy(gameObject);
 			}
 		}
 	}

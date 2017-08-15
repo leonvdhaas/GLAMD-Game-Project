@@ -3170,13 +3170,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d02f449aa47184fa53902bcf978f66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 0.02
+  acceleration: 0.5
   minSpeed: 12.5
   maxSpeed: 20
   jumpSpeed: 17.5
-  inhalerSpeedBonus: 10
-  inhalerTime: 5
-  laneSwapSpeed: 12
+  laneSwapSpeed: 12.5
+  minimumLaneSwapSpeed: 0.5
 --- !u!114 &114805417747465606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3193,7 +3192,10 @@ MonoBehaviour:
   m_bLeftClick: 1
   m_bInstantSwipe: 1
   m_stSwipeType: 1
-  SwipeDistance: 10
+  SwipeDistance: 0.1
+  maxSwipeTime: 0.375
+  minSwipeDist: 37.5
+  instantSwipeDistance: 0.125
 --- !u!120 &120799405967548264
 LineRenderer:
   m_ObjectHideFlags: 1

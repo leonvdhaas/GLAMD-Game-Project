@@ -6,6 +6,7 @@
 		Diamond,
 		Slowmotion,
 		Inhaler,
-		CoinDoubler
+		CoinDoubler,
+		Heart
 	}
 }

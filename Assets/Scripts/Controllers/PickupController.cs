@@ -9,21 +9,20 @@ namespace Assets.Scripts.Controllers
 	public class PickupController
 		: MonoBehaviour
 	{
+		public const ushort MAX_NUMBER_OF_INHALERS = 6;
+		private const float COINDOUBLER_TIME = 2.5f;
+		private const float SLOWMOTION_TIME = 5.0f;
+		private const float SLOWMOTION_FACTOR = 0.5f;
+		private const int HEART_VALUE = 25;
+		private const int INHALER_VALUE = 10;
 		private const int DIAMOND_VALUE = 5;
+		private const int COIN_VALUE = 1;
 
 		[SerializeField]
 		private float rotateSpeed;
 
 		[SerializeField]
 		private Pickup pickupType;
-
-		public const ushort MAX_NUMBER_OF_INHALERS = 6;
-
-		private const float SLOWMOTION_TIME = 5.0f;
-
-		private const float SLOWMOTION_FACTOR = 0.5f;
-
-		private const float COINDOUBLER_TIME = 2.5f;
 
 		private void FixedUpdate()
 		{
@@ -41,13 +40,14 @@ namespace Assets.Scripts.Controllers
 				{
 					case Pickup.Diamond:
 						player.Coins += DIAMOND_VALUE * multiplier;
+						// TO-DO: Add diamond sound.
 						break;
 					case Pickup.Coin:
-						player.Coins += 1 * multiplier;
+						player.Coins += COIN_VALUE * multiplier;
 						SoundManager.Instance.PlaySound(Sound.Coin);
 						break;
 					case Pickup.Slowmotion:
-						player.SetSlowmotionActive(SLOWMOTION_TIME, SLOWMOTION_FACTOR);
+						player.ActivateSlowmotion(SLOWMOTION_TIME, SLOWMOTION_FACTOR);
 						SoundManager.Instance.PlaySound(Sound.Slowmotion);
 						break;
 					case Pickup.Inhaler:
@@ -55,14 +55,28 @@ namespace Assets.Scripts.Controllers
 						{
 							player.Inhalers++;
 						}
-						else if (player.IsInvincible)
+						else
 						{
-							// TO-DO: add points
+							player.Points += INHALER_VALUE;
 						}
+
 						SoundManager.Instance.PlaySound(Sound.Inhaler);
 						break;
 					case Pickup.CoinDoubler:
-						player.SetCoinDoublerActive(COINDOUBLER_TIME);
+						player.ActivateCoinDoubler(COINDOUBLER_TIME);
+						// TO-DO: Add coin doubler sound.
+						break;
+					case Pickup.Heart:
+						if (player.Lives < 3)
+						{
+							player.Lives++;
+						}
+						else
+						{
+							player.Points += HEART_VALUE;
+						}
+
+						// TO-DO: Add heart sound.
 						break;
 					default:
 						throw new InvalidOperationException("Invalid Pickup type.");

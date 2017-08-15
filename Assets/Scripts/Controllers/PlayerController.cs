@@ -28,13 +28,11 @@ namespace Assets.Scripts.Controllers
 		private float jumpSpeed;
 
 		[SerializeField]
-		private float inhalerSpeedBonus;
-
-		[SerializeField]
-		private float inhalerTime;
-
-		[SerializeField]
 		private float laneSwapSpeed;
+
+		[Range(0.1f, 1.0f)]
+		[SerializeField]
+		private float minimumLaneSwapSpeed;
 
 		private float currentSpeed;
 		private Lane lane = Lane.Middle;
@@ -42,6 +40,8 @@ namespace Assets.Scripts.Controllers
 		private CharacterController characterController;
 		private float verticalSpeed = 0.0f;
 		private Vector3 targetLanePos;
+		private bool reactivateCoinDoubler;
+		private bool reactivateSlowmotion;
 
 		private Replay replay = new Replay();
 
@@ -53,15 +53,12 @@ namespace Assets.Scripts.Controllers
 			StartCoroutine(CoroutineHelper.Repeat(0.2f,
 				() =>
 				{
-					if (!GameManager.Instance.Paused)
+					replay.Add(new ReplayDataPoint
 					{
-						replay.Add(new ReplayDataPoint
-						{
-							Index = replay.Count,
-							Orientation = Orientation,
-							Position = transform.position
-						});
-					}
+						Index = replay.Count,
+						Orientation = Orientation,
+						Position = transform.position
+					});
 				},
 				() => Lives > 0));
 		}
@@ -158,7 +155,7 @@ namespace Assets.Scripts.Controllers
 		{
 			get
 			{
-				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS;
+				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS && !IsInvincible;
 			}
 		}
 
@@ -172,19 +169,18 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
-			if (GameManager.Instance.Paused)
+			// Don't do anything when frozen.
+			if (Frozen)
 			{
 				return;
 			}
 
+			// Apply gravity even when damaged.
 			ApplyGravity();
-
-			if (IsDamaged || Frozen)
+			if (IsDamaged)
 			{
 				return;
 			}
-
-			MoveToCorrectLane();
 
 			if ((IsOnLeftCorner && Input.GetKeyDown(KeyCode.A)) ||
 				(IsOnRightCorner && Input.GetKeyDown(KeyCode.D)))
@@ -196,9 +192,12 @@ namespace Assets.Scripts.Controllers
 				CheckForLaneSwap(Swipe.None);
 			}
 
+			MoveToCorrectLane();
 			Move();
 			CheckForJump(Swipe.None);
-			ActivateInhaler();
+
+			// TO-DO: Don't automatically activate inhaler, only check when button pressed.
+			ActivateInhaler(5, 10);
 		}
 
 		private void OnSwipe(SwipeControl.SWIPE_DIRECTION direction)
@@ -290,7 +289,7 @@ namespace Assets.Scripts.Controllers
 			if (Lives != ushort.MinValue)
 			{
 				// Wait until player lands.
-				StartCoroutine(CoroutineHelper.WaitUntil(() => IsTouchingGround(), () =>
+				StartCoroutine(CoroutineHelper.WaitUntil(IsTouchingGround, () =>
 				{
 					animator.Play("Damage");
 					StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
@@ -342,78 +341,128 @@ namespace Assets.Scripts.Controllers
 
 		private void MoveToCorrectLane()
 		{
-			var delta = currentSpeed / maxSpeed * laneSwapSpeed * Time.deltaTime;
+			var speed = laneSwapSpeed * Time.deltaTime * Mathf.Max(
+				(currentSpeed - minSpeed) / (maxSpeed - minSpeed),
+				IsInvincible ? 1 : minimumLaneSwapSpeed);
 			if (Orientation == Orientation.North || Orientation == Orientation.South)
 			{
 				transform.position = transform.position.CreateNew(x: Mathf.MoveTowards(
 					transform.position.x,
 					targetLanePos.x,
-					delta));
+					speed));
 			}
 			else
 			{
 				transform.position = transform.position.CreateNew(z: Mathf.MoveTowards(
 					transform.position.z,
 					targetLanePos.z,
-					delta));
+					speed));
 			}
 		}
 
 		private void Move()
 		{
-			if (currentSpeed < maxSpeed)
-			{
-				currentSpeed += acceleration;
-				animator.SetFloat("Speed", currentSpeed);
-			}
-
+			currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
+			animator.SetFloat("Speed", currentSpeed);
 			transform.position += Orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
 		}
 
-		private void ActivateInhaler()
+		private void ActivateInhaler(float duration, float speedBonus)
 		{
-			const int steps = 25;
+			const int steps = 100;
 
 			if (InhalerUsable)
 			{
 				IsInvincible = true;
-				StartCoroutine(CoroutineHelper.RepeatFor(
-					inhalerTime / steps,
-					0,
-					steps,
-					i =>
-					{
-						GameManager.Instance.GuiManager.UpdateInhalerMeter(1.0f - 1.0f / steps * i);
-					},
+				maxSpeed += speedBonus;
+				StartCoroutine(CoroutineHelper.For(
+					duration / steps,
+					() => 0,
+					i => i < steps,
+					(ref int i) => i++,
+					i => GameManager.Instance.GuiManager.UpdateInhalerMeter(1.0f - 1.0f / steps * i),
 					() =>
 					{
-						maxSpeed -= inhalerSpeedBonus;
+						Inhalers = 0;
+						maxSpeed -= speedBonus;
 						IsInvincible = false;
 					}));
 			}
 		}
 
-		public void SetSlowmotionActive(float duration, float slowmotionFactor)
+		public void ActivateSlowmotion(float duration, float slowmotionFactor)
 		{
+			const int steps = 100;
+
+			if (Mathf.Approximately(Time.timeScale, slowmotionFactor))
+			{
+				reactivateSlowmotion = true;
+				return;
+			}
+
 			Time.timeScale = slowmotionFactor;
-			StartCoroutine(CoroutineHelper.Delay(duration, () => Time.timeScale = 1.0f));
+			StartCoroutine(CoroutineHelper.For(
+				duration / steps,
+				() => 0,
+				i => i < steps,
+				(ref int i) =>
+				{
+					if (reactivateSlowmotion)
+					{
+						i = 0;
+						reactivateSlowmotion = false;
+					}
+					else
+					{
+						i++;
+					}
+				},
+				i => GameManager.Instance.GuiManager.UpdateSlowmotionMeter(1.0f - 1.0f / steps * i),
+				() => Time.timeScale = 1));
 		}
 
-		public void SetCoinDoublerActive(float duration)
+		public void ActivateCoinDoubler(float duration)
 		{
+			const int steps = 100;
+
+			if (IsCoinDoublerActive)
+			{
+				reactivateCoinDoubler = true;
+				return;
+			}
+
 			IsCoinDoublerActive = true;
-			StartCoroutine(CoroutineHelper.Delay(duration, () => IsCoinDoublerActive = false));
+			StartCoroutine(CoroutineHelper.For(
+				duration / steps,
+				() => 0,
+				i => i < steps,
+				(ref int i) =>
+				{
+					if (reactivateCoinDoubler)
+					{
+						i = 0;
+						reactivateCoinDoubler = false;
+					}
+					else
+					{
+						i++;
+					}
+				},
+				i => GameManager.Instance.GuiManager.UpdateCoinDoublerMeter(1.0f - 1.0f / steps * i),
+				() => IsCoinDoublerActive = false));
 		}
 
 		public void TakeObstacleDamage()
 		{
 			IsDamaged = true;
 			Lives--;
-			if(Lives != ushort.MinValue)
+
+			if (Lives > 0)
 			{
 				animator.Play("Damage");
 				StartCoroutine(CoroutineHelper.Delay(0.75f, () => IsDamaged = false));
-			}			
+			}
+
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
 		}

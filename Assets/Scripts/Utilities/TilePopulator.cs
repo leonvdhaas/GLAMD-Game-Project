@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Models;
 using Assets.Scripts.Helpers;
+using Newtonsoft.Json;
 
 namespace Assets.Scripts.Utilities
 {
@@ -50,6 +51,8 @@ namespace Assets.Scripts.Utilities
 			public SpawnObject[,] JumpOverObstacles { get; set; }
 
 			public SpawnObject[,] AirSpawns { get; set; }
+
+			public int PickupCount { get; set; }
 		}
 
 		// Obstacles
@@ -77,15 +80,15 @@ namespace Assets.Scripts.Utilities
 		public GameObject diamond;
 
 		// Which ones are unnecessary?
-		private bool bigObstacle = false;
-		private int pickupCount = 0;
-		private int coinBowCount = 0;
-		private int truckCount = 0;
-		private int bigType;
-		private int spawnCounter = 0;
-		private int listCounter = 0;
-		private int obstacleChance, pickupChance, coinChance, nothingChance;
-		private object[] obstacleType = new object[5];
+
+		//private bool bigObstacle = false;
+		//private int coinBowCount = 0;
+		//private int truckCount = 0;
+		//private int bigType;
+		//private int spawnCounter = 0;
+		//private int listCounter = 0;
+		//private int obstacleChance, pickupChance, coinChance, nothingChance;
+		//private object[] obstacleType = new object[5];
 
 		static TilePopulator()
 		{
@@ -126,26 +129,31 @@ namespace Assets.Scripts.Utilities
 		{
 			// assign each spawnobject to corresponding transform
 
-			StartCoroutine(CoroutineHelper.For(0.1f, 1, 6, o =>
-			{
-				for (int i = 0; i < 3; i++)
+			StartCoroutine(CoroutineHelper.For(
+				0.1f,
+				() => 1,
+				o => o < 6,
+				(ref int o) => o++,
+				o =>
 				{
-					tilePopulation.SpawnObstacles[0, i] = new SpawnObject();
-					tilePopulation.SpawnObstacles[0, i].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/Obstacles/SpawnObstacle{1}", o, i + 1));
-					tilePopulation.AirSpawns[0, i] = new SpawnObject();
-					tilePopulation.AirSpawns[0, i].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/AirSpawns/AirSpawn{1}", o, i + 1));
-
-					for (int e = 0; e < 5; e++)
+					for (int i = 0; i < 3; i++)
 					{
-						tilePopulation.GroundSpawns[i, e] = new SpawnObject();
-						tilePopulation.GroundSpawns[i, e].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/GroundSpawns/Line {1}/GroundSpawn{2}", o, i + 1, e + 1));
-						tilePopulation.JumpOverObstacles[i, e] = new SpawnObject();
-						tilePopulation.JumpOverObstacles[i, e].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/JumpOverObstacle/Line {1}/AirObstacleSpawn{2}", o, i + 1, e + 1));
-					}
-				}
+						tilePopulation.SpawnObstacles[0, i] = new SpawnObject();
+						tilePopulation.SpawnObstacles[0, i].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/Obstacles/SpawnObstacle{1}", o, i + 1));
+						tilePopulation.AirSpawns[0, i] = new SpawnObject();
+						tilePopulation.AirSpawns[0, i].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/AirSpawns/AirSpawn{1}", o, i + 1));
 
-				Fill(tilePopulation);
-			}));
+						for (int e = 0; e < 5; e++)
+						{
+							tilePopulation.GroundSpawns[i, e] = new SpawnObject();
+							tilePopulation.GroundSpawns[i, e].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/GroundSpawns/Line {1}/GroundSpawn{2}", o, i + 1, e + 1));
+							tilePopulation.JumpOverObstacles[i, e] = new SpawnObject();
+							tilePopulation.JumpOverObstacles[i, e].Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/JumpOverObstacle/Line {1}/AirObstacleSpawn{2}", o, i + 1, e + 1));
+						}
+					}
+
+					Fill(tilePopulation);
+				}));
 		}
 
 		private void Fill(TilePopulation tilePopulation)
@@ -158,7 +166,7 @@ namespace Assets.Scripts.Utilities
 				}
 				else if (RandomUtilities.PercentageChance(Chances.SpawnObstacle.PickupChance))
 				{
-					spawnObstacles.Object = GetPickup(spawnObstacles);
+					spawnObstacles.Object = GetPickup(tilePopulation, spawnObstacles);
 				}
 				else if (RandomUtilities.PercentageChance(Chances.SpawnObstacle.CoinChance))
 				{
@@ -175,7 +183,7 @@ namespace Assets.Scripts.Utilities
 				.Concat(tilePopulation.AirSpawns.Cast<SpawnObject>());
 			foreach (SpawnObject spawn in spawns)
 			{
-				SetPickupOrPowerup(spawn);
+				SetPickupOrPowerup(tilePopulation, spawn);
 			}
 
 			for (int i = 0; i < 3; i++)
@@ -227,11 +235,11 @@ namespace Assets.Scripts.Utilities
 			}
 		}
 
-		private void SetPickupOrPowerup(SpawnObject pickup)
+		private void SetPickupOrPowerup(TilePopulation tilePopulation, SpawnObject pickup)
 		{
 			if (RandomUtilities.PercentageChance(Chances.Spawn.PickupChance))
 			{
-				pickup.Object = GetPickup(pickup);
+				pickup.Object = GetPickup(tilePopulation, pickup);
 			}
 			else if (RandomUtilities.PercentageChance(Chances.Spawn.CoinChance))
 			{
@@ -243,15 +251,15 @@ namespace Assets.Scripts.Utilities
 			}
 		}
 
-		private GameObject GetPickup(SpawnObject pickup)
+		private GameObject GetPickup(TilePopulation tilePopulation, SpawnObject pickup)
 		{
 			var retval = new GameObject();
 
 			// How many pickups per straight tile.
-			if (pickupCount < 1)
+			if (tilePopulation.PickupCount < 1)
 			{
 				retval = PickupChance();
-				pickupCount++;
+				tilePopulation.PickupCount++;
 			}
 			else
 			{
