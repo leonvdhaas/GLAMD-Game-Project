@@ -5,7 +5,6 @@ using System.Linq;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Models;
 using Assets.Scripts.Helpers;
-using Newtonsoft.Json;
 
 namespace Assets.Scripts.Utilities
 {

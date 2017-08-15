@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Enumerations;
+using Assets.Scripts.Managers;
 using System;
 
 namespace Assets.Scripts.Models
@@ -15,12 +16,31 @@ namespace Assets.Scripts.Models
 
 		public int? OpponentScore { get; set; }
 
-		public virtual Guid CreatorId { get; set; }
+		public Guid CreatorId { get; set; }
 
-		public virtual Guid OpponentId { get; set; }
+		public Guid OpponentId { get; set; }
 
-		public virtual Guid? VictorId { get; set; }
+		public Guid? VictorId { get; set; }
 
-		public virtual Guid? ReplayId { get; set; }
+		public Guid? ReplayId { get; set; }
+
+		public MatchWinner MatchWinner
+		{
+			get
+			{
+				if (!VictorId.HasValue)
+				{
+					return MatchWinner.Draw;
+				}
+				else if (VictorId.Value == GameManager.Instance.User.Id)
+				{
+					return MatchWinner.User;
+				}
+				else
+				{
+					return MatchWinner.Opponent;
+				}
+			}
+		}
 	}
 }

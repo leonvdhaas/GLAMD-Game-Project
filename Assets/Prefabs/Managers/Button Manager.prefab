@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f74ffcc827e904986e82c6ef634d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SkipLogin: 1
   homePanel: {fileID: 0}
   registerPanel: {fileID: 0}
   loginPanel: {fileID: 0}

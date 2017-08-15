@@ -8,21 +8,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.Managers
 {
 	public static class ApiManager
 	{
-		//private const string ENDPOINT = "http://glamd.mikevdongen.nl/api";
-		private const string ENDPOINT = "http://localhost:61102/api";
+		private const string PRODUCTION_ENDPOINT = "http://glamd.mikevdongen.nl/api";
+		private const string LOCAL_ENDPOINT = "http://localhost:61102/api";
 
-		private static Dictionary<string, WWW> activeCalls = new Dictionary<string, WWW>();
+		private static Dictionary<string, object> activeCalls = new Dictionary<string, object>();
 
 		public static LogLevel LogLevel { get; set; }
 
+		public static bool UseProductionEndpoint { get; set; }
+
+		private static string Endpoint
+		{
+			get
+			{
+				return UseProductionEndpoint ? PRODUCTION_ENDPOINT : LOCAL_ENDPOINT;
+			}
+		}
+
 		public static class MatchCalls
 		{
-			public static IEnumerator Create(int seed, Guid opponentId, Guid creatorId, int creatorScore, Action<Match> onSuccess, Action<Error> onFailure)
+			public static IEnumerator CreateMatch(int seed, Guid opponentId, Guid creatorId, int creatorScore, Action<Match> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Match/Create", new Dictionary<string, string>
 				{
@@ -36,7 +47,7 @@ namespace Assets.Scripts.Managers
 				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator Update(Guid id, int opponentScore, Action<Match> onSuccess, Action<Error> onFailure)
+			public static IEnumerator UpdateMatch(Guid id, int opponentScore, Action<Match> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Match/Update", new Dictionary<string, string>
 				{
@@ -87,17 +98,46 @@ namespace Assets.Scripts.Managers
 				yield return call;
 				HandleFinishedCall(call, onSuccess, onFailure);
 			}
-
+			
 			public static IEnumerator CreateReplay(Guid matchId, string data, Action<Guid> onSuccess, Action<Error> onFailure)
 			{
-				var call = Call("Replay/Get", new Dictionary<string, string>
+				RemoveDeactiveCalls();
+
+				string uri = GetUri("Replay/Create", new Dictionary<string, string>
 				{
-					{ "matchId", matchId.ToString() },
-					{ "data", data }
+					{ "matchId", matchId.ToString() }
 				});
 
-				yield return call;
-				HandleFinishedCall(call, onSuccess, onFailure);
+				if (activeCalls.ContainsKey(uri))
+				{
+					throw new InvalidOperationException(String.Format("Multiple calls were requested for URI '{0}'", uri));
+				}
+
+				UnityWebRequest www = (activeCalls[uri] = UnityWebRequest.Post(uri, new Dictionary<string, string>
+				{
+					{ "ReplayData", data }
+				})) as UnityWebRequest;
+				
+				yield return www.Send();
+
+				if (www.isError)
+				{
+					onFailure(new Error
+					{
+						Message = www.error
+					});
+				}
+				else
+				{
+					if (www.responseCode != (int)HttpStatusCode.OK)
+					{
+						onFailure(JsonConvert.DeserializeObject<Error>(www.downloadHandler.text));
+					}
+					else
+					{
+						onSuccess(JsonConvert.DeserializeObject<Guid>(www.downloadHandler.text));
+					}
+				}
 			}
 		}
 
@@ -138,7 +178,7 @@ namespace Assets.Scripts.Managers
 				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserExists(string username, Action<bool> onSuccess, Action<Error> onFailure)
+			public static IEnumerator UserExists(string username, Action<Guid?> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("User/Exists", new Dictionary<string, string>
 				{
@@ -192,7 +232,8 @@ namespace Assets.Scripts.Managers
 			{
 				throw new InvalidOperationException(String.Format("Multiple calls were requested for URI '{0}'", uri));
 			}
-			return activeCalls[uri] = new WWW(uri);
+
+			return (activeCalls[uri] = new WWW(uri)) as WWW;
 		}
 
 		private static void HandleFinishedCall<T>(WWW call, Action<T> onSuccess, Action<Error> onFailure)
@@ -208,7 +249,8 @@ namespace Assets.Scripts.Managers
 			{
 				onFailure(new Error
 				{
-					Message = "The server is currently unavailable."
+					Message = "The server is currently unavailable.",
+					FriendlyMessage = "Er is iets fout gegaan."
 				});
 			}
 			else
@@ -231,7 +273,19 @@ namespace Assets.Scripts.Managers
 		private static void RemoveDeactiveCalls()
 		{
 			var deactiveCallKeys = activeCalls
-				.Where(x => x.Value.isDone)
+				.Where(x =>
+				{
+					if (x.Value is WWW)
+					{
+						return (x.Value as WWW).isDone;
+					}
+					else if (x.Value is UnityWebRequest)
+					{
+						return (x.Value as UnityWebRequest).isDone;
+					}
+
+					throw new InvalidOperationException(String.Format("Invalid call type: '{0}'", x.Value.GetType().Name));
+				})
 				.Select(x => x.Key)
 				.ToArray();
 			foreach (var deactiveCallKey in deactiveCallKeys)
@@ -242,7 +296,7 @@ namespace Assets.Scripts.Managers
 
 		private static string GetUri(string route, IDictionary<string, string> queryParams)
 		{
-			var sb = new StringBuilder(String.Format("{0}/{1}?", ENDPOINT.TrimEnd('?', '/'), route));
+			var sb = new StringBuilder(String.Format("{0}/{1}?", Endpoint.TrimEnd('?', '/'), route));
 			if (queryParams != null)
 			{
 				queryParams.Aggregate(sb, (_, param) => sb.AppendFormat("{0}={1}&", param.Key, param.Value));

@@ -17,19 +17,14 @@ namespace Assets.Scripts.Controllers
 
 		[SerializeField]
 		private float acceleration;
-
 		[SerializeField]
 		private float minSpeed;
-
 		[SerializeField]
 		private float maxSpeed;
-
 		[SerializeField]
 		private float jumpSpeed;
-
 		[SerializeField]
 		private float laneSwapSpeed;
-
 		[Range(0.1f, 1.0f)]
 		[SerializeField]
 		private float minimumLaneSwapSpeed;
@@ -42,7 +37,6 @@ namespace Assets.Scripts.Controllers
 		private Vector3 targetLanePos;
 		private bool reactivateCoinDoubler;
 		private bool reactivateSlowmotion;
-
 		private Replay replay = new Replay();
 
 		private void Start()
@@ -50,17 +44,21 @@ namespace Assets.Scripts.Controllers
 			GameManager.Instance.Player = this;
 			CurrentTile = TileManager.Instance.Tiles.First();
 			GetComponentInChildren<SwipeControl>().SetMethodToCall(OnSwipe);
-			StartCoroutine(CoroutineHelper.Repeat(0.2f,
-				() =>
-				{
-					replay.Add(new ReplayDataPoint
+
+			if (GameManager.Instance.CurrentGame.GameType == GameType.MultiplayerCreate)
+			{
+				StartCoroutine(CoroutineHelper.Repeat(ReplayGhostController.REPLAY_INTERVAL,
+					() =>
 					{
-						Index = replay.Count,
-						Orientation = Orientation,
-						Position = transform.position
-					});
-				},
-				() => Lives > 0));
+						GameManager.Instance.CurrentGame.Replay.Add(new ReplayDataPoint
+						{
+							Index = replay.Count,
+							Orientation = Orientation,
+							Position = transform.position
+						});
+					},
+					() => Lives > 0));
+			}
 		}
 
 		private void Awake()
@@ -76,7 +74,7 @@ namespace Assets.Scripts.Controllers
 				1.5f,
 				() =>
 				{
-					if (!Frozen && !GameManager.Instance.Paused)
+					if (!Frozen)
 					{
 						Points += 2;
 					}
@@ -96,9 +94,62 @@ namespace Assets.Scripts.Controllers
 				GameManager.Instance.GuiManager.UpdateLives(_lives = value);
 				if (value <= 0)
 				{
-					StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
+					GameOver();
 				}
 			}
+		}
+
+		private void GameOver()
+		{
+			switch (GameManager.Instance.CurrentGame.GameType)
+			{
+				case GameType.Singleplayer:
+					// TO-DO: Display appropriate final screen.
+					break;
+				case GameType.MultiplayerCreate:
+					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.CreateMatch(
+						RandomUtilities.Seed,
+						GameManager.Instance.CurrentGame.OpponentId.Value,
+						GameManager.Instance.User.Id,
+						Points + Coins,
+						onSuccess: match =>
+						{
+							GameManager.Instance.StartCoroutine(ApiManager.ReplayCalls.CreateReplay(
+								match.Id,
+								GameManager.Instance.CurrentGame.Replay.ToString(),
+								onSuccess: replayId =>
+								{
+									// TO-DO: Display appropriate final screen.
+								},
+								onFailure: error =>
+								{
+									// TO-DO: Handle error.
+								}));
+						},
+						onFailure: error =>
+						{
+							// TO-DO: Handle error.
+						}));
+					break;
+				case GameType.MultiplayerChallenge:
+					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.UpdateMatch(
+						GameManager.Instance.CurrentGame.Match.Id,
+						Points + Coins,
+						onSuccess: match =>
+						{
+							// TO-DO: Display appropriate final screen.
+						},
+						onFailure: error =>
+						{
+							// TO-DO: Handle error.
+						}));
+					break;
+				default:
+					throw new InvalidOperationException("Invalid GameType");
+			}
+
+			// TO-DO: Replace this Coroutine with "Return" button in final screen.
+			StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
 		}
 
 		private int _points = 0;

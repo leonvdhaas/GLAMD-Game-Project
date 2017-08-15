@@ -15,11 +15,16 @@ namespace Assets.Scripts.Utilities
 			Generator = new Random(123);
 		}
 
+		private static int _seed;
 		public static int Seed
 		{
+			get
+			{
+				return _seed;
+			}
 			set
 			{
-				Generator = new Random(value);
+				Generator = new Random(_seed = value);
 			}
 		}
 

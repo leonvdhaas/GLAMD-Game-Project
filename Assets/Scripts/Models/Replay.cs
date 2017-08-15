@@ -55,5 +55,12 @@ namespace Assets.Scripts.Models
 			sb.Join("_", dataPoints.Select(x => x.ToString()).ToArray());
 			return Base64.Encode(Compressor.Zip(sb.ToString()));
 		}
+
+		public byte[] ToByteArray()
+		{
+			var sb = new StringBuilder();
+			sb.Join("_", dataPoints.Select(x => x.ToString()).ToArray());
+			return Compressor.Zip(sb.ToString());
+		}
 	}
 }

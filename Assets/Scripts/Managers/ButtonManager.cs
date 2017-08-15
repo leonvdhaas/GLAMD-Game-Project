@@ -1,5 +1,6 @@
-﻿using Assets.Scripts.Helpers;
+﻿using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,61 +10,175 @@ namespace Assets.Scripts.Managers
 	public class ButtonManager
 		: MonoBehaviour
 	{
+		[SerializeField]
+		private bool SkipLogin;
+
 		[Header("Panels")]
 		[SerializeField]
 		private GameObject homePanel;
-
 		[SerializeField]
 		private GameObject registerPanel;
-
 		[SerializeField]
 		private GameObject loginPanel;
 
 		[Header("Input Fields")]
 		[SerializeField]
 		private InputField loginUsername;
-
 		[SerializeField]
 		private InputField loginPassword;
-
 		[SerializeField]
 		private InputField registerUsername;
-
 		[SerializeField]
 		private InputField registerPassword;
-
 		[SerializeField]
 		private InputField registerConfirmPassword;
 
 		[Header("Text Fields")]
 		[SerializeField]
 		private Text lblErrorLogin;
-
 		[SerializeField]
 		private Text lblErrorUsername;
-
 		[SerializeField]
 		private Text lblErrorPassword;
-
 		[SerializeField]
 		private Text lblErrorConfirmPassword;
 
-		private bool waitingForLogin;
-		private bool waitingForRegister;
+		private bool isProcessingButton;
 
-		public void StartGameBtn()
+		private void OnEnable()
 		{
-			SceneManager.LoadScene("Main");
+			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
 		}
 
-		public void LoginButton()
+		private void OnDisable()
 		{
-			if (waitingForLogin)
+			SceneManager.sceneLoaded -= SceneManager_SceneLoaded;
+		}
+
+		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+		{
+			if (scene.name == "MainStartMenu")
+			{
+				if (GameManager.Instance.User != null || SkipLogin)
+				{
+					homePanel.SetActive(true);
+				}
+				else
+				{
+					loginPanel.SetActive(true);
+				}
+			}
+		}
+
+		public void MultiplayerButton()
+		{
+			
+		}
+
+		public void StartSingleplayerButton()
+		{
+			GameManager.Instance.StartSingleplayerGame();
+		}
+
+		public void CreateMultiplayerChallengeButton()
+		{
+			// TO-DO: Get opponent id.
+			Guid opponentId = default(Guid);
+			GameManager.Instance.StartMultiplayerGame(opponentId);
+		}
+
+		public void AcceptMultiplayerChallengeButton()
+		{
+			// TO-DO: Get match.
+			Match match = null;
+			GameManager.Instance.StartMultiplayerGame(match);
+		}
+
+		public void AcceptFriendRequestButton()
+		{
+			if (isProcessingButton)
 			{
 				return;
 			}
 
-			waitingForLogin = true;
+			isProcessingButton = true;
+
+			// TO-DO: Get friend request id.
+			var friendRequestId = Guid.NewGuid();
+
+			StartCoroutine(ApiManager.FriendCalls.Accept(
+				friendRequestId,
+				onSuccess: friendRequest =>
+				{
+					// TO-DO: Display added friend.
+					isProcessingButton = false;
+				},
+				onFailure: error =>
+				{
+					// TO-DO: Handle error.
+					isProcessingButton = false;
+				}));
+		}
+
+		public void SendFriendRequestButton()
+		{
+			if (isProcessingButton)
+			{
+				return;
+			}
+
+			isProcessingButton = true;
+
+			// TO-DO: Get friend's name.
+			var friendName = "";
+
+			if (friendName.Length == 0)
+			{
+				// TO-DO: Display empty input field error.
+				isProcessingButton = false;
+				return;
+			}
+
+			StartCoroutine(ApiManager.UserCalls.UserExists(
+				friendName,
+				onSuccess: friendId =>
+				{
+					if (!friendId.HasValue)
+					{
+						// TO-DO: Display can't find friend error.
+						isProcessingButton = false;
+						return;
+					}
+
+					StartCoroutine(ApiManager.FriendCalls.Invite(
+						GameManager.Instance.User.Id,
+						friendId.Value,
+						onSuccess: friendRequest =>
+						{
+							// TO-DO: Display successfully send friend request.
+							isProcessingButton = false;
+						},
+						onFailure: error =>
+						{
+							// TO-DO: Handle error.
+							isProcessingButton = false;
+						}));
+				},
+				onFailure: error =>
+				{
+					// TO-DO: Handle error.
+					isProcessingButton = false;
+				}));
+		}
+
+		public void LoginButton()
+		{
+			if (isProcessingButton)
+			{
+				return;
+			}
+
+			isProcessingButton = true;
 			lblErrorLogin.enabled = false;
 
 			var username = loginUsername.text;
@@ -72,7 +187,7 @@ namespace Assets.Scripts.Managers
 			if (username.Length == 0 || password.Length == 0)
 			{
 				SetError(lblErrorLogin, "Vul uw login gegevens in");
-				waitingForLogin = true;
+				isProcessingButton = false;
 				return;
 			}
 
@@ -86,7 +201,7 @@ namespace Assets.Scripts.Managers
 					loginPanel.SetActive(false);
 					homePanel.SetActive(true);
 
-					waitingForLogin = false;
+					isProcessingButton = false;
 				},
 				onFailure: error =>
 				{
@@ -99,18 +214,18 @@ namespace Assets.Scripts.Managers
 						SetError(lblErrorLogin, "Er is iets fout gegaan");
 					}
 
-					waitingForLogin = false;
+					isProcessingButton = false;
 				}));
 		}
 
 		public void RegisterButton()
 		{
-			if (waitingForRegister)
+			if (isProcessingButton)
 			{
 				return;
 			}
 
-			waitingForRegister = true;
+			isProcessingButton = true;
 			lblErrorUsername.enabled = lblErrorPassword.enabled = lblErrorConfirmPassword.enabled = false;
 
 			var username = registerUsername.text;
@@ -144,43 +259,42 @@ namespace Assets.Scripts.Managers
 				lblErrorPassword.enabled ||
 				lblErrorConfirmPassword.enabled)
 			{
-				waitingForRegister = false;
+				isProcessingButton = false;
 				return;
 			}
 
 			StartCoroutine(ApiManager.UserCalls.UserExists(
 				username,
-				onSuccess: exists =>
+				onSuccess: userId =>
 				{
-					if (exists)
+					if (userId.HasValue)
 					{
 						SetError(lblErrorUsername, "Gebruikersnaam is al in gebruik");
-						waitingForRegister = false;
+						isProcessingButton = false;
+						return;
 					}
-					else
-					{
-						StartCoroutine(ApiManager.UserCalls.CreateUser(
-							username,
-							Hasher.Hash(password),
-							onSuccess: user =>
-							{
-								GameManager.Instance.User = user;
 
-								registerPanel.SetActive(false);
-								homePanel.SetActive(true);
-								waitingForRegister = false;
-							},
-							onFailure: error =>
-							{
-								SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
-								waitingForRegister = false;
-							}));
-					}
+					StartCoroutine(ApiManager.UserCalls.CreateUser(
+						username,
+						Hasher.Hash(password),
+						onSuccess: user =>
+						{
+							GameManager.Instance.User = user;
+
+							registerPanel.SetActive(false);
+							homePanel.SetActive(true);
+							isProcessingButton = false;
+						},
+						onFailure: error =>
+						{
+							SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
+							isProcessingButton = false;
+						}));
 				},
 				onFailure: error =>
 				{
 					SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
-					waitingForRegister = false;
+					isProcessingButton = false;
 				}));
 		}
 
