@@ -99,59 +99,6 @@ namespace Assets.Scripts.Controllers
 			}
 		}
 
-		private void GameOver()
-		{
-			switch (GameManager.Instance.CurrentGame.GameType)
-			{
-				case GameType.Singleplayer:
-					// TO-DO: Display appropriate final screen.
-					break;
-				case GameType.MultiplayerCreate:
-					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.CreateMatch(
-						RandomUtilities.Seed,
-						GameManager.Instance.CurrentGame.OpponentId.Value,
-						GameManager.Instance.User.Id,
-						Points + Coins,
-						onSuccess: match =>
-						{
-							GameManager.Instance.StartCoroutine(ApiManager.ReplayCalls.CreateReplay(
-								match.Id,
-								GameManager.Instance.CurrentGame.Replay.ToString(),
-								onSuccess: replayId =>
-								{
-									// TO-DO: Display appropriate final screen.
-								},
-								onFailure: error =>
-								{
-									// TO-DO: Handle error.
-								}));
-						},
-						onFailure: error =>
-						{
-							// TO-DO: Handle error.
-						}));
-					break;
-				case GameType.MultiplayerChallenge:
-					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.UpdateMatch(
-						GameManager.Instance.CurrentGame.Match.Id,
-						Points + Coins,
-						onSuccess: match =>
-						{
-							// TO-DO: Display appropriate final screen.
-						},
-						onFailure: error =>
-						{
-							// TO-DO: Handle error.
-						}));
-					break;
-				default:
-					throw new InvalidOperationException("Invalid GameType");
-			}
-
-			// TO-DO: Replace this Coroutine with "Return" button in final screen.
-			StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
-		}
-
 		private int _points = 0;
 		public int Points
 		{
@@ -178,6 +125,19 @@ namespace Assets.Scripts.Controllers
 			}
 		}
 
+		private int _inhalers = 0;
+		public int Inhalers
+		{
+			get
+			{
+				return _inhalers;
+			}
+			set
+			{
+				GameManager.Instance.GuiManager.UpdateInhalerMeter((_inhalers = value) / (float)PickupController.MAX_NUMBER_OF_INHALERS);
+			}
+		}
+
 		public Orientation Orientation { get; private set; }
 
 		public LanePosition[] TurningPositions { get; set; }
@@ -189,8 +149,6 @@ namespace Assets.Scripts.Controllers
 		public Tile CurrentTile { get; set; }
 
 		public bool IsDamaged { get; private set; }
-
-		public int Inhalers { get; internal set; }
 
 		public bool IsCoinDoublerActive { get; private set; }
 
@@ -288,6 +246,59 @@ namespace Assets.Scripts.Controllers
 				default:
 					break;
 			}
+		}
+
+		private void GameOver()
+		{
+			switch (GameManager.Instance.CurrentGame.GameType)
+			{
+				case GameType.Singleplayer:
+					// TO-DO: Display appropriate final screen.
+					break;
+				case GameType.MultiplayerCreate:
+					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.CreateMatch(
+						RandomUtilities.Seed,
+						GameManager.Instance.CurrentGame.OpponentId.Value,
+						GameManager.Instance.User.Id,
+						Points + Coins,
+						onSuccess: match =>
+						{
+							GameManager.Instance.StartCoroutine(ApiManager.ReplayCalls.CreateReplay(
+								match.Id,
+								GameManager.Instance.CurrentGame.Replay.ToString(),
+								onSuccess: replayId =>
+								{
+									// TO-DO: Display appropriate final screen.
+								},
+								onFailure: error =>
+								{
+									// TO-DO: Handle error.
+								}));
+						},
+						onFailure: error =>
+						{
+							// TO-DO: Handle error.
+						}));
+					break;
+				case GameType.MultiplayerChallenge:
+					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.UpdateMatch(
+						GameManager.Instance.CurrentGame.Match.Id,
+						Points + Coins,
+						onSuccess: match =>
+						{
+							// TO-DO: Display appropriate final screen.
+						},
+						onFailure: error =>
+						{
+							// TO-DO: Handle error.
+						}));
+					break;
+				default:
+					throw new InvalidOperationException("Invalid GameType");
+			}
+
+			// TO-DO: Replace this Coroutine with "Return" button in final screen.
+			StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
 		}
 
 		private void CheckForJump(Swipe swipe)
@@ -429,7 +440,7 @@ namespace Assets.Scripts.Controllers
 				StartCoroutine(CoroutineHelper.For(
 					duration / steps,
 					() => 0,
-					i => i < steps,
+					i => i <= steps,
 					(ref int i) => i++,
 					i => GameManager.Instance.GuiManager.UpdateInhalerMeter(1.0f - 1.0f / steps * i),
 					() =>
@@ -455,7 +466,7 @@ namespace Assets.Scripts.Controllers
 			StartCoroutine(CoroutineHelper.For(
 				duration / steps,
 				() => 0,
-				i => i < steps,
+				i => i <= steps,
 				(ref int i) =>
 				{
 					if (reactivateSlowmotion)
@@ -486,7 +497,7 @@ namespace Assets.Scripts.Controllers
 			StartCoroutine(CoroutineHelper.For(
 				duration / steps,
 				() => 0,
-				i => i < steps,
+				i => i <= steps,
 				(ref int i) =>
 				{
 					if (reactivateCoinDoubler)

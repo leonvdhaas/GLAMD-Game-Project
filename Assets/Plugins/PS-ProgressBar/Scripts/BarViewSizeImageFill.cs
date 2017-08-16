@@ -13,6 +13,11 @@ namespace PlayfulSystems.ProgressBar
 
         private bool isDisplaySizeZero;
 
+		public void SetNumSteps(int steps)
+		{
+			numSteps = steps;
+		}
+
         public override bool CanUpdateView(float currentValue, float targetValue) {
             // This ensures that we can update, even if the object has been updated cause it was set to 0
             return isActiveAndEnabled || isDisplaySizeZero;
