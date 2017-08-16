@@ -121,8 +121,8 @@ namespace Assets.Scripts.Utilities
 		private GameObject ObstacleChance()
 		{
 			return RandomUtilities.WeightedPick(
-				box.ToWeightedItem(5),
-				cartoonCar.ToWeightedItem(3),
+				box.ToWeightedItem(7),
+				cartoonCar.ToWeightedItem(5),
 				pizzaTruck.ToWeightedItem(2));
 		}
 
