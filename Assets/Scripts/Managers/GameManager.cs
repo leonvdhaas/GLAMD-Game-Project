@@ -4,6 +4,7 @@ using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 using RNG = System.Random;
 
@@ -92,8 +93,14 @@ namespace Assets.Scripts.Managers
 			};
 
 			// TO-DO: Watch advertisement before starting game.
-
-			SceneManager.LoadScene("Main");
+			Advertisement.Show(new ShowOptions
+			{
+				resultCallback = result =>
+				{
+					Debug.Log(result);
+					SceneManager.LoadScene("Main");
+				}
+			});
 		}
 
 		public void Logout()
