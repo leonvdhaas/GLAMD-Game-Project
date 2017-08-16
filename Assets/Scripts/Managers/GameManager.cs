@@ -92,12 +92,17 @@ namespace Assets.Scripts.Managers
 				OpponentId = opponentId
 			};
 
-			// TO-DO: Watch advertisement before starting game.
+			SceneManager.LoadScene("Main");
 			Advertisement.Show(new ShowOptions
 			{
 				resultCallback = result =>
 				{
-					Debug.Log(result);
+					
+					if (result == ShowResult.Failed)
+					{
+						Debug.LogError(result);
+					}
+
 					SceneManager.LoadScene("Main");
 				}
 			});
