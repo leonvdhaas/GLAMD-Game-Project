@@ -15,7 +15,7 @@ namespace Assets.Scripts.Triggers
 			var player = other.GetComponent<PlayerController>();
 			if (player != null)
 			{
-				if (player.IsInvincible)
+				if (player.InhalerPowerupActive)
 				{
 					SoundManager.Instance.PlaySound(Sound.BoxInvincibleBreak);
 					player.Points += OBSTACLE_DESTROY_SCORE;

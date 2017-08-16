@@ -152,7 +152,7 @@ namespace Assets.Scripts.Controllers
 
 		public bool IsCoinDoublerActive { get; private set; }
 
-		public bool IsInvincible { get; set; }
+		public bool InhalerPowerupActive { get; set; }
 
 		public int HorizontalSwipeDirection { get; set; }
 
@@ -164,7 +164,7 @@ namespace Assets.Scripts.Controllers
 		{
 			get
 			{
-				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS && !IsInvincible;
+				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS && !InhalerPowerupActive;
 			}
 		}
 
@@ -222,8 +222,7 @@ namespace Assets.Scripts.Controllers
 					CheckForJump(Swipe.Up);
 					break;
 				case SwipeControl.SWIPE_DIRECTION.SD_LEFT:
-					if (IsOnLeftCorner)
-					{
+					if (IsOnLeftCorner){
 						TakeCorner();
 					}
 					else
@@ -405,7 +404,7 @@ namespace Assets.Scripts.Controllers
 		{
 			var speed = laneSwapSpeed * Time.deltaTime * Mathf.Max(
 				(currentSpeed - minSpeed) / (maxSpeed - minSpeed),
-				IsInvincible ? 1 : minimumLaneSwapSpeed);
+				InhalerPowerupActive ? 1 : minimumLaneSwapSpeed);
 			if (Orientation == Orientation.North || Orientation == Orientation.South)
 			{
 				transform.position = transform.position.CreateNew(x: Mathf.MoveTowards(
@@ -424,6 +423,16 @@ namespace Assets.Scripts.Controllers
 
 		private void Move()
 		{
+			var acceleration = this.acceleration;
+			if (InhalerPowerupActive)
+			{
+				acceleration *= 3;
+			}
+			else if (currentSpeed > maxSpeed)
+			{
+				acceleration *= 5;
+			}
+
 			currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
 			animator.SetFloat("Speed", currentSpeed);
 			transform.position += Orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
@@ -435,7 +444,7 @@ namespace Assets.Scripts.Controllers
 
 			if (InhalerUsable)
 			{
-				IsInvincible = true;
+				InhalerPowerupActive = true;
 				maxSpeed += speedBonus;
 				StartCoroutine(CoroutineHelper.For(
 					duration / steps,
@@ -447,7 +456,7 @@ namespace Assets.Scripts.Controllers
 					{
 						Inhalers = 0;
 						maxSpeed -= speedBonus;
-						IsInvincible = false;
+						InhalerPowerupActive = false;
 					}));
 			}
 		}
