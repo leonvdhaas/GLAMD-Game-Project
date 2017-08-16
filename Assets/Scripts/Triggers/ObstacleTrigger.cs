@@ -23,7 +23,10 @@ namespace Assets.Scripts.Triggers
 				else
 				{
 					SoundManager.Instance.PlaySound(Sound.Thud);
-					player.TakeObstacleDamage();
+					if (!player.IsInvincible)
+					{
+						player.TakeObstacleDamage();
+					}
 				}
 
 				Destroy(gameObject);

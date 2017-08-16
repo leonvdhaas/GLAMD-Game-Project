@@ -8,12 +8,14 @@ using Assets.Scripts.Helpers;
 using Assets.Scripts.Managers;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Utilities;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Controllers
 {
 	public class PlayerController : MonoBehaviour
 	{
 		private const float GRAVITY = 9.8f;
+		private const float INVINCIBLE_TIME_AFTER_DAMAGED = 1.0f;
 
 		[SerializeField]
 		private float acceleration;
@@ -96,6 +98,11 @@ namespace Assets.Scripts.Controllers
 				{
 					GameOver();
 				}
+				else
+				{
+					IsInvincible = true;
+					StartCoroutine(CoroutineHelper.Delay(INVINCIBLE_TIME_AFTER_DAMAGED, () => IsInvincible = false));
+				}
 			}
 		}
 
@@ -159,6 +166,8 @@ namespace Assets.Scripts.Controllers
 		public int VerticalSwipeDirection { get; set; }
 
 		public bool Frozen { get; private set; }
+
+		public bool IsInvincible { get; private set; }
 
 		public bool InhalerUsable
 		{
