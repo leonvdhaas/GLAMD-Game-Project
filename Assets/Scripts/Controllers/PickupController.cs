@@ -39,7 +39,7 @@ namespace Assets.Scripts.Controllers
 				{
 					case Pickup.Diamond:
 						player.Coins += DIAMOND_VALUE * multiplier;
-						// TO-DO: Add diamond sound.
+						SoundManager.Instance.PlaySound(Sound.Diamond);
 						break;
 					case Pickup.Coin:
 						player.Coins += COIN_VALUE * multiplier;
@@ -63,7 +63,7 @@ namespace Assets.Scripts.Controllers
 						break;
 					case Pickup.CoinDoubler:
 						player.ActivateCoinDoubler(COINDOUBLER_TIME);
-						// TO-DO: Add coin doubler sound.
+						SoundManager.Instance.PlaySound(Sound.CoinDoubler);
 						break;
 					case Pickup.Heart:
 						if (player.Lives < 3)
@@ -75,7 +75,7 @@ namespace Assets.Scripts.Controllers
 							player.Points += HEART_VALUE;
 						}
 
-						// TO-DO: Add heart sound.
+						SoundManager.Instance.PlaySound(Sound.Heart);
 						break;
 					default:
 						throw new InvalidOperationException("Invalid Pickup type.");

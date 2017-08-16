@@ -56,3 +56,7 @@ MonoBehaviour:
   inhaler: {fileID: 8300000, guid: 43118e4cd9e5ef54cae71ffbbed49927, type: 3}
   thud: {fileID: 8300000, guid: 806067156f7cbfd4e8e90bfc8ea74ed9, type: 3}
   boxBreak: {fileID: 8300000, guid: fa237bfda7b97b340bb2729d5738df83, type: 3}
+  heart: {fileID: 8300000, guid: ca15272f0f598ae4dbf508ca8f1d43e5, type: 3}
+  coinDoubler: {fileID: 8300000, guid: 692ac531032c9084fa0b481c4d674bf8, type: 3}
+  diamond: {fileID: 8300000, guid: edab2e049b999e544b2dc05586988ad1, type: 3}
+  inhalerActivate: {fileID: 8300000, guid: d6c34f5b3e202ea48af43ae016f685dc, type: 3}

@@ -444,6 +444,7 @@ namespace Assets.Scripts.Controllers
 
 			if (InhalerUsable)
 			{
+				SoundManager.Instance.PlaySound(Sound.InhalerActivate);
 				InhalerPowerupActive = true;
 				maxSpeed += speedBonus;
 				StartCoroutine(CoroutineHelper.For(

@@ -6,6 +6,10 @@
 		Slowmotion,
 		Inhaler,
 		Thud,
-		BoxInvincibleBreak
+		BoxInvincibleBreak,
+		Heart,
+		CoinDoubler,
+		Diamond,
+		InhalerActivate
 	}
 }

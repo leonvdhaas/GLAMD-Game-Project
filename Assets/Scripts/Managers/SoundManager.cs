@@ -37,6 +37,18 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private AudioClip boxBreak;
 
+		[SerializeField]
+		private AudioClip heart;
+
+		[SerializeField]
+		private AudioClip coinDoubler;
+
+		[SerializeField]
+		private AudioClip diamond;
+
+		[SerializeField]
+		private AudioClip inhalerActivate;
+
 		public static SoundManager Instance { get; private set; }
 
 		public void PlaySound(Sound sound)
@@ -59,9 +71,22 @@ namespace Assets.Scripts.Managers
 				case Sound.BoxInvincibleBreak:
 					audioSource.clip = boxBreak;
 					break;
+				case Sound.Diamond:
+					audioSource.clip = diamond;
+					break;
+				case Sound.CoinDoubler:
+					audioSource.clip = coinDoubler;
+					break;
+				case Sound.Heart:
+					audioSource.clip = heart;
+					break;
+				case Sound.InhalerActivate:
+					audioSource.clip = inhalerActivate;
+					break;
 				default:
 					throw new InvalidOperationException("Invalid sound type.");
 			}
+
 			audioSource.Play();
 			StartCoroutine(CoroutineHelper.Delay(audioSource.clip.length, () => Destroy(audioSource)));
 		}

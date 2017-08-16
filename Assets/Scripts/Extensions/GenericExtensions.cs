@@ -5,11 +5,6 @@ namespace Assets.Scripts.Extensions
 {
 	public static class GenericExtensions
 	{
-		public static WeightedItem<T> ToWeightedItem<T>(this T value)
-		{
-			return value.ToWeightedItem(1);
-		}
-
 		public static WeightedItem<T> ToWeightedItem<T>(this T value, byte weight)
 		{
 			return new WeightedItem<T>(value, weight);
