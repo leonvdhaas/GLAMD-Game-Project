@@ -12,5 +12,16 @@ namespace Assets.Scripts.Models
 		public Match Match { get; set; }
 
 		public Guid? OpponentId { get; set; }
+
+		public static Game Default
+		{
+			get
+			{
+				return new Game
+				{
+					GameType = GameType.Singleplayer
+				};
+			}
+		}
 	}
 }

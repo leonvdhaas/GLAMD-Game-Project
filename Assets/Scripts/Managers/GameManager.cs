@@ -36,7 +36,23 @@ namespace Assets.Scripts.Managers
 
 		public User User { get; set; }
 
-		public Game CurrentGame { get; private set; }
+		private Game _currentGame;
+		public Game CurrentGame
+		{
+			get
+			{
+				if (_currentGame != null)
+				{
+					return _currentGame;
+				}
+
+				return Game.Default;
+			}
+			private set
+			{
+				_currentGame = value;
+			}
+		}
 
 		public void StartSingleplayerGame()
 		{
