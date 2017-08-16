@@ -61,3 +61,6 @@ MonoBehaviour:
   spaceBetweenMeter: 375
   emptyTexture: {fileID: 0}
   fullTexture: {fileID: 2800000, guid: 8cc1ce6eea8b3fa47b1d0601d5ba8e5c, type: 3}
+  coinDoublerBar: {fileID: 0}
+  inhalerBar: {fileID: 0}
+  slowmotionBar: {fileID: 0}

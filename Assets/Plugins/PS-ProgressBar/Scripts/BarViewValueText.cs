@@ -17,6 +17,12 @@ namespace PlayfulSystems.ProgressBar
 
         private float lastDisplayValue;
 
+		public void SetMaxValue(float value)
+		{
+			maxValue = value;
+			UpdateView(0, 0);
+		}
+
         public override bool CanUpdateView(float currentValue, float targetValue) {
             float displayValue = GetRoundedDisplayValue(currentValue);
 
