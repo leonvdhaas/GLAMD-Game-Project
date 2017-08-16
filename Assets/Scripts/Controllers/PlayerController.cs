@@ -476,7 +476,7 @@ namespace Assets.Scripts.Controllers
 			StartCoroutine(CoroutineHelper.For(
 				duration / steps,
 				() => 0,
-				i => i <= steps,
+				i => i <= steps && Lives > 0,
 				(ref int i) =>
 				{
 					if (reactivateSlowmotion)

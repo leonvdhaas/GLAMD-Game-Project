@@ -2,6 +2,6 @@
 {
 	public interface IWeighted
 	{
-		byte Weight { get; }
+		ushort Weight { get; }
 	}
 }

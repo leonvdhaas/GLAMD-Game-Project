@@ -72,6 +72,8 @@ namespace Assets.Scripts.Utilities
 		[SerializeField]
 		public GameObject inhaler;
 		[SerializeField]
+		public GameObject slowmotion;
+		[SerializeField]
 		public GameObject heart;
 
 		// Coins
@@ -104,8 +106,9 @@ namespace Assets.Scripts.Utilities
 		{
 			return RandomUtilities.WeightedPick(
 				heart.ToWeightedItem(1),
-				inhaler.ToWeightedItem(50),
-				doubleCoins.ToWeightedItem(75));
+				slowmotion.ToWeightedItem(25),
+				inhaler.ToWeightedItem(100),
+				doubleCoins.ToWeightedItem(150));
 		}
 
 		private GameObject CoinChance()

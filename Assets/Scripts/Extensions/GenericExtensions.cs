@@ -5,7 +5,7 @@ namespace Assets.Scripts.Extensions
 {
 	public static class GenericExtensions
 	{
-		public static WeightedItem<T> ToWeightedItem<T>(this T value, byte weight)
+		public static WeightedItem<T> ToWeightedItem<T>(this T value, ushort weight)
 		{
 			return new WeightedItem<T>(value, weight);
 		}

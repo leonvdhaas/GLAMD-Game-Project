@@ -5,7 +5,7 @@ namespace Assets.Scripts.Models
 	public struct WeightedItem<T>
 		: IWeighted
 	{
-		public WeightedItem(T value, byte weight)
+		public WeightedItem(T value, ushort weight)
 		{
 			Value = value;
 			Weight = weight;
@@ -13,6 +13,6 @@ namespace Assets.Scripts.Models
 
 		public T Value { get; private set; }
 
-		public byte Weight { get; private set; }
+		public ushort Weight { get; private set; }
 	}
 }
