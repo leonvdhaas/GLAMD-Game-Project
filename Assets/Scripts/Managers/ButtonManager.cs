@@ -10,14 +10,6 @@ namespace Assets.Scripts.Managers
 	public class ButtonManager
 		: MonoBehaviour
 	{
-		[Header("Login Info")]
-		[SerializeField]
-		private bool SkipLogin;
-		[SerializeField]
-		private string id;
-		[SerializeField]
-		private string username;
-
 		[Header("Panels")]
 		[SerializeField]
 		private GameObject homePanel;
@@ -66,16 +58,12 @@ namespace Assets.Scripts.Managers
 		{
 			if (scene.name == "MainStartMenu")
 			{
-				if (SkipLogin)
+				if (GameManager.Instance.SkipLogin)
 				{
 					if (GameManager.Instance.User == null)
 					{
-						lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
-						GameManager.Instance.User = new User
-						{
-							Id = new Guid(id),
-							Username = username
-						};
+						lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.DummyUser.Username);
+						GameManager.Instance.User = GameManager.Instance.DummyUser;
 					}
 
 					homePanel.SetActive(true);

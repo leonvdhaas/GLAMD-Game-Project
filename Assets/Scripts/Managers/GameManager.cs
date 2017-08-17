@@ -13,6 +13,52 @@ namespace Assets.Scripts.Managers
 	public class GameManager
 		: MonoBehaviour
 	{
+		[SerializeField]
+		private LogLevel _logLevel;
+		public LogLevel LogLevel
+		{
+			get
+			{
+				return _logLevel;
+			}
+		}
+
+		[SerializeField]
+		private bool _developmentMode;
+		public bool DevelopmentMode
+		{
+			get
+			{
+				return _developmentMode;
+			}
+		}
+
+		[SerializeField]
+		private bool _skipLogin;
+		public bool SkipLogin
+		{
+			get
+			{
+				return _skipLogin;
+			}
+		}
+
+		[SerializeField]
+		private string id;
+		[SerializeField]
+		private string username;
+		public User DummyUser
+		{
+			get
+			{
+				return new User
+				{
+					Id = new Guid(id),
+					Username = username
+				};
+			}
+		}
+
 		private static readonly RNG rng = new RNG();
 		private float unpausedTimeScale;
 

@@ -51,3 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8eafaa059af1347b32d821b234c03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _logLevel: 0
+  _developmentMode: 1
+  _skipLogin: 1
+  id: E5468D47-7270-40F6-A4A1-4E9C425F0D7E
+  username: Anthony

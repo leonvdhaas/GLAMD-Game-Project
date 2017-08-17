@@ -19,15 +19,11 @@ namespace Assets.Scripts.Managers
 
 		private static Dictionary<string, object> activeCalls = new Dictionary<string, object>();
 
-		public static LogLevel LogLevel { get; set; }
-
-		public static bool UseProductionEndpoint { get; set; }
-
 		private static string Endpoint
 		{
 			get
 			{
-				return UseProductionEndpoint ? PRODUCTION_ENDPOINT : LOCAL_ENDPOINT;
+				return GameManager.Instance.DevelopmentMode ? LOCAL_ENDPOINT : PRODUCTION_ENDPOINT;
 			}
 		}
 
@@ -329,12 +325,12 @@ namespace Assets.Scripts.Managers
 
 		private static void Log(WWW www)
 		{
-			if (LogLevel >= LogLevel.Basic)
+			if (GameManager.Instance.LogLevel >= LogLevel.Basic)
 			{
 				Debug.LogFormat("API Call made for URI: {0}", www.url);
 			}
 
-			if (LogLevel >= LogLevel.Full)
+			if (GameManager.Instance.LogLevel >= LogLevel.Full)
 			{
 				foreach (var header in www.responseHeaders)
 				{
