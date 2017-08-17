@@ -20,11 +20,17 @@ namespace Assets.Scripts.Models
 
 		public Guid OpponentId { get; set; }
 
+		public string CreatorName { get; set; }
+
+		public string OpponentName { get; set; }
+
 		public Guid? VictorId { get; set; }
 
 		public Guid? ReplayId { get; set; }
 
-		public MatchWinner MatchWinner
+		public DateTime CreatedOn { get; set; }
+
+		public MatchWinner Winner
 		{
 			get
 			{

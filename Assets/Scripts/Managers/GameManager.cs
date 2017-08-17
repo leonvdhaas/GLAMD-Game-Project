@@ -109,7 +109,6 @@ namespace Assets.Scripts.Managers
 		public void Logout()
 		{
 			User = null;
-			CurrentGame = null;
 		}
 
 		public void Pause()

@@ -303,6 +303,7 @@ namespace Assets.Scripts.Managers
 
 		public void LogoutButton()
 		{
+			GameManager.Instance.Logout();
 			lblLoggedInAs.text = "";
 			homePanel.SetActive(false);
 			loginPanel.SetActive(true);
