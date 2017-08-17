@@ -8,7 +8,6 @@ using Assets.Scripts.Helpers;
 using Assets.Scripts.Managers;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Utilities;
-using System.Collections.Generic;
 
 namespace Assets.Scripts.Controllers
 {
@@ -214,7 +213,7 @@ namespace Assets.Scripts.Controllers
 			Move();
 			CheckForJump(Swipe.None);
 
-			// TO-DO: Don't automatically activate inhaler, only check when button pressed.
+			//TODO: Don't automatically activate inhaler, only check when button pressed.
 			ActivateInhaler(5, 10);
 		}
 
@@ -261,7 +260,7 @@ namespace Assets.Scripts.Controllers
 			switch (GameManager.Instance.CurrentGame.GameType)
 			{
 				case GameType.Singleplayer:
-					// TO-DO: Display appropriate final screen.
+					//TODO: Display appropriate final screen.
 					break;
 				case GameType.MultiplayerCreate:
 					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.CreateMatch(
@@ -276,16 +275,16 @@ namespace Assets.Scripts.Controllers
 								GameManager.Instance.CurrentGame.Replay.ToString(),
 								onSuccess: replayId =>
 								{
-									// TO-DO: Display appropriate final screen.
+									//TODO: Display appropriate final screen.
 								},
 								onFailure: error =>
 								{
-									// TO-DO: Handle error.
+									//TODO: Handle error.
 								}));
 						},
 						onFailure: error =>
 						{
-							// TO-DO: Handle error.
+							//TODO: Handle error.
 						}));
 					break;
 				case GameType.MultiplayerChallenge:
@@ -294,18 +293,18 @@ namespace Assets.Scripts.Controllers
 						Points + Coins,
 						onSuccess: match =>
 						{
-							// TO-DO: Display appropriate final screen.
+							//TODO: Display appropriate final screen.
 						},
 						onFailure: error =>
 						{
-							// TO-DO: Handle error.
+							//TODO: Handle error.
 						}));
 					break;
 				default:
 					throw new InvalidOperationException("Invalid GameType");
 			}
 
-			// TO-DO: Replace this Coroutine with "Return" button in final screen.
+			//TODO: Replace this Coroutine with "Return" button in final screen.
 			StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
 		}
 

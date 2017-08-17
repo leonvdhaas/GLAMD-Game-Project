@@ -62,6 +62,17 @@ namespace Assets.Scripts.Managers
 
 		public static class FriendCalls
 		{
+			public static IEnumerator Delete(Guid id, Action<string> onSuccess, Action<Error> onFailure)
+			{
+				var call = Call("Friend/Delete", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+				HandleFinishedCall(call, onSuccess, onFailure);
+			}
+
 			public static IEnumerator Invite(Guid userId, Guid invitedId, Action<Friend> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Friend/Invite", new Dictionary<string, string>
@@ -200,9 +211,9 @@ namespace Assets.Scripts.Managers
 				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserInvites(Guid id, Action<Friend[]> onSuccess, Action<Error> onFailure)
+			public static IEnumerator UserFriendInvites(Guid id, Action<Friend[]> onSuccess, Action<Error> onFailure)
 			{
-				var call = Call("User/Invites", new Dictionary<string, string>
+				var call = Call("User/FriendInvites", new Dictionary<string, string>
 				{
 					{ "id", id.ToString() }
 				});
@@ -211,9 +222,20 @@ namespace Assets.Scripts.Managers
 				HandleFinishedCall(call, onSuccess, onFailure);
 			}
 
-			public static IEnumerator UserMatches(Guid id, Action<Match[]> onSuccess, Action<Error> onFailure)
+			public static IEnumerator UserMatchInvites(Guid id, Action<Match[]> onSuccess, Action<Error> onFailure)
 			{
-				var call = Call("User/Matches", new Dictionary<string, string>
+				var call = Call("User/MatchInvites", new Dictionary<string, string>
+				{
+					{ "id", id.ToString() }
+				});
+
+				yield return call;
+				HandleFinishedCall(call, onSuccess, onFailure);
+			}
+
+			public static IEnumerator UserMatchHistory(Guid id, Action<Match[]> onSuccess, Action<Error> onFailure)
+			{
+				var call = Call("User/MatchHistory", new Dictionary<string, string>
 				{
 					{ "id", id.ToString() }
 				});

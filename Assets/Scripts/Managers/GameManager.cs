@@ -78,7 +78,7 @@ namespace Assets.Scripts.Managers
 				},
 				onFailure: error =>
 				{
-					// TO-DO: Handle error.
+					//TODO: Handle error.
 				}));
 		}
 

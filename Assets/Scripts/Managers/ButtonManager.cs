@@ -10,8 +10,13 @@ namespace Assets.Scripts.Managers
 	public class ButtonManager
 		: MonoBehaviour
 	{
+		[Header("Login Info")]
 		[SerializeField]
 		private bool SkipLogin;
+		[SerializeField]
+		private string id;
+		[SerializeField]
+		private string username;
 
 		[Header("Panels")]
 		[SerializeField]
@@ -61,8 +66,18 @@ namespace Assets.Scripts.Managers
 		{
 			if (scene.name == "MainStartMenu")
 			{
-				if (GameManager.Instance.User != null || SkipLogin)
+				if (SkipLogin)
 				{
+					if (GameManager.Instance.User == null)
+					{
+						lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
+						GameManager.Instance.User = new User
+						{
+							Id = new Guid(id),
+							Username = username
+						};
+					}
+
 					homePanel.SetActive(true);
 				}
 				else
@@ -72,28 +87,10 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		public void MultiplayerButton()
-		{
-			
-		}
-
 		public void StartSingleplayerButton()
 		{
+			homePanel.SetActive(false);
 			GameManager.Instance.StartSingleplayerGame();
-		}
-
-		public void CreateMultiplayerChallengeButton()
-		{
-			// TO-DO: Get opponent id.
-			Guid opponentId = default(Guid);
-			GameManager.Instance.StartMultiplayerGame(opponentId);
-		}
-
-		public void AcceptMultiplayerChallengeButton()
-		{
-			// TO-DO: Get match.
-			Match match = null;
-			GameManager.Instance.StartMultiplayerGame(match);
 		}
 
 		public void AcceptFriendRequestButton()
@@ -105,19 +102,19 @@ namespace Assets.Scripts.Managers
 
 			isProcessingButton = true;
 
-			// TO-DO: Get friend request id.
+			//TODO: Get friend request id.
 			var friendRequestId = Guid.NewGuid();
 
 			StartCoroutine(ApiManager.FriendCalls.Accept(
 				friendRequestId,
 				onSuccess: friendRequest =>
 				{
-					// TO-DO: Display added friend.
+					//TODO: Display added friend.
 					isProcessingButton = false;
 				},
 				onFailure: error =>
 				{
-					// TO-DO: Handle error.
+					//TODO: Handle error.
 					isProcessingButton = false;
 				}));
 		}
@@ -131,12 +128,12 @@ namespace Assets.Scripts.Managers
 
 			isProcessingButton = true;
 
-			// TO-DO: Get friend's name.
+			//TODO: Get friend's name.
 			var friendName = "";
 
 			if (friendName.Length == 0)
 			{
-				// TO-DO: Display empty input field error.
+				//TODO: Display empty input field error.
 				isProcessingButton = false;
 				return;
 			}
@@ -147,7 +144,7 @@ namespace Assets.Scripts.Managers
 				{
 					if (!friendId.HasValue)
 					{
-						// TO-DO: Display can't find friend error.
+						//TODO: Display can't find friend error.
 						isProcessingButton = false;
 						return;
 					}
@@ -157,18 +154,18 @@ namespace Assets.Scripts.Managers
 						friendId.Value,
 						onSuccess: friendRequest =>
 						{
-							// TO-DO: Display successfully send friend request.
+							//TODO: Display successfully send friend request.
 							isProcessingButton = false;
 						},
 						onFailure: error =>
 						{
-							// TO-DO: Handle error.
+							//TODO: Handle error.
 							isProcessingButton = false;
 						}));
 				},
 				onFailure: error =>
 				{
-					// TO-DO: Handle error.
+					//TODO: Handle error.
 					isProcessingButton = false;
 				}));
 		}
