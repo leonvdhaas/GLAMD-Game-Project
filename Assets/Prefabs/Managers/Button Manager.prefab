@@ -64,3 +64,4 @@ MonoBehaviour:
   lblErrorUsername: {fileID: 0}
   lblErrorPassword: {fileID: 0}
   lblErrorConfirmPassword: {fileID: 0}
+  lblLoggedInAs: {fileID: 0}

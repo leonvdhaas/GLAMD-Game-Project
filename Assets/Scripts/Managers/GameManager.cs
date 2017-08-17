@@ -92,12 +92,10 @@ namespace Assets.Scripts.Managers
 				OpponentId = opponentId
 			};
 
-			SceneManager.LoadScene("Main");
 			Advertisement.Show(new ShowOptions
 			{
 				resultCallback = result =>
 				{
-					
 					if (result == ShowResult.Failed)
 					{
 						Debug.LogError(result);

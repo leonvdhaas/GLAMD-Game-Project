@@ -42,6 +42,8 @@ namespace Assets.Scripts.Managers
 		private Text lblErrorPassword;
 		[SerializeField]
 		private Text lblErrorConfirmPassword;
+		[SerializeField]
+		private Text lblLoggedInAs;
 
 		private bool isProcessingButton;
 
@@ -198,6 +200,7 @@ namespace Assets.Scripts.Managers
 				{
 					GameManager.Instance.User = user;
 
+					lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
 					loginPanel.SetActive(false);
 					homePanel.SetActive(true);
 
@@ -296,6 +299,13 @@ namespace Assets.Scripts.Managers
 					SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
 					isProcessingButton = false;
 				}));
+		}
+
+		public void LogoutButton()
+		{
+			lblLoggedInAs.text = "";
+			homePanel.SetActive(false);
+			loginPanel.SetActive(true);
 		}
 
 		private bool ValidChars(string input)
