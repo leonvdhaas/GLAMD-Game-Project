@@ -50,10 +50,6 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private GameObject slowmotionBar;
 
-		//private float coinDoublerMeter;
-		//private float inhalerMeter;
-		//private float slowmotionMeter;
-
 		private float targetCoinDoublerMeter;
 		private float targetInhalerMeter;
 		private float targetSlowmotionMeter;
@@ -75,28 +71,6 @@ namespace Assets.Scripts.Managers
 				.GetComponentInChildren<BarViewValueText>()
 				.SetMaxValue(PickupController.MAX_NUMBER_OF_INHALERS);
 		}
-
-		//private void OnGUI()
-		//{
-		//	float screenScaleX = Screen.width / 1200.0f;
-		//	float screenScaleY = Screen.height / 800.0f;
-
-		//	GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(screenScaleX, screenScaleY, 1));
-
-		//	var meters = new float[] { inhalerMeter, coinDoublerMeter, slowmotionMeter };
-		//	for (int i = 0; i < 3; i++)
-		//	{
-		//		//bar background
-		//		GUI.BeginGroup(new Rect(position.x + spaceBetweenMeter * i, position.y, size.x, size.y));
-		//		GUI.Box(new Rect(0, 0, size.x, size.y), emptyTexture);
-
-		//		//bar filling part
-		//		GUI.BeginGroup(new Rect(0, 0, size.x * meters[i], size.y));
-		//		GUI.Box(new Rect(0, 0, size.x, size.y), fullTexture);
-		//		GUI.EndGroup();
-		//		GUI.EndGroup();
-		//	}
-		//}
 
 		public void UpdateCoinDoublerMeter(float percentage)
 		{
