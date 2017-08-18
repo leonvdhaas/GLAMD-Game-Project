@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 729599aca642b9e41beb1caa7f901fd8
-timeCreated: 1502908323
+guid: 319b582e7a89e6648a199d538cf28f66
+timeCreated: 1503055013
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -10,8 +10,6 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Vert
-    7400000: Default Take
-    9500000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0
@@ -52,7 +50,7 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
