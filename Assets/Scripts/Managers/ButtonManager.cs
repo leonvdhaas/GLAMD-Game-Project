@@ -17,6 +17,8 @@ namespace Assets.Scripts.Managers
 		private GameObject registerPanel;
 		[SerializeField]
 		private GameObject loginPanel;
+		[SerializeField]
+		private GameObject errorPopupPanel;
 
 		[Header("Input Fields")]
 		[SerializeField]
@@ -29,6 +31,8 @@ namespace Assets.Scripts.Managers
 		private InputField registerPassword;
 		[SerializeField]
 		private InputField registerConfirmPassword;
+		[SerializeField]
+		private InputField addFriendUsername;
 
 		[Header("Text Fields")]
 		[SerializeField]
@@ -44,14 +48,26 @@ namespace Assets.Scripts.Managers
 
 		private bool isProcessingButton;
 
+		public static ButtonManager Instance { get; set; }
+
+		public static bool HasInstance
+		{
+			get
+			{
+				return Instance != null;
+			}
+		}
+
 		private void OnEnable()
 		{
 			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
+			Instance = this;
 		}
 
 		private void OnDisable()
 		{
 			SceneManager.sceneLoaded -= SceneManager_SceneLoaded;
+			Instance = null;
 		}
 
 		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -73,6 +89,11 @@ namespace Assets.Scripts.Managers
 					loginPanel.SetActive(true);
 				}
 			}
+		}
+
+		public void ShowErrorPopup()
+		{
+			errorPopupPanel.SetActive(true);
 		}
 
 		public void StartSingleplayerButton()
