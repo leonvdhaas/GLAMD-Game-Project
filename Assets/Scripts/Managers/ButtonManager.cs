@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Models;
+﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Assets.Scripts.Managers
 		private GameObject loginPanel;
 		[SerializeField]
 		private GameObject errorPopupPanel;
+		[SerializeField]
+		private GameObject manualPanel;
 
 		[Header("Input Fields")]
 		[SerializeField]
@@ -47,6 +50,7 @@ namespace Assets.Scripts.Managers
 		private Text lblLoggedInAs;
 
 		private bool isProcessingButton;
+		private ManualController manualController;
 
 		public static ButtonManager Instance { get; set; }
 
@@ -62,6 +66,7 @@ namespace Assets.Scripts.Managers
 		{
 			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
 			Instance = this;
+			manualController = manualPanel.GetComponent<ManualController>();
 		}
 
 		private void OnDisable()
@@ -325,6 +330,16 @@ namespace Assets.Scripts.Managers
 		{
 			errorLabel.text = value;
 			errorLabel.enabled = true;
+		}
+
+		public void PreviousManualEntryButton()
+		{
+			manualController.PreviousManualEntry();
+		}
+
+		public void NextManualEntryButton()
+		{
+			manualController.NextManualEntry();
 		}
 	}
 }
