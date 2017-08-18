@@ -55,6 +55,7 @@ MonoBehaviour:
   registerPanel: {fileID: 0}
   loginPanel: {fileID: 0}
   errorPopupPanel: {fileID: 0}
+  manualPanel: {fileID: 0}
   loginUsername: {fileID: 0}
   loginPassword: {fileID: 0}
   registerUsername: {fileID: 0}
