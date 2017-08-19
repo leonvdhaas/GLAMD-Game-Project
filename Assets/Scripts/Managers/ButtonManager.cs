@@ -48,6 +48,14 @@ namespace Assets.Scripts.Managers
 		private Text lblErrorConfirmPassword;
 		[SerializeField]
 		private Text lblLoggedInAs;
+		[SerializeField]
+		private Text lblAddFriendResult;
+
+		[Header("Colors")]
+		[SerializeField]
+		private Color errorColor;
+		[SerializeField]
+		private Color successColor;
 
 		private bool isProcessingButton;
 		private ManualController manualController;
@@ -107,32 +115,6 @@ namespace Assets.Scripts.Managers
 			GameManager.Instance.StartSingleplayerGame();
 		}
 
-		public void AcceptFriendRequestButton()
-		{
-			if (isProcessingButton)
-			{
-				return;
-			}
-
-			isProcessingButton = true;
-
-			//TODO: Get friend request id.
-			var friendRequestId = Guid.NewGuid();
-
-			StartCoroutine(ApiManager.FriendCalls.Accept(
-				friendRequestId,
-				onSuccess: friendRequest =>
-				{
-					//TODO: Display added friend.
-					isProcessingButton = false;
-				},
-				onFailure: error =>
-				{
-					//TODO: Handle error.
-					isProcessingButton = false;
-				}));
-		}
-
 		public void SendFriendRequestButton()
 		{
 			if (isProcessingButton)
@@ -140,17 +122,26 @@ namespace Assets.Scripts.Managers
 				return;
 			}
 
-			isProcessingButton = true;
+			lblAddFriendResult.text = String.Empty;
 
-			//TODO: Get friend's name.
-			var friendName = "";
-
+			string friendName = addFriendUsername.text;
 			if (friendName.Length == 0)
 			{
-				//TODO: Display empty input field error.
-				isProcessingButton = false;
+				lblAddFriendResult.text = "Vul een naam in";
+				lblAddFriendResult.color = errorColor;
+			}
+			else if (friendName == GameManager.Instance.User.Username)
+			{
+				lblAddFriendResult.text = "Je kan jezelf niet toevoegen";
+				lblAddFriendResult.color = errorColor;
+			}
+
+			if (lblAddFriendResult.text != String.Empty)
+			{
 				return;
 			}
+
+			isProcessingButton = true;
 
 			StartCoroutine(ApiManager.UserCalls.UserExists(
 				friendName,
@@ -158,7 +149,8 @@ namespace Assets.Scripts.Managers
 				{
 					if (!friendId.HasValue)
 					{
-						//TODO: Display can't find friend error.
+						lblAddFriendResult.text = "Kan vriend niet vinden";
+						lblAddFriendResult.color = errorColor;
 						isProcessingButton = false;
 						return;
 					}
@@ -168,18 +160,21 @@ namespace Assets.Scripts.Managers
 						friendId.Value,
 						onSuccess: friendRequest =>
 						{
-							//TODO: Display successfully send friend request.
+							lblAddFriendResult.text = "Vriendschapsverzoek verstuurd";
+							lblAddFriendResult.color = successColor;
 							isProcessingButton = false;
 						},
 						onFailure: error =>
 						{
-							//TODO: Handle error.
+							lblAddFriendResult.text = "Er is iets fout gegaan";
+							lblAddFriendResult.color = errorColor;
 							isProcessingButton = false;
 						}));
 				},
 				onFailure: error =>
 				{
-					//TODO: Handle error.
+					lblAddFriendResult.text = "Er is iets fout gegaan";
+					lblAddFriendResult.color = errorColor;
 					isProcessingButton = false;
 				}));
 		}
@@ -199,7 +194,7 @@ namespace Assets.Scripts.Managers
 
 			if (username.Length == 0 || password.Length == 0)
 			{
-				SetError(lblErrorLogin, "Vul uw login gegevens in");
+				SetLoginError(lblErrorLogin, "Vul uw login gegevens in");
 				isProcessingButton = false;
 				return;
 			}
@@ -212,20 +207,20 @@ namespace Assets.Scripts.Managers
 					GameManager.Instance.User = user;
 
 					lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
+					ClearInputFieldsAndErrors();
 					loginPanel.SetActive(false);
 					homePanel.SetActive(true);
-
 					isProcessingButton = false;
 				},
 				onFailure: error =>
 				{
 					if (error.Message.Contains("Invalid"))
 					{
-						SetError(lblErrorLogin, "Incorrecte login gegevens");
+						SetLoginError(lblErrorLogin, "Incorrecte login gegevens");
 					}
 					else
 					{
-						SetError(lblErrorLogin, "Er is iets fout gegaan");
+						SetLoginError(lblErrorLogin, "Er is iets fout gegaan");
 					}
 
 					isProcessingButton = false;
@@ -248,25 +243,25 @@ namespace Assets.Scripts.Managers
 
 			if (username.Length < 4)
 			{
-				SetError(lblErrorUsername, "Minimaal 4 karakters");
+				SetLoginError(lblErrorUsername, "Minimaal 4 karakters");
 			}
 			else if (username.Length > 21)
 			{
-				SetError(lblErrorUsername, "Maximaal 21 karakters");
+				SetLoginError(lblErrorUsername, "Maximaal 21 karakters");
 			}
 			else if (!ValidChars(username))
 			{
-				SetError(lblErrorUsername, "Alleen A-Z, a-z en 0-9");
+				SetLoginError(lblErrorUsername, "Alleen A-Z, a-z en 0-9");
 			}
 
 			if (password.Length < 6)
 			{
-				SetError(lblErrorPassword, "Minimaal 6 karakters");
+				SetLoginError(lblErrorPassword, "Minimaal 6 karakters");
 			}
 			
 			if (password != confirmPassword)
 			{
-				SetError(lblErrorConfirmPassword, "Wachtwoorden komen niet overeen");
+				SetLoginError(lblErrorConfirmPassword, "Wachtwoorden komen niet overeen");
 			}
 
 			if (lblErrorUsername.enabled ||
@@ -283,7 +278,7 @@ namespace Assets.Scripts.Managers
 				{
 					if (userId.HasValue)
 					{
-						SetError(lblErrorUsername, "Gebruikersnaam is al in gebruik");
+						SetLoginError(lblErrorUsername, "Gebruikersnaam is al in gebruik");
 						isProcessingButton = false;
 						return;
 					}
@@ -295,27 +290,43 @@ namespace Assets.Scripts.Managers
 						{
 							GameManager.Instance.User = user;
 
+							ClearInputFieldsAndErrors();
 							registerPanel.SetActive(false);
 							homePanel.SetActive(true);
 							isProcessingButton = false;
 						},
 						onFailure: error =>
 						{
-							SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
+							SetLoginError(lblErrorConfirmPassword, "Er is iets fout gegaan");
 							isProcessingButton = false;
 						}));
 				},
 				onFailure: error =>
 				{
-					SetError(lblErrorConfirmPassword, "Er is iets fout gegaan");
+					SetLoginError(lblErrorConfirmPassword, "Er is iets fout gegaan");
 					isProcessingButton = false;
 				}));
+		}
+
+		public void ClearInputFieldsAndErrors()
+		{
+			registerUsername.text = String.Empty;
+			registerPassword.text = String.Empty;
+			registerConfirmPassword.text = String.Empty;
+			loginUsername.text = String.Empty;
+			loginPassword.text = String.Empty;
+
+			lblErrorLogin.text = String.Empty;
+			lblErrorUsername.text = String.Empty;
+			lblErrorPassword.text = String.Empty;
+			lblErrorConfirmPassword.text = String.Empty;
 		}
 
 		public void LogoutButton()
 		{
 			GameManager.Instance.Logout();
-			lblLoggedInAs.text = "";
+			lblLoggedInAs.text = String.Empty;
+			ClearInputFieldsAndErrors();
 			homePanel.SetActive(false);
 			loginPanel.SetActive(true);
 		}
@@ -326,7 +337,7 @@ namespace Assets.Scripts.Managers
 			return !input.Any(x => !validChars.Contains(x));
 		}
 
-		private void SetError(Text errorLabel, string value)
+		private void SetLoginError(Text errorLabel, string value)
 		{
 			errorLabel.text = value;
 			errorLabel.enabled = true;

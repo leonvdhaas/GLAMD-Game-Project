@@ -67,3 +67,6 @@ MonoBehaviour:
   lblErrorPassword: {fileID: 0}
   lblErrorConfirmPassword: {fileID: 0}
   lblLoggedInAs: {fileID: 0}
+  lblAddFriendResult: {fileID: 0}
+  errorColor: {r: 0.85294116, g: 0.17560555, b: 0.17560555, a: 1}
+  successColor: {r: 0.115808845, g: 0.75, b: 0.2513945, a: 1}
