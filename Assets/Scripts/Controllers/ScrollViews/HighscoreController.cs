@@ -2,25 +2,26 @@
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Assets.Scripts.Models.ScrollViewItems;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Controllers.ScrollViews
 {
-	public class MatchHistoryController
+	public class HighscoreController
 		: MonoBehaviour
 	{
+		public const int AMOUNT_OF_HIGHSCORES = 10;
+
 		[SerializeField]
 		private GameObject itemTemplate;
 
 		[SerializeField]
 		private GameObject itemHolder;
 
-		private Match[] matches;
+		private RankedHighscore[] rankedHighscores;
 
-		public void OnEnable()
+		private void OnEnable()
 		{
-			StartCoroutine(CoroutineHelper.Repeat(30, UpdateMatchHistory));
+			StartCoroutine(CoroutineHelper.Repeat(30, UpdateHighscoreEntries));
 		}
 
 		private void OnDisable()
@@ -29,13 +30,22 @@ namespace Assets.Scripts.Controllers.ScrollViews
 			RemoveItems();
 		}
 
-		private void UpdateMatchHistory()
+		private void UpdateHighscoreEntries()
 		{
-			StartCoroutine(ApiManager.UserCalls.UserMatchHistory(
-				GameManager.Instance.User.Id,
-				onSuccess: matches =>
+			StartCoroutine(ApiManager.HighscoreCalls.HighscoreTop(
+				AMOUNT_OF_HIGHSCORES,
+				onSuccess: highscores =>
 				{
-					this.matches = matches.OrderByDescending(x => x.CreatedOn).ToArray();
+					rankedHighscores = new RankedHighscore[highscores.Length];
+					for (int i = 0; i < highscores.Length; i++)
+					{
+						rankedHighscores[i] = new RankedHighscore
+						{
+							Rank = i + 1,
+							Highscore = highscores[i]
+						};
+					}
+
 					UpdateScrollView();
 				},
 				onFailure: error =>
@@ -48,10 +58,10 @@ namespace Assets.Scripts.Controllers.ScrollViews
 		{
 			RemoveItems();
 
-			foreach (var match in matches)
+			foreach (var rankedHighscore in rankedHighscores)
 			{
 				GameObject scrollViewItem = Instantiate(itemTemplate, itemHolder.transform, false);
-				scrollViewItem.GetComponent<MatchHistoryItem>().Match = match;
+				scrollViewItem.GetComponent<HighscoreItem>().RankedHighscore = rankedHighscore;
 			}
 		}
 

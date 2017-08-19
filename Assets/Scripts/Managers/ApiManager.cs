@@ -241,6 +241,32 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
+		public static class HighscoreCalls
+		{
+			public static IEnumerator HighscoreAdd(string username, int score, Action<Highscore> onSuccess, Action<Error> onFailure)
+			{
+				var call = Call("Highscore/Add", new Dictionary<string, string>
+				{
+					{ "username", username },
+					{ "score", score.ToString() }
+				});
+
+				yield return call;
+				HandleFinishedCall(call, onSuccess, onFailure);
+			}
+
+			public static IEnumerator HighscoreTop(int amount, Action<Highscore[]> onSuccess, Action<Error> onFailure)
+			{
+				var call = Call("Highscore/Top", new Dictionary<string, string>
+				{
+					{ "amount", amount.ToString() }
+				});
+
+				yield return call;
+				HandleFinishedCall(call, onSuccess, onFailure);
+			}
+		}
+
 		private static WWW Call(string route, IDictionary<string, string> queryParams)
 		{
 			RemoveDeactiveCalls();

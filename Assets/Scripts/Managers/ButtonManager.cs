@@ -245,9 +245,9 @@ namespace Assets.Scripts.Managers
 			{
 				SetLoginError(lblErrorUsername, "Minimaal 4 karakters");
 			}
-			else if (username.Length > 21)
+			else if (username.Length > 17)
 			{
-				SetLoginError(lblErrorUsername, "Maximaal 21 karakters");
+				SetLoginError(lblErrorUsername, "Maximaal 17 karakters");
 			}
 			else if (!ValidChars(username))
 			{

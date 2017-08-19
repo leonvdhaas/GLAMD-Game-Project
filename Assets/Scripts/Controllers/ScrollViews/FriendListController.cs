@@ -19,7 +19,7 @@ namespace Assets.Scripts.Controllers.ScrollViews
 
 		private void OnEnable()
 		{
-			StartCoroutine(CoroutineHelper.Repeat(30, UpdateMatches));
+			StartCoroutine(CoroutineHelper.Repeat(30, UpdateFriends));
 		}
 
 		private void OnDisable()
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Controllers.ScrollViews
 			RemoveItems();
 		}
 
-		private void UpdateMatches()
+		private void UpdateFriends()
 		{
 			StartCoroutine(ApiManager.UserCalls.UserFriends(
 				GameManager.Instance.User.Id,
