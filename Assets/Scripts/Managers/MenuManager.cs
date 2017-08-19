@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace Assets.Scripts.Managers
 {
-	public class ButtonManager
+	public class MenuManager
 		: MonoBehaviour
 	{
 		[Header("Panels")]
@@ -60,7 +60,7 @@ namespace Assets.Scripts.Managers
 		private bool isProcessingButton;
 		private ManualController manualController;
 
-		public static ButtonManager Instance { get; set; }
+		public static MenuManager Instance { get; set; }
 
 		public static bool HasInstance
 		{

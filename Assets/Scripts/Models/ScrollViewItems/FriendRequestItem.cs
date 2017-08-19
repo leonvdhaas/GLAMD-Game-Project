@@ -59,7 +59,7 @@ namespace Assets.Scripts.Models.ScrollViewItems
 				},
 				onFailure: error =>
 				{
-					ButtonManager.Instance.ShowErrorPopup();
+					MenuManager.Instance.ShowErrorPopup();
 				}));
 		}
 
@@ -73,7 +73,7 @@ namespace Assets.Scripts.Models.ScrollViewItems
 				},
 				onFailure: error =>
 				{
-					ButtonManager.Instance.ShowErrorPopup();
+					MenuManager.Instance.ShowErrorPopup();
 				}));
 		}
 	}

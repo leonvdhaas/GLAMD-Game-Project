@@ -124,7 +124,7 @@ namespace Assets.Scripts.Managers
 				},
 				onFailure: error =>
 				{
-					ButtonManager.Instance.ShowErrorPopup();
+					MenuManager.Instance.ShowErrorPopup();
 				}));
 		}
 
