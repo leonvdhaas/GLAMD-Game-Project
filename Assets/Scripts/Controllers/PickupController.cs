@@ -81,6 +81,7 @@ namespace Assets.Scripts.Controllers
 						throw new InvalidOperationException("Invalid Pickup type.");
 				}
 
+				gameObject.SetActive(false);
 				Destroy(gameObject);
 			}
 		}

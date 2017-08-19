@@ -29,6 +29,7 @@ namespace Assets.Scripts.Triggers
 					}
 				}
 
+				gameObject.SetActive(false);
 				Destroy(gameObject);
 			}
 		}

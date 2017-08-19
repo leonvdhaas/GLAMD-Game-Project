@@ -38,7 +38,6 @@ namespace Assets.Scripts.Controllers
 		private Vector3 targetLanePos;
 		private bool reactivateCoinDoubler;
 		private bool reactivateSlowmotion;
-		private Replay replay = new Replay();
 
 		private void Start()
 		{
@@ -49,16 +48,9 @@ namespace Assets.Scripts.Controllers
 			if (GameManager.Instance.CurrentGame.GameType == GameType.MultiplayerCreate)
 			{
 				StartCoroutine(CoroutineHelper.Repeat(ReplayGhostController.REPLAY_INTERVAL,
-					() =>
-					{
-						GameManager.Instance.CurrentGame.Replay.Add(new ReplayDataPoint
-						{
-							Index = replay.Count,
-							Orientation = Orientation,
-							Position = transform.position
-						});
-					},
-					() => Lives > 0));
+					AddReplayDataPoint,
+					() => Lives > 0,
+					AddReplayDataPoint));
 			}
 		}
 
@@ -255,6 +247,16 @@ namespace Assets.Scripts.Controllers
 			}
 		}
 
+		private void AddReplayDataPoint()
+		{
+			GameManager.Instance.CurrentGame.Replay.Add(new ReplayDataPoint
+			{
+				Index = GameManager.Instance.CurrentGame.Replay.Count,
+				Orientation = Orientation,
+				Position = transform.position
+			});
+		}
+
 		private void GameOver()
 		{
 			switch (GameManager.Instance.CurrentGame.GameType)
@@ -350,12 +352,22 @@ namespace Assets.Scripts.Controllers
 				throw new InvalidOperationException("Tried to take invalid corner.");
 			}
 
+			if (InhalerPowerupActive)
+			{
+				TakeCorner();
+				return;
+			}
+
 			IsDamaged = true;
 			animator.SetFloat("Speed", 0.0f);
 			currentSpeed = minSpeed;
 
-			Lives--;
-			if (Lives != ushort.MinValue)
+			if (!IsInvincible)
+			{
+				Lives--;
+			}
+
+			if (Lives > 0)
 			{
 				// Wait until player lands.
 				StartCoroutine(CoroutineHelper.WaitUntil(IsTouchingGround, () =>
