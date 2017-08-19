@@ -103,13 +103,13 @@ namespace Assets.Scripts.Managers
 
 		public void StartSingleplayerGame()
 		{
-			RandomUtilities.Seed = rng.Next(Int32.MinValue, Int32.MaxValue);
+			SetRandomSeed();
 			StartGame(GameType.Singleplayer, null, null, null);
 		}
 
 		public void StartMultiplayerGame(Guid opponentId)
 		{
-			RandomUtilities.Seed = rng.Next(Int32.MinValue, Int32.MaxValue);
+			SetRandomSeed();
 			StartGame(GameType.MultiplayerCreate, null, new Replay(), opponentId);
 		}
 
@@ -166,6 +166,11 @@ namespace Assets.Scripts.Managers
 		public void Unpause()
 		{
 			Time.timeScale = unpausedTimeScale;
+		}
+
+		private static void SetRandomSeed()
+		{
+			RandomUtilities.Seed = rng.Next(Int32.MinValue, Int32.MaxValue);
 		}
 	}
 }

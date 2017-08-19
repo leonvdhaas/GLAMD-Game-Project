@@ -8,8 +8,6 @@ namespace Assets.Scripts.Models.ScrollViewItems
 	public class MatchInviteItem
 		: MonoBehaviour
 	{
-		private const int PANEL_DEPTH = 4;
-
 		[SerializeField]
 		private Text lblOpponentName;
 
@@ -38,7 +36,6 @@ namespace Assets.Scripts.Models.ScrollViewItems
 
 		public void MatchInviteButton()
 		{
-			transform.GetParent(PANEL_DEPTH).gameObject.SetActive(false);
 			GameManager.Instance.StartMultiplayerGame(Match);
 		}
 	}
