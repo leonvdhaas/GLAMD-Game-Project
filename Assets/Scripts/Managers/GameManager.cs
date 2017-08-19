@@ -124,7 +124,7 @@ namespace Assets.Scripts.Managers
 				},
 				onFailure: error =>
 				{
-					//TODO: Handle error.
+					ButtonManager.Instance.ShowErrorPopup();
 				}));
 		}
 

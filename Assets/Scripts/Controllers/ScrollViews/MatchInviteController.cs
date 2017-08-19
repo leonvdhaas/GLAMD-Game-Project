@@ -40,7 +40,7 @@ namespace Assets.Scripts.Controllers.ScrollViews
 				},
 				onFailure: error =>
 				{
-					//TODO: Handle error.
+					ButtonManager.Instance.ShowErrorPopup();
 				}));
 		}
 

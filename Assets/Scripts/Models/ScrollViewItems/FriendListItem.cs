@@ -59,7 +59,7 @@ namespace Assets.Scripts.Models.ScrollViewItems
 				},
 				onFailure: error =>
 				{
-					//TODO: Handle error.
+					ButtonManager.Instance.ShowErrorPopup();
 				}));
 		}
 	}
