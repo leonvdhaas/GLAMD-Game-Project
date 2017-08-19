@@ -458,7 +458,7 @@ namespace Assets.Scripts.Controllers
 				StartCoroutine(CoroutineHelper.For(
 					duration / steps,
 					() => 0,
-					i => i <= steps,
+					i => i <= steps && Lives > 0,
 					(ref int i) => i++,
 					i => GameManager.Instance.GuiManager.UpdateInhalerMeter(1.0f - 1.0f / steps * i),
 					() =>
@@ -515,7 +515,7 @@ namespace Assets.Scripts.Controllers
 			StartCoroutine(CoroutineHelper.For(
 				duration / steps,
 				() => 0,
-				i => i <= steps,
+				i => i <= steps && Lives > 0,
 				(ref int i) =>
 				{
 					if (reactivateCoinDoubler)
