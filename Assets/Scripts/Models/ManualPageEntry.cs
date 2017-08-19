@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Models
 {
@@ -8,8 +7,8 @@ namespace Assets.Scripts.Models
 	public class ManualPageEntry
 	{
 		[SerializeField]
-		private Image _image;
-		public Image Image
+		private Sprite _image;
+		public Sprite Sprite
 		{
 			get
 			{

@@ -7296,9 +7296,9 @@ RectTransform:
   m_Father: {fileID: 1898702186}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 384.00485, y: -649.9602}
   m_SizeDelta: {x: 550, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &960534446
@@ -9056,9 +9056,9 @@ RectTransform:
   m_Father: {fileID: 1898702186}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 384.00485, y: -165}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1085172572
@@ -10693,9 +10693,9 @@ RectTransform:
   m_Father: {fileID: 1898702186}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 384.00485, y: -1157.4204}
   m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1417934673
@@ -14735,7 +14735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1898702186
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14775,154 +14775,154 @@ MonoBehaviour:
   manualText: {fileID: 1996253839}
   manualPage: {fileID: 1806044328}
   PageEntries:
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Welkom bij Serious Runner! Voor het goede doel van dit jaar (longontsteking)
       heb je een sponsorloop georganiseerd.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Dit doe je omdat je zelf ook een longaandoening hebt (astma) en je je kunt
       identificeren met jongeren die last hebben van hun longen.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Je sponsoren hebben onderweg allerei muntjes en kostbaarheden geplaatst
       die je op kunt pakken om je sponsorgeld te vermeerderen!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Het zal echter niet makkelijk worden om deze op te pakken! Je sponsorloop
       vindt plaats in Breda!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Door de drukte in de stad rondom Serious Request bevinden zich allerlei
       obstakels op de weg. Gelukkig kun je deze gewoon ontwijken!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Je bent wel je puffer voor onderweg vergeten! Stom! Gelukkig zijn je sponsoren
       zo aardig geweest om hiervan er ook en paar onderweg te leggen.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1aab3a6bb38bf2b458e0ee0fdb25bb6d, type: 3}
     _title: Welkom!
     _text: Door deze te gebruiken zul je nog sneller kunnen rennen en dus meer geld
       op kunnen halen voor het goede doel van dit jaar! Succes!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 0889cd8fb29cccb4985c2b8ffd9616e1, type: 3}
     _title: Het level
     _text: Een level in Serious Request is opgebouwd uit rechte stukken en bochten.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 0889cd8fb29cccb4985c2b8ffd9616e1, type: 3}
     _title: Het level
     _text: De rechte stukken zijn opgebouwd uit drie banen waartussen je kunt wisselen.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1d7e0e666c6df2947840d5af9cc51924, type: 3}
     _title: Besturing
     _text: In Serious Runner hoef je niet zelf te rennen. Het spel zal dit zelf doen.
       Het enige wat jij hoeft te doen is van baan wisselen, springen en bochten maken.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1d7e0e666c6df2947840d5af9cc51924, type: 3}
     _title: Van baan verwisselen
     _text: Van baan verwisselen doe je in Serious Runner door naar links of naar rechts
       te swipen.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1d7e0e666c6df2947840d5af9cc51924, type: 3}
     _title: Van baan verwisselen
     _text: Van baan verwisselen kan wenselijk zijn wanneer er op een andere baan bijvoorbeeld
       meer muntjes liggen!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1d7e0e666c6df2947840d5af9cc51924, type: 3}
     _title: Springen
     _text: Springen in Serious Runner doe je door omhoog te swipen. Dit kan handig
       zijn wanneer je bijvoorbeeld obstakels wilt ontwijken!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 1d7e0e666c6df2947840d5af9cc51924, type: 3}
     _title: Bochten
     _text: Bochten maken doe je door in de bocht naar de juiste kant swipen. Doe dit
       echter wel op tijd, anders stoot je je teen tegen de stoep en verlies je een
       leven!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 6634a9cd35aa91046a634d70f19e3307, type: 3}
     _title: Obstakels
     _text: 'In een level staan allerhande obstakels: kratten, auto''s en bussen.'
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 6634a9cd35aa91046a634d70f19e3307, type: 3}
     _title: Obstakels
     _text: Deze zijn te ontwijken door van baan te wisselen of erover heen te springen.
       Doe je dit niet op tijd, dan bots je er tegenaan en verlies je een leven.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: b185ddb40b7adcf479fffac4fc93f098, type: 3}
     _title: Levens
     _text: Je hebt in totaal drie levens. Verlies je ze alledrie, dan is het game
       over!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: ad4116cb32926e442b3cd97be2287b6a, type: 3}
     _title: Muntjes
     _text: Over het hele level liggen muntjes verspreid. Pak deze op voor extra punten.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: b1090988f0103d343ad62ee747d14c30, type: 3}
     _title: Diamanten
     _text: Diamanten leveren extra veel punten op! 1 diamant is 5 keer zo veel waard
       als een muntje.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 146a9dfd6176a6043aeb15b48caf963d, type: 3}
     _title: Power-ups
     _text: Door het level liggen ook verscheidene power-ups verspreid. Pak deze op
       om je score nog hoger te krijgen!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 030f9e3db69a1ad4b935ea3a37eb4a92, type: 3}
     _title: Muntjes verdubbelaar
     _text: Met de muntjes verdubbelaar zijn je muntjes twee keer zo veel waard! Dit
       geldt ook voor diamanten!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: ce586af2dcf03df489b09b85bcf61cac, type: 3}
     _title: Slow motion
     _text: Met de slow motion power-up zul je tijdelijk langzamer rennen. Wel krijg
       je nog net zo veel punten en wissel je net zo snel van baan als normaal.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: ce586af2dcf03df489b09b85bcf61cac, type: 3}
     _title: Slow motion
     _text: Hierdoor is het gemakkelijker om muntjes en andere power-ups op te pakken!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 6c48a5fd549498b46baea036af2f62c3, type: 3}
     _title: Inhaler
     _text: Wanneer je zes inhalers hebt opgepakt zal er een knop onderaan het midden
       van het scherm verschijnen. Hiermee kun je Inhaler Power activeren!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 6c48a5fd549498b46baea036af2f62c3, type: 3}
     _title: Inhaler
     _text: Hierdoor ga je tijdelijk sneller rennen en ben je onschaadbaar!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 6c48a5fd549498b46baea036af2f62c3, type: 3}
     _title: Inhaler
     _text: Hierdoor kun je meer muntjes oppakken en zelfs obstakels slopen, wat meer
       punten oplevert!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 6c48a5fd549498b46baea036af2f62c3, type: 3}
     _title: Inhaler
     _text: Als je Inhaler Power hebt geactiveerd en je zou weer een inhaler oppakken,
       dan krijg je hier extra punten voor.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: be060ce35363d57478fdafe44290bb78, type: 3}
     _title: Punten
     _text: Je punten worden bepaald door de hoeveelheid tijd die je rent, je aantal
       muntjes, het aantal obstakels wat je hebt gesloopt...
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: be060ce35363d57478fdafe44290bb78, type: 3}
     _title: Punten
-    _text: '...en eventueel puffers die je hebt opgepakt terwijl Puffer Power geactiveerd
+    _text: '...en eventueel inhalers die je hebt opgepakt terwijl Inhaler Power geactiveerd
       was.'
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Multiplayer
     _text: In Serious Runner kun je vrienden uitdagen jouw score te verbeteren! Hiervoor
       moet je hen eerst uitnodigen om jouw vriend te worden.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Vrienden uitnodigen
     _text: Vrienden uitnodigen jouw vriend te worden doe je door in het multiplayer
       menu naar de vriendenlijst te gaan.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Vrienden uitnodigen
     _text: Daar druk je op "vriend toevoegen". Vul hier de gebruikersnaam van je vriend
       in, en je zult hem uit kunnen dagen!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Vrienden uitdagen
     _text: Door in het multiplayer menu naar "start uitdaging" te gaan, zul je uit
       je vriendenlijst iemand kunnen kiezen om uit te dagen.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Vrienden uitdagen
     _text: Hierna zal een normaal spel gestart worden. De score die je hierbij haalt
       zal de score worden die je vriend zal moeten proberen te verbeteren.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Uitdagingen aangaan
     _text: In het multiplayer menu kun je bij "bekijk uitdagingen" zien welke vrienden
       je hebben uitgedaagd en wat hun score was. Door op een uitdaging te klikken
       ga je hem aan!
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Uitdagingen aangaan
     _text: Er zal een spel gestart worden waarin je een schim van je tegenstander
       ziet.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Uitdagingen aangaan
     _text: Hiermee kun je zien welke keuzes je tegenstander heeft gemaakt en of je
       voor of achter op hem of haar loopt.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Uitdagingen aangaan
     _text: Wanneer je af gaat zul je zien of je de score van je vriend hebt verbeterd.
-  - _image: {fileID: 0}
+  - _image: {fileID: 21300000, guid: 47035a5914c58974f88515d1e461d1ba, type: 3}
     _title: Gespeelde uitdagingen
     _text: In het multiplayer menu bij "spelgeschiedenis" kun je zien hoe je uitdagingen
       zijn verlopen.

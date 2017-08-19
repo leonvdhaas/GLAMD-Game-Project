@@ -69,7 +69,7 @@ namespace Assets.Scripts.Controllers
 
 		private void UpdateActiveManualEntry()
 		{
-			manualImage = PageEntries[Page].Image;
+			manualImage.sprite = PageEntries[Page].Sprite;
 			manualTitle.text = PageEntries[Page].Title;
 			manualText.text = PageEntries[Page].Text;
 			manualPage.text = GetPageString();
