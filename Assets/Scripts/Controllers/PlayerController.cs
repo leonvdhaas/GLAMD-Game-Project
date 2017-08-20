@@ -263,52 +263,17 @@ namespace Assets.Scripts.Controllers
 			switch (GameManager.Instance.CurrentGame.GameType)
 			{
 				case GameType.Singleplayer:
-					//TODO: Display appropriate final screen.
+					GameManager.Instance.HandleFinishedSingleplayerGame();
 					break;
 				case GameType.MultiplayerCreate:
-					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.CreateMatch(
-						RandomUtilities.Seed,
-						GameManager.Instance.CurrentGame.OpponentId.Value,
-						GameManager.Instance.User.Id,
-						Points + Coins,
-						onSuccess: match =>
-						{
-							GameManager.Instance.StartCoroutine(ApiManager.ReplayCalls.CreateReplay(
-								match.Id,
-								GameManager.Instance.CurrentGame.Replay.ToString(),
-								onSuccess: replayId =>
-								{
-									//TODO: Display appropriate final screen.
-								},
-								onFailure: error =>
-								{
-									//TODO: Handle error.
-								}));
-						},
-						onFailure: error =>
-						{
-							//TODO: Handle error.
-						}));
+					GameManager.Instance.HandleFinishedMultiplayerCreateGame();
 					break;
 				case GameType.MultiplayerChallenge:
-					GameManager.Instance.StartCoroutine(ApiManager.MatchCalls.UpdateMatch(
-						GameManager.Instance.CurrentGame.Match.Id,
-						Points + Coins,
-						onSuccess: match =>
-						{
-							//TODO: Display appropriate final screen.
-						},
-						onFailure: error =>
-						{
-							//TODO: Handle error.
-						}));
+					GameManager.Instance.HandleFinishedMultiplayerChallengeGame();
 					break;
 				default:
 					throw new InvalidOperationException("Invalid GameType");
 			}
-
-			//TODO: Replace this Coroutine with "Return" button in final screen.
-			StartCoroutine(CoroutineHelper.Delay(3.0f, () => SceneManager.LoadScene("MainStartMenu")));
 		}
 
 		private void CheckForJump(Swipe swipe)
@@ -459,7 +424,7 @@ namespace Assets.Scripts.Controllers
 			transform.position += Orientation.GetDirectionVector3() * CurrentSpeed * Time.deltaTime;
 		}
 
-		private void ActivateInhaler(float duration, float speedBonus)
+		public void ActivateInhaler(float duration, float speedBonus)
 		{
 			const int steps = 100;
 

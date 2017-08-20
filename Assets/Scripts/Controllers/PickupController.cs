@@ -10,7 +10,7 @@ namespace Assets.Scripts.Controllers
 	{
 		public const ushort MAX_NUMBER_OF_INHALERS = 6;
 		private const float COINDOUBLER_TIME = 2.5f;
-		private const float SLOWMOTION_TIME = 5.0f;
+		private const float SLOWMOTION_TIME = 2.5f;
 		private const float SLOWMOTION_FACTOR = 0.5f;
 		private const int HEART_VALUE = 25;
 		private const int INHALER_VALUE = 10;

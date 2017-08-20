@@ -87,20 +87,12 @@ namespace Assets.Scripts.Managers
 		{
 			if (scene.name == "MainStartMenu")
 			{
-				if (GameManager.Instance.SkipLogin)
-				{
-					if (GameManager.Instance.User == null)
-					{
-						lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.DummyUser.Username);
-						GameManager.Instance.User = GameManager.Instance.DummyUser;
-					}
-
-					homePanel.SetActive(true);
-				}
-				else
-				{
-					loginPanel.SetActive(true);
-				}
+				lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.User.Username);
+				homePanel.SetActive(true);
+			}
+			else
+			{
+				loginPanel.SetActive(true);
 			}
 		}
 

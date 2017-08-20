@@ -13,6 +13,22 @@ namespace Assets.Scripts.Managers
 	public class GameManager
 		: MonoBehaviour
 	{
+		private static readonly RNG rng = new RNG();
+		private float unpausedTimeScale;
+
+		private void Awake()
+		{
+			if (Instance == null)
+			{
+				Instance = this;
+				DontDestroyOnLoad(gameObject);
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
+		}
+
 		[SerializeField]
 		private LogLevel _logLevel;
 		public LogLevel LogLevel
@@ -59,29 +75,23 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		private static readonly RNG rng = new RNG();
-		private float unpausedTimeScale;
-
-		private void Awake()
+		private User _user;
+		public User User
 		{
-			if (Instance == null)
+			get
 			{
-				Instance = this;
-				DontDestroyOnLoad(gameObject);
+				if (SkipLogin && _user == null)
+				{
+					return DummyUser;
+				}
+
+				return _user;
 			}
-			else
+			set
 			{
-				Destroy(gameObject);
+				_user = value;
 			}
 		}
-
-		public static GameManager Instance { get; private set; }
-
-		public PlayerController Player { get; set; }
-
-		public GuiManager GuiManager { get; set; }
-
-		public User User { get; set; }
 
 		private Game _currentGame;
 		public Game CurrentGame
@@ -100,6 +110,12 @@ namespace Assets.Scripts.Managers
 				_currentGame = value;
 			}
 		}
+
+		public static GameManager Instance { get; private set; }
+
+		public PlayerController Player { get; set; }
+
+		public GuiManager GuiManager { get; set; }
 
 		public void StartSingleplayerGame()
 		{
@@ -171,6 +187,57 @@ namespace Assets.Scripts.Managers
 		private static void SetRandomSeed()
 		{
 			RandomUtilities.Seed = rng.Next(Int32.MinValue, Int32.MaxValue);
+		}
+
+		public void HandleFinishedMultiplayerCreateGame()
+		{
+			StartCoroutine(ApiManager.MatchCalls.CreateMatch(
+						RandomUtilities.Seed,
+						CurrentGame.OpponentId.Value,
+						User.Id,
+						Player.Points + Player.Coins,
+						onSuccess: match =>
+						{
+							Instance.StartCoroutine(ApiManager.ReplayCalls.CreateReplay(
+								match.Id,
+								CurrentGame.Replay.ToString(),
+								onSuccess: replayId =>
+								{
+									GuiManager.DisplayMultiplayerCreateEndScreen(Player.Points, Player.Coins);
+								},
+								onFailure: error =>
+								{
+									GuiManager.DisplayMultiplayerCreateEndScreen(Player.Points, Player.Coins, false);
+								}));
+						},
+						onFailure: error =>
+						{
+							GuiManager.DisplayMultiplayerCreateEndScreen(Player.Points, Player.Coins, false);
+						}));
+		}
+
+		public void HandleFinishedMultiplayerChallengeGame()
+		{
+			StartCoroutine(ApiManager.MatchCalls.UpdateMatch(
+						CurrentGame.Match.Id,
+						Player.Points + Player.Coins,
+						onSuccess: match =>
+						{
+							GuiManager.DisplayMultiplayerChallengeEndScreen(match, Player.Points, Player.Coins);
+						},
+						onFailure: error =>
+						{
+							GuiManager.DisplayMultiplayerChallengeEndScreen(CurrentGame.Match, Player.Points, Player.Coins, false);
+						}));
+		}
+
+		public void HandleFinishedSingleplayerGame()
+		{
+			StartCoroutine(ApiManager.HighscoreCalls.HighscoreAdd(
+				User.Username,
+				Player.Points + Player.Coins,
+				onSuccess: highscoreUpdate => GuiManager.DisplaySingleplayerEndScreen(Player.Points, Player.Coins, highscoreUpdate),
+				onFailure: error => GuiManager.DisplaySingleplayerEndScreen(Player.Points, Player.Coins)));
 		}
 	}
 }

@@ -243,7 +243,7 @@ namespace Assets.Scripts.Managers
 
 		public static class HighscoreCalls
 		{
-			public static IEnumerator HighscoreAdd(string username, int score, Action<Highscore> onSuccess, Action<Error> onFailure)
+			public static IEnumerator HighscoreAdd(string username, int score, Action<HighscoreUpdate> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Highscore/Add", new Dictionary<string, string>
 				{
