@@ -4,6 +4,7 @@
 	{
 		Coin,
 		Slowmotion,
+		ReverseSlowmotion,
 		Inhaler,
 		Thud,
 		BoxInvincibleBreak,

@@ -29,6 +29,9 @@ namespace Assets.Scripts.Managers
 		private AudioClip slowmotion;
 
 		[SerializeField]
+		private AudioClip reverseSlowmotion;
+
+		[SerializeField]
 		private AudioClip inhaler;
 
 		[SerializeField]
@@ -61,6 +64,9 @@ namespace Assets.Scripts.Managers
 					break;
 				case Sound.Slowmotion:
 					audioSource.clip = slowmotion;
+					break;
+				case Sound.ReverseSlowmotion:
+					audioSource.clip = reverseSlowmotion;
 					break;
 				case Sound.Inhaler:
 					audioSource.clip = inhaler;

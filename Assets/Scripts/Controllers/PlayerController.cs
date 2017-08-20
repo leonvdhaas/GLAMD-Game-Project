@@ -483,6 +483,7 @@ namespace Assets.Scripts.Controllers
 				i => GameManager.Instance.GuiManager.UpdateSlowmotionMeter(1.0f - 1.0f / steps * i),
 				() =>
 				{
+					SoundManager.Instance.PlaySound(Sound.ReverseSlowmotion);
 					isTransitioningSlowmotion = true;
 					StartCoroutine(CoroutineHelper.Repeat(
 						0.2f,

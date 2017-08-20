@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coin: {fileID: 8300000, guid: 94761a9be70eae24d81aa3eb8e3d30b0, type: 3}
   slowmotion: {fileID: 8300000, guid: df25807ffc963fc4eba7a2bd0edd8d3d, type: 3}
+  reverseSlowmotion: {fileID: 8300000, guid: 5b0dc401b930af94abc366da3c48e255, type: 3}
   inhaler: {fileID: 8300000, guid: 43118e4cd9e5ef54cae71ffbbed49927, type: 3}
   thud: {fileID: 8300000, guid: 806067156f7cbfd4e8e90bfc8ea74ed9, type: 3}
   boxBreak: {fileID: 8300000, guid: fa237bfda7b97b340bb2729d5738df83, type: 3}
