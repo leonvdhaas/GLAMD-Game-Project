@@ -37,6 +37,7 @@ namespace Assets.Scripts.Controllers
 		private Vector3 targetLanePos;
 		private bool reactivateCoinDoubler;
 		private bool reactivateSlowmotion;
+		private bool isTransitioningSlowmotion;
 
 		private void Start()
 		{
@@ -452,7 +453,11 @@ namespace Assets.Scripts.Controllers
 		{
 			const int steps = 100;
 
-			if (Mathf.Approximately(Time.timeScale, slowmotionFactor))
+			if (isTransitioningSlowmotion)
+			{
+				isTransitioningSlowmotion = false;
+			}
+			else if (Mathf.Approximately(Time.timeScale, slowmotionFactor))
 			{
 				reactivateSlowmotion = true;
 				return;
@@ -476,7 +481,15 @@ namespace Assets.Scripts.Controllers
 					}
 				},
 				i => GameManager.Instance.GuiManager.UpdateSlowmotionMeter(1.0f - 1.0f / steps * i),
-				() => Time.timeScale = 1));
+				() =>
+				{
+					isTransitioningSlowmotion = true;
+					StartCoroutine(CoroutineHelper.Repeat(
+						0.2f,
+						() => Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1.0f, 0.1f),
+						() => !Mathf.Approximately(1.0f, Time.timeScale) && isTransitioningSlowmotion,
+						() => isTransitioningSlowmotion = false));
+				}));
 		}
 
 		public void ActivateCoinDoubler(float duration)
