@@ -282,6 +282,7 @@ namespace Assets.Scripts.Managers
 						{
 							GameManager.Instance.User = user;
 
+							lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
 							ClearInputFieldsAndErrors();
 							registerPanel.SetActive(false);
 							homePanel.SetActive(true);
