@@ -180,8 +180,8 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
-			// Don't do anything when frozen.
-			if (Frozen)
+			// Don't do anything when frozen or paused.
+			if (Frozen || GameManager.Instance.Paused)
 			{
 				return;
 			}
@@ -213,7 +213,7 @@ namespace Assets.Scripts.Controllers
 
 		private void OnSwipe(SwipeControl.SWIPE_DIRECTION direction)
 		{
-			if (IsDamaged || Frozen)
+			if (IsDamaged || Frozen || GameManager.Instance.Paused)
 			{
 				return;
 			}

@@ -281,6 +281,18 @@ namespace Assets.Scripts.Managers
 			GameManager.Instance.Player.ActivateInhaler(5, 10);
 		}
 
+		public void PauseButton()
+		{
+			if (GameManager.Instance.Paused)
+			{
+				GameManager.Instance.Unpause();
+			}
+			else
+			{
+				GameManager.Instance.Pause();
+			}
+		}
+
 		public void ReturnToMainMenuButton()
 		{
 			SceneManager.LoadScene("MainStartMenu");

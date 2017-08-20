@@ -117,6 +117,8 @@ namespace Assets.Scripts.Managers
 
 		public GuiManager GuiManager { get; set; }
 
+		public bool Paused { get; internal set; }
+
 		public void StartSingleplayerGame()
 		{
 			SetRandomSeed();
@@ -175,6 +177,7 @@ namespace Assets.Scripts.Managers
 
 		public void Pause()
 		{
+			Paused = true;
 			unpausedTimeScale = Time.timeScale;
 			Time.timeScale = 0;
 		}
@@ -182,6 +185,7 @@ namespace Assets.Scripts.Managers
 		public void Unpause()
 		{
 			Time.timeScale = unpausedTimeScale;
+			Paused = false;
 		}
 
 		private static void SetRandomSeed()
