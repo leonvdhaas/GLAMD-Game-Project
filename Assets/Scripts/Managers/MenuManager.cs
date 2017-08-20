@@ -85,13 +85,9 @@ namespace Assets.Scripts.Managers
 
 		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
-			if (scene.name == "MainStartMenu")
+			if (scene.name == "MainStartMenu" && GameManager.Instance.User != null)
 			{
-				if (GameManager.Instance.SkipLogin)
-				{
-					lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.User.Username);
-				}
-
+				lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.User.Username);
 				homePanel.SetActive(true);
 			}
 			else
