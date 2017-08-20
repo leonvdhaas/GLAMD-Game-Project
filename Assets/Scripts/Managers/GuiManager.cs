@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Assets.Scripts.Models;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Helpers;
 
 namespace Assets.Scripts.Managers
 {
@@ -149,15 +150,17 @@ namespace Assets.Scripts.Managers
 			switch (lives)
 			{
 				case 0:
-					leftHeart.enabled = middleHeart.enabled = rightHeart.enabled = false;
+					FlashDisableHeart(leftHeart);
+					middleHeart.enabled = rightHeart.enabled = false;
 					break;
 				case 1:
 					leftHeart.enabled = true;
-					middleHeart.enabled = rightHeart.enabled = false;
+					FlashDisableHeart(middleHeart);
+					rightHeart.enabled = false;
 					break;
 				case 2:
 					leftHeart.enabled = middleHeart.enabled = true;
-					rightHeart.enabled = false;
+					FlashDisableHeart(rightHeart);
 					break;
 				case 3:
 					leftHeart.enabled = middleHeart.enabled = rightHeart.enabled = true;
@@ -165,6 +168,15 @@ namespace Assets.Scripts.Managers
 				default:
 					throw new InvalidOperationException("Invalid amount of lives.");
 			}
+		}
+
+		private void FlashDisableHeart(Image heart)
+		{
+			StartCoroutine(CoroutineHelper.RepeatFor(
+						0.25f,
+						5,
+						() => heart.enabled = !heart.enabled,
+						() => heart.enabled = false));
 		}
 
 		public void UpdateCoins(int coins)
