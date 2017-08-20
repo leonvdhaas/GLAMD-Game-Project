@@ -30,7 +30,6 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private float minimumLaneSwapSpeed;
 
-		private float currentSpeed;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
 		private CharacterController characterController;
@@ -58,7 +57,7 @@ namespace Assets.Scripts.Controllers
 		{
 			characterController = GetComponent<CharacterController>();
 			animator = GetComponent<Animator>();
-			currentSpeed = (maxSpeed + minSpeed) / 2;
+			CurrentSpeed = (maxSpeed + minSpeed) / 2;
 			Orientation = Orientation.North;
 
 			Frozen = true;
@@ -135,6 +134,8 @@ namespace Assets.Scripts.Controllers
 				GameManager.Instance.GuiManager.UpdateInhalerMeter((_inhalers = value) / (float)PickupController.MAX_NUMBER_OF_INHALERS);
 			}
 		}
+
+		public float CurrentSpeed { get; private set; }
 
 		public Orientation Orientation { get; private set; }
 
@@ -360,7 +361,7 @@ namespace Assets.Scripts.Controllers
 
 			IsDamaged = true;
 			animator.SetFloat("Speed", 0.0f);
-			currentSpeed = minSpeed;
+			CurrentSpeed = minSpeed;
 
 			if (!IsInvincible)
 			{
@@ -423,7 +424,7 @@ namespace Assets.Scripts.Controllers
 		private void MoveToCorrectLane()
 		{
 			var speed = laneSwapSpeed * Time.deltaTime * Mathf.Max(
-				(currentSpeed - minSpeed) / (maxSpeed - minSpeed),
+				(CurrentSpeed - minSpeed) / (maxSpeed - minSpeed),
 				InhalerPowerupActive ? 1 : minimumLaneSwapSpeed);
 			if (Orientation == Orientation.North || Orientation == Orientation.South)
 			{
@@ -448,14 +449,14 @@ namespace Assets.Scripts.Controllers
 			{
 				acceleration *= 3;
 			}
-			else if (currentSpeed > maxSpeed)
+			else if (CurrentSpeed > maxSpeed)
 			{
 				acceleration *= 5;
 			}
 
-			currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
-			animator.SetFloat("Speed", currentSpeed);
-			transform.position += Orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
+			CurrentSpeed = Mathf.MoveTowards(CurrentSpeed, maxSpeed, acceleration * Time.deltaTime);
+			animator.SetFloat("Speed", CurrentSpeed);
+			transform.position += Orientation.GetDirectionVector3() * CurrentSpeed * Time.deltaTime;
 		}
 
 		private void ActivateInhaler(float duration, float speedBonus)
@@ -556,7 +557,7 @@ namespace Assets.Scripts.Controllers
 			}
 
 			animator.SetFloat("Speed", 0.0f);
-			currentSpeed = minSpeed;
+			CurrentSpeed = minSpeed;
 		}
 	}
 }
