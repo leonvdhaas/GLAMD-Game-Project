@@ -1,7 +1,10 @@
 ﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.Enumerations;
+using Assets.Scripts.Helpers;
 using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,6 +54,12 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text lblAddFriendResult;
 
+		[Header("Sliders")]
+		[SerializeField]
+		private Slider soundEffectSlider;
+		[SerializeField]
+		private Slider musicSlider;
+
 		[Header("Colors")]
 		[SerializeField]
 		private Color errorColor;
@@ -58,7 +67,9 @@ namespace Assets.Scripts.Managers
 		private Color successColor;
 
 		private bool isProcessingButton;
+		private Coroutine sfxSliderDrag;
 		private ManualController manualController;
+		private bool playSample;
 
 		public static MenuManager Instance { get; set; }
 
@@ -85,6 +96,8 @@ namespace Assets.Scripts.Managers
 
 		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
+			UpdateVolumeSliders();
+
 			if (scene.name == "MainStartMenu" && GameManager.Instance.User != null)
 			{
 				lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.User.Username);
@@ -94,6 +107,16 @@ namespace Assets.Scripts.Managers
 			{
 				loginPanel.SetActive(true);
 			}
+		}
+
+		private void UpdateVolumeSliders()
+		{
+			playSample = false;
+
+			soundEffectSlider.value = SoundManager.Instance.SoundEffectVolume;;
+			musicSlider.value = SoundManager.Instance.MusicVolume;
+
+			StartCoroutine(CoroutineHelper.Delay(0.5f, () => playSample = true));
 		}
 
 		public void ShowErrorPopup()
@@ -344,6 +367,28 @@ namespace Assets.Scripts.Managers
 		public void NextManualEntryButton()
 		{
 			manualController.NextManualEntry();
+		}
+
+		public void SetSoundEffectVolume(float volume)
+		{
+			if (sfxSliderDrag != null)
+			{
+				StopCoroutine(sfxSliderDrag);
+			}
+
+			SoundManager.Instance.SoundEffectVolume = volume;
+
+			if (playSample)
+			{
+				sfxSliderDrag = StartCoroutine(CoroutineHelper.Delay(0.1f, () => SoundManager.Instance.PlaySoundEffect(Sound.Coin)));
+			}
+		}
+
+		public void SetMusicVolume(float volume)
+		{
+			//TODO: Make sure music volume changes automatically when changing volume.
+
+			SoundManager.Instance.MusicVolume = volume;
 		}
 	}
 }

@@ -162,7 +162,7 @@ namespace Assets.Scripts.Managers
 				{
 					if (result == ShowResult.Failed)
 					{
-						Debug.LogError(result);
+						Debug.LogWarning("Couldn't play advertisement");
 					}
 
 					SceneManager.LoadScene("Main");

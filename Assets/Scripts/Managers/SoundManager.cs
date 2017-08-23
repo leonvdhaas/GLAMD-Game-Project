@@ -11,7 +11,7 @@ namespace Assets.Scripts.Managers
 		: MonoBehaviour
 	{
 		[SerializeField]
-		private new Audio[] soundEffects;
+		private Audio[] soundEffects;
 
 		private AudioSource audioSource;
 
@@ -24,9 +24,8 @@ namespace Assets.Scripts.Managers
 				DontDestroyOnLoad(gameObject);
 
 				audioSource = GetComponent<AudioSource>();
-
-				MusicVolume = 1.0f;
 				SoundEffectVolume = 1.0f;
+				MusicVolume = 1.0f;
 			}
 			else
 			{
@@ -34,11 +33,11 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		public static SoundManager Instance { get; private set; }
+		public float SoundEffectVolume { get; set; }
 
-		public float SoundEffectVolume { get; private set; }
+		public float MusicVolume { get; set; }
 
-		public float MusicVolume { get; private set; }
+		public static SoundManager Instance { get; set; }
 
 		public void PlaySoundEffect(Sound sound)
 		{
