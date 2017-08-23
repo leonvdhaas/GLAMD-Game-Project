@@ -4,7 +4,9 @@ using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
 using UnityEngine;
+#if UNITY_ADS
 using UnityEngine.Advertisements;
+#endif
 using UnityEngine.SceneManagement;
 using RNG = System.Random;
 
@@ -156,6 +158,7 @@ namespace Assets.Scripts.Managers
 				OpponentId = opponentId
 			};
 
+#if UNITY_ADS
 			Advertisement.Show(new ShowOptions
 			{
 				resultCallback = result =>
@@ -168,6 +171,9 @@ namespace Assets.Scripts.Managers
 					SceneManager.LoadScene("Main");
 				}
 			});
+#else
+			SceneManager.LoadScene("Main");
+#endif
 		}
 
 		public void Logout()
