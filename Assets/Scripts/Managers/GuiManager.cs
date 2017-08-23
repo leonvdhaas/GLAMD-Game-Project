@@ -145,22 +145,22 @@ namespace Assets.Scripts.Managers
 			pointsText.text = points.ToString().PadLeft(6, '0');
 		}
 
-		public void UpdateLives(int lives)
+		public void UpdateLives(int lives, bool blink)
 		{
 			switch (lives)
 			{
 				case 0:
-					FlashDisableHeart(leftHeart);
+					FlashDisableHeart(leftHeart, blink ? 5 : 0);
 					middleHeart.enabled = rightHeart.enabled = false;
 					break;
 				case 1:
 					leftHeart.enabled = true;
-					FlashDisableHeart(middleHeart);
+					FlashDisableHeart(middleHeart, blink ? 5 : 0);
 					rightHeart.enabled = false;
 					break;
 				case 2:
 					leftHeart.enabled = middleHeart.enabled = true;
-					FlashDisableHeart(rightHeart);
+					FlashDisableHeart(rightHeart, blink ? 5 : 0);
 					break;
 				case 3:
 					leftHeart.enabled = middleHeart.enabled = rightHeart.enabled = true;
@@ -170,11 +170,11 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		private void FlashDisableHeart(Image heart)
+		private void FlashDisableHeart(Image heart, int amount)
 		{
 			StartCoroutine(CoroutineHelper.RepeatFor(
 						0.25f,
-						5,
+						amount,
 						() => heart.enabled = !heart.enabled,
 						() => heart.enabled = false));
 		}

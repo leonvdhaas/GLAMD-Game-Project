@@ -33,6 +33,7 @@ namespace Assets.Scripts.Controllers
 			var player = other.GetComponent<PlayerController>();
 			if (player != null)
 			{
+				gameObject.SetActive(false);
 				int multiplier = player.IsCoinDoublerActive ? 2 : 1;
 
 				switch (pickupType)
@@ -81,7 +82,6 @@ namespace Assets.Scripts.Controllers
 						throw new InvalidOperationException("Invalid Pickup type.");
 				}
 
-				gameObject.SetActive(false);
 				Destroy(gameObject);
 			}
 		}

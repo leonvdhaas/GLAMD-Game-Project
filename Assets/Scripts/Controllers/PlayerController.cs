@@ -84,7 +84,10 @@ namespace Assets.Scripts.Controllers
 			}
 			set
 			{
-				GameManager.Instance.GuiManager.UpdateLives(_lives = value);
+				GameManager.Instance.GuiManager.UpdateLives(value, value < Lives);
+
+				_lives = value;
+
 				if (value <= 0)
 				{
 					GameOver();
