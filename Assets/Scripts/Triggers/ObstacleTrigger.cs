@@ -17,12 +17,12 @@ namespace Assets.Scripts.Triggers
 			{
 				if (player.InhalerPowerupActive)
 				{
-					SoundManager.Instance.PlaySound(Sound.BoxInvincibleBreak);
+					SoundManager.Instance.PlaySoundEffect(Sound.BoxInvincibleBreak);
 					player.Points += OBSTACLE_DESTROY_SCORE;
 				}
 				else
 				{
-					SoundManager.Instance.PlaySound(Sound.Thud);
+					SoundManager.Instance.PlaySoundEffect(Sound.Thud);
 					if (!player.IsInvincible)
 					{
 						player.TakeObstacleDamage();

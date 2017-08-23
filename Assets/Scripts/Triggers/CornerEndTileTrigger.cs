@@ -14,7 +14,7 @@ namespace Assets.Scripts.Triggers
 			if (player != null) {
 				player.TakeFailedCorner();
 				GetComponent<Collider>().enabled = false;
-				SoundManager.Instance.PlaySound(Sound.Thud);
+				SoundManager.Instance.PlaySoundEffect(Sound.Thud);
 			}
 		}
 	}

@@ -39,15 +39,15 @@ namespace Assets.Scripts.Controllers
 				{
 					case Pickup.Diamond:
 						player.Coins += DIAMOND_VALUE * multiplier;
-						SoundManager.Instance.PlaySound(Sound.Diamond);
+						SoundManager.Instance.PlaySoundEffect(Sound.Diamond);
 						break;
 					case Pickup.Coin:
 						player.Coins += COIN_VALUE * multiplier;
-						SoundManager.Instance.PlaySound(Sound.Coin);
+						SoundManager.Instance.PlaySoundEffect(Sound.Coin);
 						break;
 					case Pickup.Slowmotion:
 						player.ActivateSlowmotion(SLOWMOTION_TIME, SLOWMOTION_FACTOR);
-						SoundManager.Instance.PlaySound(Sound.Slowmotion);
+						SoundManager.Instance.PlaySoundEffect(Sound.Slowmotion);
 						break;
 					case Pickup.Inhaler:
 						if (player.Inhalers < MAX_NUMBER_OF_INHALERS)
@@ -59,11 +59,11 @@ namespace Assets.Scripts.Controllers
 							player.Points += INHALER_VALUE;
 						}
 
-						SoundManager.Instance.PlaySound(Sound.Inhaler);
+						SoundManager.Instance.PlaySoundEffect(Sound.Inhaler);
 						break;
 					case Pickup.CoinDoubler:
 						player.ActivateCoinDoubler(COINDOUBLER_TIME);
-						SoundManager.Instance.PlaySound(Sound.CoinDoubler);
+						SoundManager.Instance.PlaySoundEffect(Sound.CoinDoubler);
 						break;
 					case Pickup.Heart:
 						if (player.Lives < 3)
@@ -75,7 +75,7 @@ namespace Assets.Scripts.Controllers
 							player.Points += HEART_VALUE;
 						}
 
-						SoundManager.Instance.PlaySound(Sound.Heart);
+						SoundManager.Instance.PlaySoundEffect(Sound.Heart);
 						break;
 					default:
 						throw new InvalidOperationException("Invalid Pickup type.");

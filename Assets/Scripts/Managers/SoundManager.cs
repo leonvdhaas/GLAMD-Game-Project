@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Models;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Managers
@@ -8,6 +10,11 @@ namespace Assets.Scripts.Managers
 	public class SoundManager
 		: MonoBehaviour
 	{
+		[SerializeField]
+		private new Audio[] soundEffects;
+
+		private AudioSource audioSource;
+
 		// Use this for initialization
 		private void Awake()
 		{
@@ -15,6 +22,11 @@ namespace Assets.Scripts.Managers
 			{
 				Instance = this;
 				DontDestroyOnLoad(gameObject);
+
+				audioSource = GetComponent<AudioSource>();
+
+				MusicVolume = 1.0f;
+				SoundEffectVolume = 1.0f;
 			}
 			else
 			{
@@ -22,79 +34,15 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
-		[SerializeField]
-		private AudioClip coin;
-
-		[SerializeField]
-		private AudioClip slowmotion;
-
-		[SerializeField]
-		private AudioClip reverseSlowmotion;
-
-		[SerializeField]
-		private AudioClip inhaler;
-
-		[SerializeField]
-		private AudioClip thud;
-
-		[SerializeField]
-		private AudioClip boxBreak;
-
-		[SerializeField]
-		private AudioClip heart;
-
-		[SerializeField]
-		private AudioClip coinDoubler;
-
-		[SerializeField]
-		private AudioClip diamond;
-
-		[SerializeField]
-		private AudioClip inhalerActivate;
-
 		public static SoundManager Instance { get; private set; }
 
-		public void PlaySound(Sound sound)
-		{
-			var audioSource = gameObject.AddComponent<AudioSource>();
-			switch (sound)
-			{
-				case Sound.Coin:
-					audioSource.clip = coin;
-					break;
-				case Sound.Slowmotion:
-					audioSource.clip = slowmotion;
-					break;
-				case Sound.ReverseSlowmotion:
-					audioSource.clip = reverseSlowmotion;
-					break;
-				case Sound.Inhaler:
-					audioSource.clip = inhaler;
-					break;
-				case Sound.Thud:
-					audioSource.clip = thud;
-					break;
-				case Sound.BoxInvincibleBreak:
-					audioSource.clip = boxBreak;
-					break;
-				case Sound.Diamond:
-					audioSource.clip = diamond;
-					break;
-				case Sound.CoinDoubler:
-					audioSource.clip = coinDoubler;
-					break;
-				case Sound.Heart:
-					audioSource.clip = heart;
-					break;
-				case Sound.InhalerActivate:
-					audioSource.clip = inhalerActivate;
-					break;
-				default:
-					throw new InvalidOperationException("Invalid sound type.");
-			}
+		public float SoundEffectVolume { get; private set; }
 
-			audioSource.Play();
-			StartCoroutine(CoroutineHelper.Delay(audioSource.clip.length, () => Destroy(audioSource)));
+		public float MusicVolume { get; private set; }
+
+		public void PlaySoundEffect(Sound sound)
+		{
+			audioSource.PlayOneShot(soundEffects.Single(x => x.Sound == sound).Clip, SoundEffectVolume);
 		}
 	}
 }

@@ -431,7 +431,7 @@ namespace Assets.Scripts.Controllers
 
 			if (InhalerUsable)
 			{
-				SoundManager.Instance.PlaySound(Sound.InhalerActivate);
+				SoundManager.Instance.PlaySoundEffect(Sound.InhalerActivate);
 				InhalerPowerupActive = true;
 				maxSpeed += speedBonus;
 				StartCoroutine(CoroutineHelper.For(
@@ -483,7 +483,7 @@ namespace Assets.Scripts.Controllers
 				i => GameManager.Instance.GuiManager.UpdateSlowmotionMeter(1.0f - 1.0f / steps * i),
 				() =>
 				{
-					SoundManager.Instance.PlaySound(Sound.ReverseSlowmotion);
+					SoundManager.Instance.PlaySoundEffect(Sound.ReverseSlowmotion);
 					isTransitioningSlowmotion = true;
 					StartCoroutine(CoroutineHelper.Repeat(
 						0.2f,
