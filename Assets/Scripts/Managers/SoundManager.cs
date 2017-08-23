@@ -13,7 +13,8 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Audio[] soundEffects;
 
-		private AudioSource audioSource;
+		private AudioSource sfxAudioSource;
+		private AudioSource musicAudioSource;
 
 		// Use this for initialization
 		private void Awake()
@@ -23,9 +24,11 @@ namespace Assets.Scripts.Managers
 				Instance = this;
 				DontDestroyOnLoad(gameObject);
 
-				audioSource = GetComponent<AudioSource>();
-				SoundEffectVolume = 1.0f;
-				MusicVolume = 1.0f;
+				musicAudioSource = GetComponent<AudioSource>();
+				sfxAudioSource = gameObject.AddComponent<AudioSource>();
+
+				SoundEffectVolume = 0.5f;
+				MusicVolume = 0.5f;
 			}
 			else
 			{
@@ -35,13 +38,17 @@ namespace Assets.Scripts.Managers
 
 		public float SoundEffectVolume { get; set; }
 
-		public float MusicVolume { get; set; }
+		public float MusicVolume
+		{
+			get { return musicAudioSource.volume; }
+			set { musicAudioSource.volume = value; }
+		}
 
 		public static SoundManager Instance { get; set; }
 
 		public void PlaySoundEffect(Sound sound)
 		{
-			audioSource.PlayOneShot(soundEffects.Single(x => x.Sound == sound).Clip, SoundEffectVolume);
+			sfxAudioSource.PlayOneShot(soundEffects.Single(x => x.Sound == sound).Clip, SoundEffectVolume);
 		}
 	}
 }
