@@ -84,6 +84,11 @@ namespace Assets.Scripts.Controllers
 			}
 			set
 			{
+				if (GameManager.Instance.CurrentGame.GameOver)
+				{
+					return;
+				}
+
 				GameManager.Instance.GuiManager.UpdateLives(value, value < Lives);
 
 				_lives = value;
@@ -109,6 +114,11 @@ namespace Assets.Scripts.Controllers
 			}
 			set
 			{
+				if (GameManager.Instance.CurrentGame.GameOver)
+				{
+					return;
+				}
+
 				GameManager.Instance.GuiManager.UpdatePoints(_points = value);
 			}
 		}
@@ -122,6 +132,11 @@ namespace Assets.Scripts.Controllers
 			}
 			set
 			{
+				if (GameManager.Instance.CurrentGame.GameOver)
+				{
+					return;
+				}
+
 				GameManager.Instance.GuiManager.UpdateCoins(_coins = value);
 			}
 		}
@@ -135,6 +150,11 @@ namespace Assets.Scripts.Controllers
 			}
 			set
 			{
+				if (GameManager.Instance.CurrentGame.GameOver)
+				{
+					return;
+				}
+
 				GameManager.Instance.GuiManager.UpdateInhalerMeter((_inhalers = value) / (float)PickupController.MAX_NUMBER_OF_INHALERS);
 			}
 		}
@@ -264,6 +284,8 @@ namespace Assets.Scripts.Controllers
 
 		private void GameOver()
 		{
+			GameManager.Instance.CurrentGame.GameOver = true;
+
 			switch (GameManager.Instance.CurrentGame.GameType)
 			{
 				case GameType.Singleplayer:

@@ -50,5 +50,12 @@ namespace Assets.Scripts.Managers
 		{
 			sfxAudioSource.PlayOneShot(soundEffects.Single(x => x.Sound == sound).Clip, SoundEffectVolume);
 		}
+
+		public void SetBackgroundMusic(AudioClip clip)
+		{
+			musicAudioSource.Stop();
+			musicAudioSource.clip = clip;
+			musicAudioSource.Play();
+		}
 	}
 }

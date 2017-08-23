@@ -13,15 +13,6 @@ namespace Assets.Scripts.Models
 
 		public Guid? OpponentId { get; set; }
 
-		public static Game Default
-		{
-			get
-			{
-				return new Game
-				{
-					GameType = GameType.Singleplayer
-				};
-			}
-		}
+		public bool GameOver { get; set; }
 	}
 }

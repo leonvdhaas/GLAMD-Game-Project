@@ -386,8 +386,6 @@ namespace Assets.Scripts.Managers
 
 		public void SetMusicVolume(float volume)
 		{
-			//TODO: Make sure music volume changes automatically when changing volume.
-
 			SoundManager.Instance.MusicVolume = volume;
 		}
 	}

@@ -105,7 +105,7 @@ namespace Assets.Scripts.Managers
 					return _currentGame;
 				}
 
-				return Game.Default;
+				return new Game();
 			}
 			private set
 			{
