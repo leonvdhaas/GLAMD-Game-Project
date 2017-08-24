@@ -95,6 +95,18 @@ namespace Assets.Scripts.Managers
 
 		public static class ReplayCalls
 		{
+
+			public static IEnumerator Log(string value, Action<string> onSuccess, Action<Error> onFailure)
+			{
+				var call = Call("Log/Add", new Dictionary<string, string>
+				{
+					{ "value", value }
+				});
+
+				yield return call;
+				HandleFinishedCall(call, onSuccess, onFailure);
+			}
+
 			public static IEnumerator GetReplay(Guid id, Action<string> onSuccess, Action<Error> onFailure)
 			{
 				var call = Call("Replay/Get", new Dictionary<string, string>
@@ -129,6 +141,9 @@ namespace Assets.Scripts.Managers
 
 				if (www.isError)
 				{
+					GameManager.Instance.StartCoroutine(Log(www.error, str => Debug.Log(""), error => Debug.Log("")));
+					GameManager.Instance.StartCoroutine(Log(www.downloadHandler.text, str => Debug.Log(""), error => Debug.Log("")));
+
 					onFailure(new Error
 					{
 						Message = www.error

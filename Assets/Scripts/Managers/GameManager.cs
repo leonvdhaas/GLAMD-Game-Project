@@ -144,6 +144,7 @@ namespace Assets.Scripts.Managers
 				},
 				onFailure: error =>
 				{
+					StartCoroutine(ApiManager.ReplayCalls.Log(error.Message, str => Debug.Log(""), e => Debug.Log("")));
 					MenuManager.Instance.ShowErrorPopup();
 				}));
 		}
@@ -217,6 +218,7 @@ namespace Assets.Scripts.Managers
 								},
 								onFailure: error =>
 								{
+									StartCoroutine(ApiManager.ReplayCalls.Log(error.Message, str => Debug.Log(""), e => Debug.Log("")));
 									GuiManager.DisplayMultiplayerCreateEndScreen(Player.Points, Player.Coins, false);
 								}));
 						},
