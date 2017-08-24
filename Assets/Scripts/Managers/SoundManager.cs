@@ -27,8 +27,8 @@ namespace Assets.Scripts.Managers
 				musicAudioSource = GetComponent<AudioSource>();
 				sfxAudioSource = gameObject.AddComponent<AudioSource>();
 
-				SoundEffectVolume = 0.5f;
-				MusicVolume = 0.5f;
+				SoundEffectVolume = 1;
+				MusicVolume = 1;
 			}
 			else
 			{
