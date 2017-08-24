@@ -32,6 +32,8 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private GameObject slowmotionBar;
 		[SerializeField]
+		private GameObject inhalerButton;
+		[SerializeField]
 		private Color errorColor;
 		[SerializeField]
 		private Color regularColor;
@@ -118,6 +120,16 @@ namespace Assets.Scripts.Managers
 		public void UpdateInhalerMeter(float percentage)
 		{
 			targetInhalerMeter = percentage;
+
+			if (Mathf.Approximately(percentage, 1))
+			{
+				inhalerButton.SetActive(true);
+				inhalerButton.GetComponent<Button>().interactable = true;
+			}
+			else if (Mathf.Approximately(percentage, 0))
+			{
+				inhalerButton.SetActive(false);
+			}
 		}
 
 		public void UpdateSlowmotionMeter(float percentage)
@@ -290,7 +302,8 @@ namespace Assets.Scripts.Managers
 
 		public void ActivateInhalerButton()
 		{
-			GameManager.Instance.Player.ActivateInhaler(5, 10);
+			inhalerButton.GetComponent<Button>().interactable = false;
+			GameManager.Instance.Player.ActivateInhaler(PickupController.INHALER_TIME, PickupController.INHALER_SPEED);
 		}
 
 		public void PauseButton()
