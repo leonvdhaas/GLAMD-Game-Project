@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Assets.Scripts.Models;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Utilities;
 
 namespace Assets.Scripts.Managers
 {
@@ -51,6 +52,8 @@ namespace Assets.Scripts.Managers
 		private GameObject multiplayerChallengePanel;
 		[SerializeField]
 		private GameObject endScreenExitButton;
+		[SerializeField]
+		private GameObject factPanel;
 
 		[Header("SP End Screen")]
 		[SerializeField]
@@ -93,6 +96,12 @@ namespace Assets.Scripts.Managers
 		private Text mpChallengeTotal;
 		[SerializeField]
 		private Text mpChallengeFriendTotal;
+
+		[Header("Facts screen")]
+		[SerializeField]
+		private Text fact;
+		[SerializeField]
+		private string[] facts;
 
 		private float targetCoinDoublerMeter;
 		private float targetInhalerMeter;
@@ -325,6 +334,18 @@ namespace Assets.Scripts.Managers
 		public void ReturnToMainMenuButton()
 		{
 			SceneManager.LoadScene("MainStartMenu");
+		}
+
+		public void DisplayFactScreen()
+		{
+			endScreenPanel.SetActive(false);
+			fact.text = facts.Pick() + " Ga voor meer informatie naar de Serious Request site.";
+			factPanel.SetActive(true);
+		}
+
+		public void ToSeriousRequestWebsite()
+		{
+			Application.OpenURL("http://seriousrequest.3fm.nl/nieuws/detail/5351472/doel-3fm-serious-request-2016-longontsteking");
 		}
 	}
 }
