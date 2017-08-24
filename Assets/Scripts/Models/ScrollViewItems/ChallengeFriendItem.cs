@@ -56,7 +56,6 @@ namespace Assets.Scripts.Models.ScrollViewItems
 		{
 			if (isProcessing)
 			{
-				Debug.Log("Test");
 				return;
 			}
 
