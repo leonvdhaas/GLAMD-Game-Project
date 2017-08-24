@@ -31,6 +31,8 @@ namespace Assets.Scripts.Managers
 		private GameObject pickupsPanel;
 		[SerializeField]
 		private GameObject pointsPanel;
+		[SerializeField]
+		private GameObject loadingPanel;
 
 		[Header("Input Fields")]
 		[SerializeField]
@@ -80,20 +82,11 @@ namespace Assets.Scripts.Managers
 		private ManualController pointsController;
 		private bool playSample;
 
-		public static MenuManager Instance { get; set; }
-
-		public static bool HasInstance
-		{
-			get
-			{
-				return Instance != null;
-			}
-		}
-
 		private void OnEnable()
 		{
 			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
-			Instance = this;
+
+			GameManager.Instance.MenuManager = this;
 			storyController = storyPanel.GetComponent<ManualController>();
 			controlsController = controlsPanel.GetComponent<ManualController>();
 			pickupsController = pickupsPanel.GetComponent<ManualController>();
@@ -103,7 +96,6 @@ namespace Assets.Scripts.Managers
 		private void OnDisable()
 		{
 			SceneManager.sceneLoaded -= SceneManager_SceneLoaded;
-			Instance = null;
 		}
 
 		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -119,6 +111,11 @@ namespace Assets.Scripts.Managers
 			{
 				loginPanel.SetActive(true);
 			}
+		}
+
+		public void ShowLoadingScreen()
+		{
+			loadingPanel.SetActive(true);
 		}
 
 		private void UpdateVolumeSliders()

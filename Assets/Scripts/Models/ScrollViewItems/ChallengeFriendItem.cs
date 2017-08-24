@@ -8,7 +8,7 @@ namespace Assets.Scripts.Models.ScrollViewItems
 	public class ChallengeFriendItem
 		: MonoBehaviour
 	{
-		private const int PANEL_DEPTH = 4;
+		private static bool isProcessing;
 
 		[SerializeField]
 		private Text lblFriendName;
@@ -54,8 +54,15 @@ namespace Assets.Scripts.Models.ScrollViewItems
 
 		public void ChallengeFriendButton()
 		{
-			transform.GetParent(PANEL_DEPTH).gameObject.SetActive(false);
+			if (isProcessing)
+			{
+				Debug.Log("Test");
+				return;
+			}
+
+			isProcessing = true;
 			GameManager.Instance.StartMultiplayerGame(friendUser.Id);
+			isProcessing = false;
 		}
 	}
 }

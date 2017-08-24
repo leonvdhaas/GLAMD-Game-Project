@@ -1,5 +1,9 @@
 ﻿using System.IO;
+#if UNITY_ANDROID
+using Unity.IO.Compression;
+#else
 using System.IO.Compression;
+#endif
 using System.Text;
 
 namespace Assets.Scripts.Utilities

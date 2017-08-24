@@ -21,7 +21,9 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text pointsText;
 		[SerializeField]
-		private Text pauseText;
+		private GameObject pauseButton;
+		[SerializeField]
+		private GameObject pausePanel;
 		[SerializeField]
 		private Image leftHeart;
 		[SerializeField]
@@ -293,6 +295,7 @@ namespace Assets.Scripts.Managers
 
 		private void DisplayEndScreen(GameType gameType)
 		{
+			DisableUI();
 			endScreenPanel.SetActive(true);
 
 			switch (gameType)
@@ -311,23 +314,39 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
+		public void DisableUI()
+		{
+			pauseButton.SetActive(false);
+			inhalerButton.GetComponent<Button>().interactable = false;
+		}
+
+		public void PlayAgainButton()
+		{
+			GameManager.Instance.StartSingleplayerGame();
+		}
+
 		public void ActivateInhalerButton()
 		{
-			inhalerButton.GetComponent<Button>().interactable = false;
-			GameManager.Instance.Player.ActivateInhaler(PickupController.INHALER_TIME, PickupController.INHALER_SPEED);
+			if (!GameManager.Instance.Paused)
+			{
+				inhalerButton.GetComponent<Button>().interactable = false;
+				GameManager.Instance.Player.ActivateInhaler(PickupController.INHALER_TIME, PickupController.INHALER_SPEED);
+			}
 		}
 
 		public void PauseButton()
 		{
 			if (GameManager.Instance.Paused)
 			{
+				pausePanel.SetActive(false);
+				pauseButton.SetActive(true);
 				GameManager.Instance.Unpause();
-				pauseText.text = "ll";
 			}
 			else
 			{
+				pauseButton.SetActive(false);
+				pausePanel.SetActive(true);
 				GameManager.Instance.Pause();
-				pauseText.text = ">";
 			}
 		}
 
@@ -343,7 +362,7 @@ namespace Assets.Scripts.Managers
 			factPanel.SetActive(true);
 		}
 
-		public void ToSeriousRequestWebsite()
+		public void ToSeriousRequestWebsiteButton()
 		{
 			Application.OpenURL("http://seriousrequest.3fm.nl/nieuws/detail/5351472/doel-3fm-serious-request-2016-longontsteking");
 		}

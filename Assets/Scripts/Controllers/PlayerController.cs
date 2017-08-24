@@ -281,6 +281,7 @@ namespace Assets.Scripts.Controllers
 
 		private void GameOver()
 		{
+			GameManager.Instance.GuiManager.DisableUI();
 			GameManager.Instance.CurrentGame.GameOver = true;
 
 			switch (GameManager.Instance.CurrentGame.GameType)

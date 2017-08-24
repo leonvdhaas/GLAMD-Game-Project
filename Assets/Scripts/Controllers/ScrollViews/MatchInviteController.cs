@@ -40,7 +40,7 @@ namespace Assets.Scripts.Controllers.ScrollViews
 				},
 				onFailure: error =>
 				{
-					MenuManager.Instance.ShowErrorPopup();
+					GameManager.Instance.MenuManager.ShowErrorPopup();
 				}));
 		}
 

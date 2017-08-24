@@ -8,6 +8,8 @@ namespace Assets.Scripts.Models.ScrollViewItems
 	public class MatchInviteItem
 		: MonoBehaviour
 	{
+		private static bool isProcessing;
+
 		[SerializeField]
 		private Text lblOpponentName;
 
@@ -36,7 +38,24 @@ namespace Assets.Scripts.Models.ScrollViewItems
 
 		public void MatchInviteButton()
 		{
-			GameManager.Instance.StartMultiplayerGame(Match);
+			if (isProcessing)
+			{
+				return;
+			}
+
+			isProcessing = true;
+			StartCoroutine(ApiManager.ReplayCalls.GetReplay(
+				Match.ReplayId.Value,
+				onSuccess: replayData =>
+				{
+					GameManager.Instance.StartMultiplayerGame(Match, new Replay(replayData));
+					isProcessing = false;
+				},
+				onFailure: error =>
+				{
+					GameManager.Instance.MenuManager.ShowErrorPopup();
+					isProcessing = false;
+				}));
 		}
 	}
 }

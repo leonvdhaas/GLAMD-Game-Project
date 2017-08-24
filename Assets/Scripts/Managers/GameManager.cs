@@ -15,6 +15,9 @@ namespace Assets.Scripts.Managers
 	public class GameManager
 		: MonoBehaviour
 	{
+		public const int AD_SHOW_AMOUNT = 3;
+
+		private int adCounter;
 		private static readonly RNG rng = new RNG();
 		private float unpausedTimeScale;
 
@@ -119,6 +122,8 @@ namespace Assets.Scripts.Managers
 
 		public GuiManager GuiManager { get; set; }
 
+		public MenuManager MenuManager { get; set; }
+
 		public bool Paused { get; internal set; }
 
 		public void StartSingleplayerGame()
@@ -133,24 +138,19 @@ namespace Assets.Scripts.Managers
 			StartGame(GameType.MultiplayerCreate, null, new Replay(), opponentId);
 		}
 
-		public void StartMultiplayerGame(Match match)
+		public void StartMultiplayerGame(Match match, Replay replay)
 		{
 			RandomUtilities.Seed = match.Seed;
-			StartCoroutine(ApiManager.ReplayCalls.GetReplay(
-				match.ReplayId.Value,
-				onSuccess: replayData =>
-				{
-					StartGame(GameType.MultiplayerChallenge, match, new Replay(replayData), null);
-				},
-				onFailure: error =>
-				{
-					StartCoroutine(ApiManager.ReplayCalls.Log(error.Message, str => Debug.Log(""), e => Debug.Log("")));
-					MenuManager.Instance.ShowErrorPopup();
-				}));
+			StartGame(GameType.MultiplayerChallenge, match, replay, null);
 		}
 
 		private void StartGame(GameType gameType, Match match, Replay replay, Guid? opponentId)
 		{
+			if (MenuManager != null)
+			{
+				MenuManager.ShowLoadingScreen();
+			}
+
 			CurrentGame = new Game
 			{
 				GameType = gameType,
@@ -160,18 +160,25 @@ namespace Assets.Scripts.Managers
 			};
 
 #if UNITY_ADS
-			Advertisement.Show(new ShowOptions
+			if (adCounter++ % AD_SHOW_AMOUNT == 0)
 			{
-				resultCallback = result =>
+				Advertisement.Show(new ShowOptions
 				{
-					if (result == ShowResult.Failed)
+					resultCallback = result =>
 					{
-						Debug.LogWarning("Couldn't play advertisement");
-					}
+						if (result == ShowResult.Failed)
+						{
+							Debug.LogWarning("Couldn't play advertisement");
+						}
 
-					SceneManager.LoadScene("Main");
-				}
-			});
+						SceneManager.LoadScene("Main");
+					}
+				});
+			}
+			else
+			{
+				SceneManager.LoadScene("Main");
+			}
 #else
 			SceneManager.LoadScene("Main");
 #endif
@@ -218,7 +225,6 @@ namespace Assets.Scripts.Managers
 								},
 								onFailure: error =>
 								{
-									StartCoroutine(ApiManager.ReplayCalls.Log(error.Message, str => Debug.Log(""), e => Debug.Log("")));
 									GuiManager.DisplayMultiplayerCreateEndScreen(Player.Points, Player.Coins, false);
 								}));
 						},

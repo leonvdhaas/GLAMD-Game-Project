@@ -59,7 +59,7 @@ namespace Assets.Scripts.Models.ScrollViewItems
 				},
 				onFailure: error =>
 				{
-					MenuManager.Instance.ShowErrorPopup();
+					GameManager.Instance.MenuManager.ShowErrorPopup();
 				}));
 		}
 	}
