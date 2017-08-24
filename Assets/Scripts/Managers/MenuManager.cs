@@ -24,7 +24,13 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private GameObject errorPopupPanel;
 		[SerializeField]
-		private GameObject manualPanel;
+		private GameObject storyPanel;
+		[SerializeField]
+		private GameObject controlsPanel;
+		[SerializeField]
+		private GameObject pickupsPanel;
+		[SerializeField]
+		private GameObject pointsPanel;
 
 		[Header("Input Fields")]
 		[SerializeField]
@@ -68,7 +74,10 @@ namespace Assets.Scripts.Managers
 
 		private bool isProcessingButton;
 		private Coroutine sfxSliderDrag;
-		private ManualController manualController;
+		private ManualController storyController;
+		private ManualController controlsController;
+		private ManualController pickupsController;
+		private ManualController pointsController;
 		private bool playSample;
 
 		public static MenuManager Instance { get; set; }
@@ -85,7 +94,10 @@ namespace Assets.Scripts.Managers
 		{
 			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
 			Instance = this;
-			manualController = manualPanel.GetComponent<ManualController>();
+			storyController = storyPanel.GetComponent<ManualController>();
+			controlsController = controlsPanel.GetComponent<ManualController>();
+			pickupsController = pickupsPanel.GetComponent<ManualController>();
+			pointsController = pointsPanel.GetComponent<ManualController>();
 		}
 
 		private void OnDisable()
@@ -359,14 +371,44 @@ namespace Assets.Scripts.Managers
 			errorLabel.enabled = true;
 		}
 
-		public void PreviousManualEntryButton()
+		public void PreviousStoryEntryButton()
 		{
-			manualController.PreviousManualEntry();
+			storyController.PreviousManualEntry();
 		}
 
-		public void NextManualEntryButton()
+		public void NextStoryEntryButton()
 		{
-			manualController.NextManualEntry();
+			storyController.NextManualEntry();
+		}
+
+		public void NextControlsEntryButton()
+		{
+			controlsController.NextManualEntry();
+		}
+
+		public void PreviousControlsEntryButton()
+		{
+			controlsController.PreviousManualEntry();
+		}
+
+		public void NextPickupsEntryButton()
+		{
+			pickupsController.NextManualEntry();
+		}
+
+		public void PreviousPickupsEntryButton()
+		{
+			pickupsController.PreviousManualEntry();
+		}
+
+		public void NextPoinsEntryButton()
+		{
+			pointsController.NextManualEntry();
+		}
+
+		public void PreviousPointsEntryButton()
+		{
+			pointsController.PreviousManualEntry();
 		}
 
 		public void SetSoundEffectVolume(float volume)
