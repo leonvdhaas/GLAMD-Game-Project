@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Enumerations;
+﻿	using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
 using System.Linq;
@@ -325,7 +325,12 @@ namespace Assets.Scripts.Controllers
 
 		private bool IsTouchingGround()
 		{
-			var touching = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.2f);
+			bool touching = Physics.Raycast(
+				transform.position + Vector3.up * 0.6f,
+				Vector3.down,
+				0.2f,
+				-1,
+				QueryTriggerInteraction.Ignore);
 			if (touching)
 			{
 				verticalSpeed = 0;
