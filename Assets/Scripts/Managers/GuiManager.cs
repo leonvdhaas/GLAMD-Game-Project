@@ -20,6 +20,8 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text pointsText;
 		[SerializeField]
+		private Text pauseText;
+		[SerializeField]
 		private Image leftHeart;
 		[SerializeField]
 		private Image middleHeart;
@@ -311,10 +313,12 @@ namespace Assets.Scripts.Managers
 			if (GameManager.Instance.Paused)
 			{
 				GameManager.Instance.Unpause();
+				pauseText.text = "ll";
 			}
 			else
 			{
 				GameManager.Instance.Pause();
+				pauseText.text = ">";
 			}
 		}
 
