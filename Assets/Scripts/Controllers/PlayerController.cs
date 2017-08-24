@@ -229,9 +229,6 @@ namespace Assets.Scripts.Controllers
 			MoveToCorrectLane();
 			Move();
 			CheckForJump(Swipe.None);
-
-			//TODO: Don't automatically activate inhaler, only check when button pressed.
-			ActivateInhaler(5, 10);
 		}
 
 		private void OnSwipe(SwipeControl.SWIPE_DIRECTION direction)

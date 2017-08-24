@@ -9,6 +9,8 @@ namespace Assets.Scripts.Controllers
 		: MonoBehaviour
 	{
 		public const ushort MAX_NUMBER_OF_INHALERS = 6;
+		public const float INHALER_TIME = 5;
+		public const float INHALER_SPEED = 10;
 		private const float COINDOUBLER_TIME = 2.5f;
 		private const float SLOWMOTION_TIME = 2.5f;
 		private const float SLOWMOTION_FACTOR = 0.5f;
