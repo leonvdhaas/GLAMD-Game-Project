@@ -93,10 +93,15 @@ namespace Assets.Scripts.Utilities
 		//private int obstacleChance, pickupChance, coinChance, nothingChance;
 		//private object[] obstacleType = new object[5];
 
-		static TilePopulator()
+		private void Awake()
 		{
 			Chances = new Generator();
-			Chances.Fill(30, 20, 10, 40);
+			StartCoroutine(CoroutineHelper.For(
+				15,
+				() => 20,
+				i => i <= 45,
+				(ref int i) => i++,
+				i => { Chances.Fill(i, 20, 10, 70 - i); Debug.Log(i); }));
 		}
 
 		// Chance Generator
