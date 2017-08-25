@@ -124,7 +124,6 @@ namespace Assets.Scripts.Managers
 			slowmotion = slowmotionBar.GetComponent<ProgressBarPro>();
 
 			inhalerBar.GetComponentInChildren<BarViewSizeImageFill>().SetNumSteps(PickupController.MAX_NUMBER_OF_INHALERS);
-			inhalerBar.GetComponentInChildren<BarViewValueText>().SetMaxValue(PickupController.MAX_NUMBER_OF_INHALERS);
 		}
 
 		public void UpdateCoinDoublerMeter(float percentage)
