@@ -373,6 +373,11 @@ namespace Assets.Scripts.Managers
 
 		public void ReturnToMainMenuButton()
 		{
+			if (GameManager.Instance.Paused)
+			{
+				GameManager.Instance.Unpause();
+			}
+
 			SceneManager.LoadScene("MainStartMenu");
 		}
 
