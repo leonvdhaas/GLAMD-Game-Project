@@ -21,6 +21,8 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text pointsText;
 		[SerializeField]
+		private Text countDownText;
+		[SerializeField]
 		private GameObject pauseButton;
 		[SerializeField]
 		private GameObject pausePanel;
@@ -213,20 +215,18 @@ namespace Assets.Scripts.Managers
 		{
 			if (count == null)
 			{
-				// startSignal.SetActive(false);
+				countDownText.enabled = false;
 				return;
 			}
 
-			// startSignal.SetActive(true);
+			countDownText.enabled = true;
 			if (count > 0)
 			{
-				//TODO: Show actual ingame count displays.
-				Debug.Log(count);
+				countDownText.text = count.ToString() + "..";
 			}
 			else
 			{
-				//TODO: Show actual ingame count displays.
-				Debug.Log("Go!");
+				countDownText.text = "GO";
 			}
 		}
 
