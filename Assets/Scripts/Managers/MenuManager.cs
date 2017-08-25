@@ -24,13 +24,7 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private GameObject errorPopupPanel;
 		[SerializeField]
-		private GameObject storyPanel;
-		[SerializeField]
-		private GameObject controlsPanel;
-		[SerializeField]
-		private GameObject pickupsPanel;
-		[SerializeField]
-		private GameObject pointsPanel;
+		private GameObject manualPanel;
 		[SerializeField]
 		private GameObject loadingPanel;
 
@@ -61,6 +55,8 @@ namespace Assets.Scripts.Managers
 		private Text lblLoggedInAs;
 		[SerializeField]
 		private Text lblAddFriendResult;
+		[SerializeField]
+		private Text lblCategory;
 
 		[Header("Sliders")]
 		[SerializeField]
@@ -76,10 +72,7 @@ namespace Assets.Scripts.Managers
 
 		private bool isProcessingButton;
 		private Coroutine sfxSliderDrag;
-		private ManualController storyController;
-		private ManualController controlsController;
-		private ManualController pickupsController;
-		private ManualController pointsController;
+		private ManualController manualController;
 		private bool playSample;
 
 		private void OnEnable()
@@ -87,10 +80,7 @@ namespace Assets.Scripts.Managers
 			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
 
 			GameManager.Instance.MenuManager = this;
-			storyController = storyPanel.GetComponent<ManualController>();
-			controlsController = controlsPanel.GetComponent<ManualController>();
-			pickupsController = pickupsPanel.GetComponent<ManualController>();
-			pointsController = pointsPanel.GetComponent<ManualController>();
+			manualController = manualPanel.GetComponent<ManualController>();
 		}
 
 		private void OnDisable()
@@ -368,44 +358,23 @@ namespace Assets.Scripts.Managers
 			errorLabel.enabled = true;
 		}
 
-		public void PreviousStoryEntryButton()
+		public void PreviousManualEntryButton()
 		{
-			storyController.PreviousManualEntry();
+			manualController.PreviousManualEntry();
 		}
 
-		public void NextStoryEntryButton()
+		public void NextManualEntryButton()
 		{
-			storyController.NextManualEntry();
+			manualController.NextManualEntry();
 		}
 
-		public void NextControlsEntryButton()
+		public void LoadManualEntries(string category)
 		{
-			controlsController.NextManualEntry();
-		}
-
-		public void PreviousControlsEntryButton()
-		{
-			controlsController.PreviousManualEntry();
-		}
-
-		public void NextPickupsEntryButton()
-		{
-			pickupsController.NextManualEntry();
-		}
-
-		public void PreviousPickupsEntryButton()
-		{
-			pickupsController.PreviousManualEntry();
-		}
-
-		public void NextPoinsEntryButton()
-		{
-			pointsController.NextManualEntry();
-		}
-
-		public void PreviousPointsEntryButton()
-		{
-			pointsController.PreviousManualEntry();
+			manualController.LoadedPageEntries = manualController.PageEntries.Where(p => p.Category == category).ToArray();
+			manualController.ResetPage();
+			manualController.UpdateActiveManualEntry();
+			lblCategory.text = category;
+			manualPanel.SetActive(true);
 		}
 
 		public void SetSoundEffectVolume(float volume)

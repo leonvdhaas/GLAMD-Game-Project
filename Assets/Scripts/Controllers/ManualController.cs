@@ -23,8 +23,9 @@ namespace Assets.Scripts.Controllers
 		[SerializeField]
 		private Text manualPage;
 
-		[SerializeField]
-		private ManualPageEntry[] PageEntries;
+		public ManualPageEntry[] PageEntries;
+
+		public ManualPageEntry[] LoadedPageEntries;
 
 		private void Start()
 		{
@@ -40,13 +41,13 @@ namespace Assets.Scripts.Controllers
 			}
 			set
 			{
-				if (value >= PageEntries.Length)
+				if (value >= LoadedPageEntries.Length)
 				{
 					_page = 0;
 				}
 				else if (value < 0)
 				{
-					_page = PageEntries.Length - 1;
+					_page = LoadedPageEntries.Length - 1;
 				}
 				else
 				{
@@ -67,18 +68,23 @@ namespace Assets.Scripts.Controllers
 			Page--;
 		}
 
-		private void UpdateActiveManualEntry()
+		public void ResetPage()
 		{
-			manualImage.sprite = PageEntries[Page].Sprite;
-			manualTitle.text = PageEntries[Page].Title;
-			manualText.text = PageEntries[Page].Text;
+			Page = 0;
+		}
+
+		public void UpdateActiveManualEntry()
+		{
+			manualImage.sprite = LoadedPageEntries[Page].Sprite;
+			manualTitle.text = LoadedPageEntries[Page].Title;
+			manualText.text = LoadedPageEntries[Page].Text;
 			manualPage.text = GetPageString();
 
 		}
 
 		private string GetPageString()
 		{
-			return String.Format("{0}/{1}", Page + 1, PageEntries.Length);
+			return String.Format("{0}/{1}", Page + 1, LoadedPageEntries.Length);
 		}
 	}
 }
