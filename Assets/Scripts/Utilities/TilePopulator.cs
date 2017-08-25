@@ -101,7 +101,7 @@ namespace Assets.Scripts.Utilities
 				() => 20,
 				i => i <= 45,
 				(ref int i) => i++,
-				i => { Chances.Fill(i, 20, 10, 70 - i); Debug.Log(i); }));
+				i => Chances.Fill(i, 20, 10, 70 - i)));
 		}
 
 		// Chance Generator

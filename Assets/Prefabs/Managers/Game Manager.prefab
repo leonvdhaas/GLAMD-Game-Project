@@ -67,6 +67,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _logLevel: 0
   _developmentMode: 0
-  _skipLogin: 0
+  _skipLogin: 1
   id: E5468D47-7270-40F6-A4A1-4E9C425F0D7E
   username: Anthony
