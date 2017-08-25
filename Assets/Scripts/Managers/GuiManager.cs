@@ -8,6 +8,7 @@ using Assets.Scripts.Models;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.Utilities;
+using Assets.Scripts.Models.Pickups;
 
 namespace Assets.Scripts.Managers
 {
@@ -123,7 +124,7 @@ namespace Assets.Scripts.Managers
 			inhaler = inhalerBar.GetComponent<ProgressBarPro>();
 			slowmotion = slowmotionBar.GetComponent<ProgressBarPro>();
 
-			inhalerBar.GetComponentInChildren<BarViewSizeImageFill>().SetNumSteps(PickupController.MAX_NUMBER_OF_INHALERS);
+			inhalerBar.GetComponentInChildren<BarViewSizeImageFill>().SetNumSteps(Inhaler.MAX_AMOUNT);
 		}
 
 		public void UpdateCoinDoublerMeter(float percentage)
@@ -351,7 +352,7 @@ namespace Assets.Scripts.Managers
 			if (!GameManager.Instance.Paused)
 			{
 				inhalerButton.GetComponent<Button>().interactable = false;
-				GameManager.Instance.Player.ActivateInhaler(PickupController.INHALER_TIME, PickupController.INHALER_SPEED);
+				GameManager.Instance.Player.ActivateInhaler(Inhaler.TIME, Inhaler.SPEED);
 			}
 		}
 

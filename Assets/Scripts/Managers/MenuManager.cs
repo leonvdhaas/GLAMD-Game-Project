@@ -1,10 +1,8 @@
 ﻿using Assets.Scripts.Controllers;
 using Assets.Scripts.Enumerations;
 using Assets.Scripts.Helpers;
-using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;

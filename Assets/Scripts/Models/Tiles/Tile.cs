@@ -3,7 +3,7 @@ using Assets.Scripts.Extensions;
 using UnityEngine;
 using Assets.Scripts.Utilities;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Models.Tiles
 {
 	public abstract class Tile
 		: MonoBehaviour

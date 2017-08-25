@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Models.Tiles
 {
 	public class StartTile
 		: Tile

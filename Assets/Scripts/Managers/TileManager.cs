@@ -1,10 +1,10 @@
 ﻿using Assets.Scripts.Enumerations;
-using Assets.Scripts.Models;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Assets.Scripts.Utilities;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Models.Tiles;
 
 namespace Assets.Scripts.Managers
 {

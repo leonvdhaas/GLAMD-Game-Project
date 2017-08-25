@@ -1,4 +1,4 @@
-﻿	using Assets.Scripts.Enumerations;
+﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
 using UnityEngine;
 using System.Linq;
@@ -6,8 +6,8 @@ using Assets.Scripts.Models;
 using System;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.Managers;
-using UnityEngine.SceneManagement;
-using Assets.Scripts.Utilities;
+using Assets.Scripts.Models.Tiles;
+using Assets.Scripts.Models.Pickups;
 
 namespace Assets.Scripts.Controllers
 {
@@ -171,7 +171,7 @@ namespace Assets.Scripts.Controllers
 					return;
 				}
 
-				GameManager.Instance.GuiManager.UpdateInhalerMeter((_inhalers = value) / (float)PickupController.MAX_NUMBER_OF_INHALERS);
+				GameManager.Instance.GuiManager.UpdateInhalerMeter((_inhalers = value) / (float)Inhaler.MAX_AMOUNT);
 			}
 		}
 
@@ -205,7 +205,7 @@ namespace Assets.Scripts.Controllers
 		{
 			get
 			{
-				return Inhalers == PickupController.MAX_NUMBER_OF_INHALERS && !InhalerPowerupActive;
+				return Inhalers == Inhaler.MAX_AMOUNT && !InhalerPowerupActive;
 			}
 		}
 

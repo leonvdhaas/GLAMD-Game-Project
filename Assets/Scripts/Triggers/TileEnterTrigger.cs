@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Controllers;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Models.Tiles;
 using UnityEngine;
 
 namespace Assets.Scripts.Models.Triggers

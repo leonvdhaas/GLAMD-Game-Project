@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Models;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Models.Tiles;
 
 namespace Assets.Scripts.Utilities
 {

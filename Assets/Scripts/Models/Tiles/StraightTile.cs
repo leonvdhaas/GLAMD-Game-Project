@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Managers;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Models.Tiles
 {
 	public class StraightTile
 		: Tile
