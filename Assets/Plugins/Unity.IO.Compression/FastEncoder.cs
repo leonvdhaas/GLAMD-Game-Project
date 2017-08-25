@@ -1,9 +1,9 @@
-namespace Unity.IO.Compression {
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
+namespace Unity.IO.Compression
+{
+	using System;
+	using System.Diagnostics;
 
-    internal class FastEncoder {
+	internal class FastEncoder {
 
         private FastEncoderWindow inputWindow; // input history window
         private Match currentMatch;            // current match in history window

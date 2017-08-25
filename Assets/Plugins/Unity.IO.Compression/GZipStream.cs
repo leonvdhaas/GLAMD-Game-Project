@@ -1,9 +1,9 @@
-namespace Unity.IO.Compression {
-    using System;
-    using System.IO;
-    using System.Diagnostics;
+namespace Unity.IO.Compression
+{
+	using System;
+	using System.IO;
 
-    public class GZipStream : Stream {
+	public class GZipStream : Stream {
 
         private DeflateStream deflateStream;
 

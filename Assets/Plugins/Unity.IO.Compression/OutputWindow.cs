@@ -1,16 +1,15 @@
 namespace Unity.IO.Compression
 {
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
+	using System;
+	using System.Diagnostics;
 
-    // This class maintains a window for decompressed output.
-    // We need to keep this because the decompressed information can be 
-    // a literal or a length/distance pair. For length/distance pair,
-    // we need to look back in the output window and copy bytes from there.
-    // We use a byte array of WindowSize circularly.
-    //
-    internal class OutputWindow {
+	// This class maintains a window for decompressed output.
+	// We need to keep this because the decompressed information can be 
+	// a literal or a length/distance pair. For length/distance pair,
+	// we need to look back in the output window and copy bytes from there.
+	// We use a byte array of WindowSize circularly.
+	//
+	internal class OutputWindow {
         
         private const int WindowSize = 32768;
         private const int WindowMask = 32767;

@@ -1,24 +1,23 @@
 namespace Unity.IO.Compression
 {
-    using System;
-    using System.Diagnostics;
-    
-    // Strictly speaking this class is not a HuffmanTree, this class is 
-    // a lookup table combined with a HuffmanTree. The idea is to speed up
-    // the lookup for short symbols (they should appear more frequently ideally.)
-    // However we don't want to create a huge table since it might take longer to 
-    // build the table than decoding (Deflate usually generates new tables frequently.)  
-    // 
-    // Jean-loup Gailly and Mark Adler gave a very good explanation about this.
-    // The full text (algorithm.txt) can be found inside 
-    // ftp://ftp.uu.net/pub/archiving/zip/zlib/zlib.zip.
-    //
-    // Following paper explains decoding in details:
-    //   Hirschberg and Lelewer, "Efficient decoding of prefix codes,"
-    //   Comm. ACM, 33,4, April 1990, pp. 449-459.
-    //
+	using System.Diagnostics;
 
-    internal class HuffmanTree {
+	// Strictly speaking this class is not a HuffmanTree, this class is 
+	// a lookup table combined with a HuffmanTree. The idea is to speed up
+	// the lookup for short symbols (they should appear more frequently ideally.)
+	// However we don't want to create a huge table since it might take longer to 
+	// build the table than decoding (Deflate usually generates new tables frequently.)  
+	// 
+	// Jean-loup Gailly and Mark Adler gave a very good explanation about this.
+	// The full text (algorithm.txt) can be found inside 
+	// ftp://ftp.uu.net/pub/archiving/zip/zlib/zlib.zip.
+	//
+	// Following paper explains decoding in details:
+	//   Hirschberg and Lelewer, "Efficient decoding of prefix codes,"
+	//   Comm. ACM, 33,4, April 1990, pp. 449-459.
+	//
+
+	internal class HuffmanTree {
         internal const int   MaxLiteralTreeElements         = 288;
         internal const int   MaxDistTreeElements            =  32;
         internal const int   EndOfBlockCode                 = 256;

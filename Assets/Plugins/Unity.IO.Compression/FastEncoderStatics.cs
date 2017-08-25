@@ -1,8 +1,8 @@
-namespace Unity.IO.Compression {
-    using System.Diagnostics;
-    using System.Globalization;
+namespace Unity.IO.Compression
+{
+	using System.Diagnostics;
 
-    internal static class FastEncoderStatics {
+	internal static class FastEncoderStatics {
         // static information for encoding, DO NOT MODIFY
 
         internal static readonly byte[] FastEncoderTreeStructureData = {
