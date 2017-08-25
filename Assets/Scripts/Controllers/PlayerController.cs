@@ -45,6 +45,22 @@ namespace Assets.Scripts.Controllers
 			CurrentTile = TileManager.Instance.Tiles.First();
 			GetComponentInChildren<SwipeControl>().SetMethodToCall(OnSwipe);
 
+			// Countdown.
+			StartCoroutine(CoroutineHelper.WaitUntil(() => GameManager.Instance.GuiManager != null, () =>
+			{
+				StartCoroutine(CoroutineHelper.For(
+				1,
+				() => 3,
+				i => i >= 0,
+				(ref int i) => i--,
+				i =>
+				{
+					GameManager.Instance.GuiManager.DisplayStartSignal(i);
+					Frozen = i != 0;
+				},
+				() => GameManager.Instance.GuiManager.DisplayStartSignal(null)));
+			}));
+
 			if (GameManager.Instance.CurrentGame.GameType == GameType.MultiplayerCreate)
 			{
 				StartCoroutine(CoroutineHelper.Repeat(ReplayGhostController.REPLAY_INTERVAL,
@@ -60,9 +76,9 @@ namespace Assets.Scripts.Controllers
 			animator = GetComponent<Animator>();
 			CurrentSpeed = (maxSpeed + minSpeed) / 2;
 			Orientation = Orientation.North;
-
 			Frozen = true;
-			StartCoroutine(CoroutineHelper.Delay(3, () => Frozen = false));
+
+			// Add points passively
 			StartCoroutine(CoroutineHelper.Repeat(
 				1.5f,
 				() =>

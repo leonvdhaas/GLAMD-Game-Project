@@ -209,6 +209,27 @@ namespace Assets.Scripts.Managers
 			coinsText.text = String.Format("× {0}", coins.ToString().PadLeft(3, '0'));
 		}
 
+		public void DisplayStartSignal(int? count)
+		{
+			if (count == null)
+			{
+				// startSignal.SetActive(false);
+				return;
+			}
+
+			// startSignal.SetActive(true);
+			if (count > 0)
+			{
+				//TODO: Show actual ingame count displays.
+				Debug.Log(count);
+			}
+			else
+			{
+				//TODO: Show actual ingame count displays.
+				Debug.Log("Go!");
+			}
+		}
+
 		public void DisplaySingleplayerEndScreen(int points, int coins, HighscoreUpdate highscoreUpdate = null)
 		{
 			string highscoreText = String.Empty;
