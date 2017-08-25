@@ -393,7 +393,7 @@ namespace Assets.Scripts.Managers
 
 			if (playSample)
 			{
-				sfxSliderDrag = StartCoroutine(CoroutineHelper.Delay(0.1f, () => SoundManager.Instance.PlaySoundEffect(Sound.Coin)));
+				sfxSliderDrag = StartCoroutine(CoroutineHelper.Delay(0.1f, () => SoundManager.Instance.PlaySoundEffect(Sound.Diamond)));
 			}
 		}
 
