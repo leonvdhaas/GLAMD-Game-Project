@@ -35,5 +35,15 @@ namespace Assets.Scripts.Models
 				return _text;
 			}
 		}
+
+		[SerializeField]
+		private string _category;
+		public string Category
+		{
+			get
+			{
+				return _category;
+			}
+		}
 	}
 }
