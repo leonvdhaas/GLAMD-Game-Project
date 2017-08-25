@@ -221,7 +221,7 @@ namespace Assets.Scripts.Managers
 			countDownText.enabled = true;
 			if (count > 0)
 			{
-				countDownText.text = count.ToString() + "..";
+				countDownText.text = String.Format("{0}..", count);
 			}
 			else
 			{
@@ -291,6 +291,7 @@ namespace Assets.Scripts.Managers
 					case MatchWinner.User:
 						mpChallengeMatchResult.color = winColor;
 						mpChallengeMatchResult.text = "GEWONNEN";
+						SoundManager.Instance.PlaySoundEffect(Sound.Victory);
 						break;
 					case MatchWinner.Opponent:
 						mpChallengeMatchResult.color = lossColor;

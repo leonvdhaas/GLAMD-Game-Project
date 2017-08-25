@@ -153,3 +153,5 @@ MonoBehaviour:
     _sound: 8
   - _clip: {fileID: 8300000, guid: d6c34f5b3e202ea48af43ae016f685dc, type: 3}
     _sound: 9
+  - _clip: {fileID: 8300000, guid: b216275aaea02bd4098a6db625a127ba, type: 3}
+    _sound: 10

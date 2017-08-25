@@ -94,7 +94,7 @@ namespace Assets.Scripts.Managers
 
 			if (scene.name == "MainStartMenu" && GameManager.Instance.User != null)
 			{
-				lblLoggedInAs.text = String.Format("Ingelogd als: {0}", GameManager.Instance.User.Username);
+				SetUsername(GameManager.Instance.User.Username);
 				homePanel.SetActive(true);
 			}
 			else
@@ -220,7 +220,7 @@ namespace Assets.Scripts.Managers
 				{
 					GameManager.Instance.User = user;
 
-					lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
+					SetUsername(username);
 					ClearInputFieldsAndErrors();
 					loginPanel.SetActive(false);
 					homePanel.SetActive(true);
@@ -304,7 +304,7 @@ namespace Assets.Scripts.Managers
 						{
 							GameManager.Instance.User = user;
 
-							lblLoggedInAs.text = String.Format("Ingelogd als: {0}", username);
+							SetUsername(username);
 							ClearInputFieldsAndErrors();
 							registerPanel.SetActive(false);
 							homePanel.SetActive(true);
@@ -321,6 +321,11 @@ namespace Assets.Scripts.Managers
 					SetLoginError(lblErrorConfirmPassword, "Er is iets fout gegaan");
 					isProcessingButton = false;
 				}));
+		}
+
+		private void SetUsername(string username)
+		{
+			lblLoggedInAs.text = String.Format("Gebruiker: {0}", username);
 		}
 
 		public void ClearInputFieldsAndErrors()

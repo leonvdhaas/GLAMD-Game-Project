@@ -11,6 +11,7 @@
 		Heart,
 		CoinDoubler,
 		Diamond,
-		InhalerActivate
+		InhalerActivate,
+		Victory
 	}
 }
