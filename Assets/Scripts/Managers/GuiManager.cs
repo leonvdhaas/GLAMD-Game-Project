@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Controllers;
-using Assets.Scripts.Enumerations;
+﻿using Assets.Scripts.Enumerations;
 using PlayfulSystems.ProgressBar;
 using System;
 using UnityEngine;
@@ -352,7 +351,7 @@ namespace Assets.Scripts.Managers
 			if (!GameManager.Instance.Paused)
 			{
 				inhalerButton.GetComponent<Button>().interactable = false;
-				GameManager.Instance.Player.ActivateInhaler(Inhaler.TIME, Inhaler.SPEED);
+				GameManager.Instance.Player.ActivateInhaler(Inhaler.DURATION, Inhaler.SPEED_BONUS);
 			}
 		}
 
