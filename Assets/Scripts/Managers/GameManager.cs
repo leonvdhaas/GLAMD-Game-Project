@@ -127,7 +127,7 @@ namespace Assets.Scripts.Managers
 
 		public bool Paused { get; internal set; }
 
-		public bool SkipInstructions { get; set; }
+		public bool ShowInstructions { get; set; }
 
 		public void StartSingleplayerGame()
 		{
@@ -157,16 +157,7 @@ namespace Assets.Scripts.Managers
 				OpponentId = opponentId
 			};
 
-			if (SkipInstructions)
-			{
-				if (MenuManager != null)
-				{
-					MenuManager.ShowLoadingScreen();
-				}
-
-				StartGame(game);
-			}
-			else
+			if (ShowInstructions)
 			{
 				StartCoroutine(CoroutineHelper.For(
 					2,
@@ -175,6 +166,15 @@ namespace Assets.Scripts.Managers
 					(ref int i) => i++,
 					i => MenuManager.ShowLoadingScreen(i),
 					() => StartGame(game)));
+			}
+			else
+			{
+				if (MenuManager != null)
+				{
+					MenuManager.ShowLoadingScreen();
+				}
+
+				StartGame(game);
 			}
 		}
 

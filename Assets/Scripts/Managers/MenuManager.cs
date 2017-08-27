@@ -134,7 +134,7 @@ namespace Assets.Scripts.Managers
 
 			soundEffectSlider.value = SoundManager.Instance.SoundEffectVolume;;
 			musicSlider.value = SoundManager.Instance.MusicVolume;
-			instructionsToggle.isOn = !GameManager.Instance.SkipInstructions;
+			instructionsToggle.isOn = GameManager.Instance.ShowInstructions;
 
 			StartCoroutine(CoroutineHelper.Delay(0.5f, () => playSample = true));
 		}
@@ -425,7 +425,7 @@ namespace Assets.Scripts.Managers
 
 		public void SetShowInstructions(bool enabled)
 		{
-			GameManager.Instance.SkipInstructions = !enabled;
+			GameManager.Instance.ShowInstructions = enabled;
 		}
 	}
 }
