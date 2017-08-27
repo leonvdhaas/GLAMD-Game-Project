@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Controllers;
 using Assets.Scripts.Enumerations;
+using Assets.Scripts.Helpers;
 using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
@@ -126,6 +127,8 @@ namespace Assets.Scripts.Managers
 
 		public bool Paused { get; internal set; }
 
+		public bool SkipInstructions { get; set; }
+
 		public void StartSingleplayerGame()
 		{
 			SetRandomSeed();
@@ -146,18 +149,38 @@ namespace Assets.Scripts.Managers
 
 		private void StartGame(GameType gameType, Match match, Replay replay, Guid? opponentId)
 		{
-			if (MenuManager != null)
-			{
-				MenuManager.ShowLoadingScreen();
-			}
-
-			CurrentGame = new Game
+			var game = new Game
 			{
 				GameType = gameType,
 				Match = match,
 				Replay = replay,
 				OpponentId = opponentId
 			};
+
+			if (SkipInstructions)
+			{
+				if (MenuManager != null)
+				{
+					MenuManager.ShowLoadingScreen();
+				}
+
+				StartGame(game);
+			}
+			else
+			{
+				StartCoroutine(CoroutineHelper.For(
+					2,
+					() => 0,
+					i => i < 2 && MenuManager != null,
+					(ref int i) => i++,
+					i => MenuManager.ShowLoadingScreen(i),
+					() => StartGame(game)));
+			}
+		}
+
+		private void StartGame(Game game)
+		{
+			CurrentGame = game;
 
 #if UNITY_ADS
 			if (adCounter++ % AD_SHOW_AMOUNT == 0)

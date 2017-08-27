@@ -25,6 +25,10 @@ namespace Assets.Scripts.Managers
 		private GameObject manualPanel;
 		[SerializeField]
 		private GameObject loadingPanel;
+		[SerializeField]
+		private GameObject controlsLoadingPanel;
+		[SerializeField]
+		private GameObject powerupsLoadingPanel;
 
 		[Header("Input Fields")]
 		[SerializeField]
@@ -56,11 +60,13 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text lblCategory;
 
-		[Header("Sliders")]
+		[Header("Settings")]
 		[SerializeField]
 		private Slider soundEffectSlider;
 		[SerializeField]
 		private Slider musicSlider;
+		[SerializeField]
+		private Toggle instructionsToggle;
 
 		[Header("Colors")]
 		[SerializeField]
@@ -88,7 +94,7 @@ namespace Assets.Scripts.Managers
 
 		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
-			UpdateVolumeSliders();
+			UpdateSettings();
 
 			if (scene.name == "MainStartMenu" && GameManager.Instance.User != null)
 			{
@@ -106,12 +112,29 @@ namespace Assets.Scripts.Managers
 			loadingPanel.SetActive(true);
 		}
 
-		private void UpdateVolumeSliders()
+		public void ShowLoadingScreen(int part)
+		{
+			switch (part)
+			{
+				case 0:
+					controlsLoadingPanel.SetActive(true);
+					break;
+				case 1:
+					powerupsLoadingPanel.SetActive(true);
+					controlsLoadingPanel.SetActive(false);
+					break;
+				default:
+					throw new InvalidOperationException("Unknown loading screen part provided.");
+			}
+		}
+
+		private void UpdateSettings()
 		{
 			playSample = false;
 
 			soundEffectSlider.value = SoundManager.Instance.SoundEffectVolume;;
 			musicSlider.value = SoundManager.Instance.MusicVolume;
+			instructionsToggle.isOn = !GameManager.Instance.SkipInstructions;
 
 			StartCoroutine(CoroutineHelper.Delay(0.5f, () => playSample = true));
 		}
@@ -398,6 +421,11 @@ namespace Assets.Scripts.Managers
 		public void SetMusicVolume(float volume)
 		{
 			SoundManager.Instance.MusicVolume = volume;
+		}
+
+		public void SetShowInstructions(bool enabled)
+		{
+			GameManager.Instance.SkipInstructions = !enabled;
 		}
 	}
 }
