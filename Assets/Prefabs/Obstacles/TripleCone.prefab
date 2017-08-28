@@ -22,8 +22,6 @@ GameObject:
   - component: {fileID: 33824669820362912}
   - component: {fileID: 23113745303578352}
   - component: {fileID: 95503849653495218}
-  - component: {fileID: 65970414281834764}
-  - component: {fileID: 114038658015055510}
   m_Layer: 0
   m_Name: ObstacleWorkCone_Death
   m_TagString: Untagged
@@ -57,8 +55,6 @@ GameObject:
   - component: {fileID: 33496378702266796}
   - component: {fileID: 23380250052046648}
   - component: {fileID: 95829540692706548}
-  - component: {fileID: 65567655436507646}
-  - component: {fileID: 114032489535751002}
   m_Layer: 0
   m_Name: ObstacleWorkCone_Death
   m_TagString: Untagged
@@ -92,8 +88,6 @@ GameObject:
   - component: {fileID: 33443292508933110}
   - component: {fileID: 23357497958624650}
   - component: {fileID: 95882872616987882}
-  - component: {fileID: 65800811735496600}
-  - component: {fileID: 114910924616506554}
   m_Layer: 0
   m_Name: ObstacleWorkCone_Death
   m_TagString: Untagged
@@ -109,6 +103,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4255932717018852}
+  - component: {fileID: 114880329436418078}
+  - component: {fileID: 65459284754432076}
   m_Layer: 0
   m_Name: TripleCone
   m_TagString: Untagged
@@ -345,42 +341,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151080948440826}
   m_Mesh: {fileID: 4300000, guid: ab30e9b3cdf96c841bfd6b702a6bd5fa, type: 3}
---- !u!65 &65567655436507646
+--- !u!65 &65459284754432076
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1515060711453170}
+  m_GameObject: {fileID: 1847703011188664}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.46470276, y: 0.76006556, z: 0.46470279}
-  m_Center: {x: 0, y: 0.38003278, z: -0.000000007450581}
---- !u!65 &65800811735496600
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1803276027273306}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.46470276, y: 0.76006556, z: 0.46470279}
-  m_Center: {x: 0, y: 0.38003278, z: -0.000000007450581}
---- !u!65 &65970414281834764
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1151080948440826}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.46470276, y: 0.76006556, z: 0.46470279}
-  m_Center: {x: 0, y: 0.38003278, z: -0.000000007450581}
+  m_Size: {x: 1.3, y: 0.78, z: 0.4}
+  m_Center: {x: 0, y: 0.39, z: 0.08}
 --- !u!95 &95503849653495218
 Animator:
   serializedVersion: 3
@@ -432,34 +404,12 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114032489535751002
+--- !u!114 &114880329436418078
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1515060711453170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d459b02a269a347459c4cfffa5e5cdf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114038658015055510
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1151080948440826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d459b02a269a347459c4cfffa5e5cdf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114910924616506554
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1803276027273306}
+  m_GameObject: {fileID: 1847703011188664}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d459b02a269a347459c4cfffa5e5cdf5, type: 3}
