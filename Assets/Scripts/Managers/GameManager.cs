@@ -28,6 +28,8 @@ namespace Assets.Scripts.Managers
 			{
 				Instance = this;
 				DontDestroyOnLoad(gameObject);
+
+				ShowInstructions = true;
 			}
 			else
 			{
