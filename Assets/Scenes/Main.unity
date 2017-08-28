@@ -2172,6 +2172,8 @@ MonoBehaviour:
   bin: {fileID: 1098298507755292, guid: bcf134bc3c3067b40ad95ff44ddbee11, type: 2}
   roadBarrier: {fileID: 1285103674476818, guid: 44892d434c949ad4bb5162ebb597a32c,
     type: 2}
+  alternativeBox: {fileID: 1100135662662102, guid: 19940bf296638e448b08f03a5832a75f,
+    type: 2}
   doubleCoins: {fileID: 1293149959539180, guid: 87c626787f796344a8713d675eac49de,
     type: 2}
   inhaler: {fileID: 1817109485504760, guid: f024e9b4a78e64d4ea421afe09e9a6a8, type: 2}
@@ -6711,6 +6713,52 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1844317811}
+--- !u!1001 &1870249489
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560989882088122, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100135662662102, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 19940bf296638e448b08f03a5832a75f, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1895243908
 GameObject:
   m_ObjectHideFlags: 0

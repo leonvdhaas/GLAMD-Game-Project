@@ -55,6 +55,8 @@ namespace Assets.Scripts.Utilities
 		private GameObject bin;
 		[SerializeField]
 		private GameObject roadBarrier;
+		[SerializeField]
+		private GameObject alternativeBox;
 
 		// Pickups
 		[SerializeField]
@@ -120,7 +122,7 @@ namespace Assets.Scripts.Utilities
 
 		private GameObject JumpableObstacle()
 		{
-			return RandomUtilities.Pick(cone, bin, container);
+			return RandomUtilities.Pick(cone, bin, container, alternativeBox);
 		}
 
 		private SpawnObject SetPickupOrPowerup(TilePopulation tilePopulation, SpawnObject pickup)
@@ -171,12 +173,12 @@ namespace Assets.Scripts.Utilities
 			return retval;
 		}
 
-		private bool rowchance()
+		private bool RowChance()
 		{
 			return RandomUtilities.PercentageChance(Chances.SpawnObstacle.ObstacleChance / 4); // kans op rij dozen
 		}
 
-		private bool movingchance()
+		private bool MovingChance()
 		{
 			return RandomUtilities.PercentageChance(Chances.SpawnObstacle.ObstacleChance / 2); // kans op een bewegende auto
 		}
@@ -206,12 +208,12 @@ namespace Assets.Scripts.Utilities
 
 		private GameObject ObstacleOrBoth()
 		{
-			if (rowchance() && !rowBoxes)
+			if (RowChance() && !rowBoxes)
 			{
 				rowBoxes = true;
 				return box;
 			}
-			else if (movingchance() && !movingCar)
+			else if (MovingChance() && !movingCar)
 			{
 				movingCar = true;
 				return cartoonCar;
@@ -224,7 +226,7 @@ namespace Assets.Scripts.Utilities
 
 		private GameObject ObstacleOrMoving()
 		{
-			if (movingchance() && !movingCar)
+			if (MovingChance() && !movingCar)
 			{
 				movingCar = true;
 				return cartoonCar;
@@ -237,7 +239,7 @@ namespace Assets.Scripts.Utilities
 
 		private GameObject ObstacleOrRow()
 		{
-			if (rowchance() && !rowBoxes)
+			if (RowChance() && !rowBoxes)
 			{
 				return box;
 			}
