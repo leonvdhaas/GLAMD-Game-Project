@@ -3173,9 +3173,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 0.5
-  minSpeed: 12.5
-  maxSpeed: 20
-  jumpSpeed: 17.5
+  minSpeed: 10
+  maxSpeed: 14.5
+  jumpSpeed: 15
   laneSwapSpeed: 12.5
   minimumLaneSwapSpeed: 0.5
 --- !u!114 &114805417747465606
