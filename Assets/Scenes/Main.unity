@@ -2236,11 +2236,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85ee689e7eb73a42873182f11cff89c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 1271141269317222, guid: 99d4b2c166e3e8b46ba8f91d17fbd3e2, type: 2}
   cartoonCar: {fileID: 129892, guid: b7f262220eb08454cb74573cb40cd9e6, type: 2}
   jeep: {fileID: 149270, guid: 3f1a81100d0d7674dbd0c2d94e6d0c3b, type: 2}
   box: {fileID: 154496, guid: 0d194ddaf516e5e46b54f439d19175bf, type: 2}
   hotdogTruck: {fileID: 100008, guid: 4d54456f28c5642498222e5464a3596d, type: 2}
   pizzaTruck: {fileID: 105954, guid: 6b689d5ba6d2be94aafb7b71d42f1619, type: 2}
+  cone: {fileID: 1923799675819514, guid: cdf7a41e4557f2b4aaced6c7dc61d5c1, type: 2}
+  bin: {fileID: 1098298507755292, guid: bcf134bc3c3067b40ad95ff44ddbee11, type: 2}
+  roadBarrier: {fileID: 1285103674476818, guid: 44892d434c949ad4bb5162ebb597a32c,
+    type: 2}
   doubleCoins: {fileID: 1293149959539180, guid: 87c626787f796344a8713d675eac49de,
     type: 2}
   inhaler: {fileID: 1817109485504760, guid: f024e9b4a78e64d4ea421afe09e9a6a8, type: 2}
@@ -2248,6 +2253,8 @@ MonoBehaviour:
   heart: {fileID: 1326108627307978, guid: acebd88c07e24574d964cb440f403e8c, type: 2}
   coin: {fileID: 1530552356750620, guid: cd651e4fd702d5b42b91f9b75c9320f8, type: 2}
   diamond: {fileID: 1654676593943028, guid: 22b15716d5d43734380eb1369d1375e6, type: 2}
+  moveTrigger: {fileID: 1480040401415728, guid: ce173a927b1dc1042a8f43651bbce170,
+    type: 2}
 --- !u!114 &519243200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2261,7 +2268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startTile: {fileID: 4997285563036800, guid: 8fc778256bfda0341836ef219a80decc, type: 2}
-  straightTile: {fileID: 4074892411073346, guid: c65477e8b68305a4baa1c4e9c377f065,
+  straightTile: {fileID: 4074892411073346, guid: acc95424260d6d24ea20caeac74474cc,
     type: 2}
   leftCornerTile: {fileID: 4977549205819974, guid: 1923caca34b348a46b001b5d154f2375,
     type: 2}
