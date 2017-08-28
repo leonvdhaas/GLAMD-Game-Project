@@ -380,9 +380,9 @@ namespace Assets.Scripts.Utilities
 						{
 							spawnObstacle.Object = ObstacleChance();
 						}
-						else if (e > 0 && e < 4)
+						else if (e > 0 && e < 5)
 						{
-							if (e > 2)
+							if (e > 1)
 							{
 								spawnObstacle.Object = ObstacleOrBoth();
 							}
@@ -441,7 +441,7 @@ namespace Assets.Scripts.Utilities
 								tilePopulation.Blocks[e][groundspawns][guideline, a].Alive = false;
 							}
 
-							tilePopulation.Blocks[e][airspawns][0, i] = SetPickupOrPowerup(tilePopulation, tilePopulation.Blocks[e][airspawns][0, i]);
+							tilePopulation.Blocks[e][airspawns][0, i].Object = PickupChance();
 						}
 					}
 					else if (!obstacle.Alive && obstacle.Object == null)
@@ -491,6 +491,19 @@ namespace Assets.Scripts.Utilities
 			}
 
 			int rowLength = RowLength();
+			if (rowStartBlock != 0)
+			{
+				tilePopulation.Blocks[rowStartBlock - 1][spawnobstacles][0, rowLineStart].Alive = false;
+				tilePopulation.Blocks[rowStartBlock - 1][airspawns][0, rowLineStart].Alive = false;
+
+				for (int airspawncount = 0; airspawncount < 5; airspawncount++)
+				{
+					tilePopulation.Blocks[rowStartBlock - 1][jumpoverobstacles][rowLineStart, airspawncount].Alive = false;
+					tilePopulation.Blocks[rowStartBlock + rowLength][jumpoverobstacles][rowLineStart, airspawncount].Alive = false;
+				}
+			}
+			tilePopulation.Blocks[rowStartBlock + rowLength][spawnobstacles][0, rowLineStart].Alive = false;
+			tilePopulation.Blocks[rowStartBlock + rowLength][airspawns][0, rowLineStart].Alive = false;
 
 			for (int block = rowStartBlock; block < (rowStartBlock + rowLength); block++)
 			{
@@ -517,17 +530,6 @@ namespace Assets.Scripts.Utilities
 						tilePopulation.Blocks[block][boxcoins][rowLineStart, boxcoincount].Alive = true;
 					}
 				}
-			}
-
-			tilePopulation.Blocks[rowStartBlock - 1][spawnobstacles][0, rowLineStart].Alive = false;
-			tilePopulation.Blocks[rowStartBlock + rowLength][spawnobstacles][0, rowLineStart].Alive = false;
-			tilePopulation.Blocks[rowStartBlock - 1][airspawns][0, rowLineStart].Alive = false;
-			tilePopulation.Blocks[rowStartBlock + rowLength][airspawns][0, rowLineStart].Alive = false;
-
-			for (int airspawncount = 0; airspawncount < 5; airspawncount++)
-			{
-				tilePopulation.Blocks[rowStartBlock - 1][jumpoverobstacles][rowLineStart, airspawncount].Alive = false;
-				tilePopulation.Blocks[rowStartBlock + rowLength][jumpoverobstacles][rowLineStart, airspawncount].Alive = false;
 			}
 		}
 
@@ -556,11 +558,11 @@ namespace Assets.Scripts.Utilities
 
 			if (found)
 			{
-				tilePopulation.MoveTrigger.Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/GroundSpawns/Line {1}/GroundSpawn{2}", movingStartBlock - moveLength + 1, 1, 0));
+				tilePopulation.MoveTrigger.Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/GroundSpawns/Line {1}/GroundSpawn{2}", movingStartBlock - moveLength, 1, 0));
 				tilePopulation.MoveTrigger.Object = moveTrigger;
 			}
 
-			for (int block = movingStartBlock; block >= (movingStartBlock - moveLength); block--)
+			for (int block = movingStartBlock - 1; block >= (movingStartBlock - moveLength); block--)
 			{
 				for (int boxcount = 0; boxcount < 3; boxcount++)
 				{
@@ -637,7 +639,7 @@ namespace Assets.Scripts.Utilities
 				}
 			}
 
-			if (tilePopulation.MoveTrigger.Alive && tilePopulation.MoveTrigger.Object != null && tilePopulation.MoveTrigger.Location != null)
+			if (tilePopulation.MoveTrigger.Location != null)
 			{
 				Instantiate(
 						tilePopulation.MoveTrigger.Object,
