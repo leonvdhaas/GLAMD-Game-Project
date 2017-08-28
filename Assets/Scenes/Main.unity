@@ -4565,6 +4565,7 @@ MonoBehaviour:
   coinsText: {fileID: 1698571779}
   pointsText: {fileID: 1827478770}
   countDownText: {fileID: 2117322391}
+  countdownGrowthDelta: 0.05
   pauseButton: {fileID: 1587340602}
   pausePanel: {fileID: 878247838}
   leftHeart: {fileID: 1430713850}
@@ -5511,7 +5512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 383.964, y: -550}
+  m_AnchoredPosition: {x: 383.96396, y: -550}
   m_SizeDelta: {x: 550, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1593953188
@@ -7921,6 +7922,8 @@ GameObject:
   - component: {fileID: 2117322389}
   - component: {fileID: 2117322390}
   - component: {fileID: 2117322391}
+  - component: {fileID: 2117322393}
+  - component: {fileID: 2117322392}
   m_Layer: 5
   m_Name: CountDownText
   m_TagString: Untagged
@@ -7943,7 +7946,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 325}
+  m_AnchoredPosition: {x: 0, y: 180}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2117322390
@@ -7972,8 +7975,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 52051252843e45b499191c3d11085a1c, type: 3}
-    m_FontSize: 130
+    m_Font: {fileID: 12800000, guid: de9a1d5cdc591cd4d90a80e5267e2b3f, type: 3}
+    m_FontSize: 110
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -7985,6 +7988,34 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &2117322392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2117322388}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.25490198, g: 0.26666668, b: 0.2784314, a: 1}
+  m_EffectDistance: {x: -5, y: -5}
+  m_UseGraphicAlpha: 1
+--- !u!114 &2117322393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2117322388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2136478772 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1300576098593292, guid: 372bfc8f1fe466348b6af042ac419fef,

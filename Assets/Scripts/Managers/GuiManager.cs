@@ -23,6 +23,8 @@ namespace Assets.Scripts.Managers
 		[SerializeField]
 		private Text countDownText;
 		[SerializeField]
+		private float countdownGrowthDelta;
+		[SerializeField]
 		private GameObject pauseButton;
 		[SerializeField]
 		private GameObject pausePanel;
@@ -115,6 +117,8 @@ namespace Assets.Scripts.Managers
 		private ProgressBarPro inhaler;
 		private ProgressBarPro slowmotion;
 
+		private RectTransform countdownRect;
+
 		private void Start()
 		{
 			GameManager.Instance.GuiManager = this;
@@ -124,6 +128,7 @@ namespace Assets.Scripts.Managers
 			slowmotion = slowmotionBar.GetComponent<ProgressBarPro>();
 
 			inhalerBar.GetComponentInChildren<BarViewSizeImageFill>().SetNumSteps(Inhaler.MAX_AMOUNT);
+			countdownRect = countDownText.GetComponent<RectTransform>();
 		}
 
 		public void UpdateCoinDoublerMeter(float percentage)
@@ -156,6 +161,12 @@ namespace Assets.Scripts.Managers
 			UpdateProgressBar(inhaler, targetInhalerMeter);
 			UpdateProgressBar(coinDoubler, targetCoinDoublerMeter);
 			UpdateProgressBar(slowmotion, targetSlowmotionMeter);
+
+
+			if (countdownRect.localScale != Vector3.one)
+			{
+				countdownRect.localScale = Vector3.MoveTowards(countdownRect.localScale, Vector3.one, countdownGrowthDelta);
+			}
 		}
 
 		private void UpdateProgressBar(ProgressBarPro progressBar, float target)
@@ -219,6 +230,8 @@ namespace Assets.Scripts.Managers
 			}
 
 			countDownText.enabled = true;
+			countDownText.GetComponent<RectTransform>().localScale = Vector3.zero;
+
 			if (count > 0)
 			{
 				countDownText.text = String.Format("{0}..", count);
