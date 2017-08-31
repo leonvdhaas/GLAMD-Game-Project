@@ -219,8 +219,6 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
-			Debug.Log(animator.GetFloat("Speed"));
-
 			// Don't do anything when frozen or paused.
 			if (Frozen || GameManager.Instance.Paused)
 			{
