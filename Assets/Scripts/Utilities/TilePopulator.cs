@@ -95,30 +95,26 @@ namespace Assets.Scripts.Utilities
 		// BoxRow
 		private int rowStartBlock;
 		private int rowLineStart;
-		private bool rowBoxes;
+		private bool rowBoxes = false;
 
 		// Moving car
 		private int movingStartBlock;
 		private int movingLineStart;
 		private bool movingCar = false;
 
-		private int pickupCount = 0;
-		private bool bigObstacle = false;
-
 		private int guideline;  // lijn met muntjes voor de speler om te volgen mits een stuk baan leeg is
+        private int maxPowerup = 2; // max aantal powerups per straightile
 
 		private void Awake()
 		{
 			Chances = new Generator();
-			//StartCoroutine(CoroutineHelper.For(
-			//    15,
-			//    () => 20,
-			//    i => i <= 45,
-			//    (ref int i) => i += 2,
-			//    i => Chances.Fill(i, 20, 10, 70 - i)));
-
-			Chances.Fill(55, 20, 20, 05);
-		}
+            StartCoroutine(CoroutineHelper.For(
+                15,
+                () => 25,
+                i => i <= 55,
+                (ref int i) => i += 2,
+                i => Chances.Fill(i, 30, 20, 30 - i)));
+        }
 
 		private GameObject JumpableObstacle()
 		{
@@ -127,11 +123,11 @@ namespace Assets.Scripts.Utilities
 
 		private SpawnObject SetPickupOrPowerup(TilePopulation tilePopulation, SpawnObject pickup)
 		{
-			if (RandomUtilities.PercentageChance(Chances.Spawn.PickupChance))
+			if (RandomUtilities.PercentageChance(Chances.SpawnObstacle.PickupChance))
 			{
 				pickup.Object = GetPickup(tilePopulation, pickup);
 			}
-			else if (RandomUtilities.PercentageChance(Chances.Spawn.CoinChance))
+			else if (RandomUtilities.PercentageChance(Chances.SpawnObstacle.CoinChance))
 			{
 				pickup.Object = CoinChance();
 			}
@@ -144,9 +140,13 @@ namespace Assets.Scripts.Utilities
 
 		private SpawnObject BoxPickupOrPowerup(TilePopulation tilePopulation, SpawnObject pickup)
 		{
-			if (RandomUtilities.PercentageChance(Chances.Spawn.PickupChance))
+			if (RandomUtilities.PercentageChance(Chances.SpawnObstacle.PickupChance / 4))  // kans pickupspawn boven op dozen, heel veel spawnpunten achter elkaar dus kans lager anders ineens 3/4 powerups
 			{
-				pickup.Object = GetPickup(tilePopulation, pickup);
+                if (tilePopulation.PickupCount < maxPowerup)
+                {
+                    pickup.Object = PickupChance();
+                    tilePopulation.PickupCount++;
+                }
 			}
 			else
 			{
@@ -160,7 +160,7 @@ namespace Assets.Scripts.Utilities
 			var retval = new GameObject();
 
 			// How many pickups per straight tile.
-			if (tilePopulation.PickupCount < 1)
+			if (tilePopulation.PickupCount < maxPowerup)
 			{
 				retval = PickupChance();
 				tilePopulation.PickupCount++;
@@ -175,7 +175,7 @@ namespace Assets.Scripts.Utilities
 
 		private bool RowChance()
 		{
-			return RandomUtilities.PercentageChance(Chances.SpawnObstacle.ObstacleChance / 4); // kans op rij dozen
+            return RandomUtilities.PercentageChance(Chances.SpawnObstacle.ObstacleChance / 5); // kans op rij dozen
 		}
 
 		private bool MovingChance()
@@ -186,7 +186,7 @@ namespace Assets.Scripts.Utilities
 		private GameObject CoinChance()
 		{
 			return RandomUtilities.WeightedPick(
-				diamond.ToWeightedItem(2),
+				diamond.ToWeightedItem(1),
 				coin.ToWeightedItem(20));
 		}
 
@@ -210,13 +210,11 @@ namespace Assets.Scripts.Utilities
 		{
 			if (RowChance() && !rowBoxes)
 			{
-				rowBoxes = true;
 				return box;
 			}
 			else if (MovingChance() && !movingCar)
 			{
-				movingCar = true;
-				return cartoonCar;
+				return RandomUtilities.Pick(cartoonCar, jeep);
 			}
 			else
 			{
@@ -228,9 +226,8 @@ namespace Assets.Scripts.Utilities
 		{
 			if (MovingChance() && !movingCar)
 			{
-				movingCar = true;
-				return cartoonCar;
-			}
+				return RandomUtilities.Pick(cartoonCar, jeep);
+            }
 			else
 			{
 				return ObstacleChance();
@@ -341,10 +338,10 @@ namespace Assets.Scripts.Utilities
 							}
 						}
 					}
+                    tilePopulation.MoveTrigger = new SpawnObject();
+                    tilePopulation.MoveTrigger.Object = moveTrigger;
 
-					tilePopulation.MoveTrigger = new SpawnObject();
-
-					Block[0] = tilePopulation.SpawnObstacles;
+                    Block[0] = tilePopulation.SpawnObstacles;
 					Block[1] = tilePopulation.AirSpawns;
 					Block[2] = tilePopulation.Boxes;
 					Block[3] = tilePopulation.GroundSpawns;
@@ -362,9 +359,6 @@ namespace Assets.Scripts.Utilities
 
 		private void FillStatic(TilePopulation tilePopulation)
 		{
-			rowBoxes = false;
-			movingCar = false;
-
 			for (int e = 0; e < 5; e++)
 			{
 				if (e % 1 == 0)
@@ -380,7 +374,7 @@ namespace Assets.Scripts.Utilities
 						{
 							spawnObstacle.Object = ObstacleChance();
 						}
-						else if (e > 0 && e < 5)
+						else if (e > 0 && e < 4)
 						{
 							if (e > 1)
 							{
@@ -402,7 +396,7 @@ namespace Assets.Scripts.Utilities
 							rowStartBlock = e;
 						}
 
-						if (spawnObstacle.Object == cartoonCar && !movingCar)
+						if ((spawnObstacle.Object == cartoonCar || spawnObstacle.Object == jeep) && !movingCar)
 						{
 							movingCar = true;
 							movingStartBlock = e;
@@ -421,9 +415,9 @@ namespace Assets.Scripts.Utilities
 				for (int i = 0; i < 3; i++) // jump or not jump over obstacle, pickups
 				{
 					SpawnObject obstacle = tilePopulation.Blocks[e][spawnobstacles][0, i];
-					if ((obstacle.Object == cone || obstacle.Object == bin || obstacle.Object == container) && (obstacle.Alive))
+					if ((obstacle.Object == cone || obstacle.Object == bin || obstacle.Object == container || obstacle.Object == alternativeBox) && (obstacle.Alive))
 					{
-						if (RandomUtilities.PercentageChance(Chances.Spawn.CoinChance))
+						if (RandomUtilities.PercentageChance(Chances.SpawnObstacle.CoinChance)) // kans voor een boog muntjes
 						{
 							for (int a = 0; a < 5; a++)
 							{
@@ -433,7 +427,7 @@ namespace Assets.Scripts.Utilities
 
 							tilePopulation.Blocks[e][airspawns][0, i].Alive = false;
 						}
-						else if ((RandomUtilities.PercentageChance(Chances.Spawn.PickupChance)))
+						else if ((RandomUtilities.PercentageChance(Chances.SpawnObstacle.PickupChance))) // kans voor een powerup boven obstakel
 						{
 							for (int a = 0; a < 5; a++)
 							{
@@ -454,8 +448,8 @@ namespace Assets.Scripts.Utilities
 						tilePopulation.Blocks[e][airspawns][0, i].Alive = false;
 					}
 				}
-				if (!tilePopulation.Blocks[e][spawnobstacles][0, guideline].Alive && tilePopulation.Blocks[e][spawnobstacles][0, guideline].Object == null &&
-					RandomUtilities.PercentageChance(Chances.Spawn.CoinChance))
+				if (tilePopulation.Blocks[e][spawnobstacles][0, guideline].Object == null &&
+					RandomUtilities.PercentageChance(Chances.SpawnObstacle.CoinChance))
 				{
 					for (int b = 0; b < tilePopulation.Blocks[e][groundspawns].GetLength(1); b++)
 					{
@@ -466,23 +460,23 @@ namespace Assets.Scripts.Utilities
 				}
 			}
 
-			if (rowBoxes)
-			{
-				FillBoxRows(tilePopulation);
-			}
+            if (rowBoxes)
+            {
+                FillBoxRows(tilePopulation);
+            }
 
-			if (movingCar)
-			{
-				FillMoving(tilePopulation);
-			}
+            if (movingCar)
+            {
+                FillMoving(tilePopulation);
+            }
 
-			FillBigObstacles(tilePopulation);
+            FillBigObstacles(tilePopulation);
 			Spawn(tilePopulation);
 		}
 
 		private void FillBoxRows(TilePopulation tilePopulation)
 		{
-			for (int e = 0; e < 5; e++)
+			for (int e = 1; e < 4; e++)
 			{
 				for (int i = 0; i < 3; i++)
 				{
@@ -535,44 +529,46 @@ namespace Assets.Scripts.Utilities
 
 		private void FillMoving(TilePopulation tilePopulation)
 		{
-			bool found = false;
 			for (int b = 4; b > 1; b--)
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					if (tilePopulation.Blocks[b][spawnobstacles][0, i].Object == cartoonCar && i != rowLineStart && !found)
+                    GameObject movingobject = tilePopulation.Blocks[b][spawnobstacles][0, i].Object;
+                    if ((movingobject == cartoonCar || movingobject == jeep) && !rowBoxes)
 					{
 						movingLineStart = i;
 						movingStartBlock = b;
 						tilePopulation.Blocks[b][spawnobstacles][0, i].Move = true;
-						found = true;
 					}
-					else if (tilePopulation.Blocks[b][spawnobstacles][0, i].Object == cartoonCar && found)
-					{
-						tilePopulation.Blocks[b][spawnobstacles][0, i].Object = JumpableObstacle();
-					}
+                    else if ((movingobject == cartoonCar || movingobject == jeep) && i != rowLineStart && rowBoxes)
+                    {
+                        movingLineStart = i;
+                        movingStartBlock = b;
+                        tilePopulation.Blocks[b][spawnobstacles][0, i].Move = true;
+                    }
 				}
 			}
 
 			int moveLength = MovingLength();
+            int moveTriggerAdjustment = 2;
+            if (movingStartBlock - moveLength - moveTriggerAdjustment < 0) { moveTriggerAdjustment = 1; }
+		    tilePopulation.MoveTrigger.Location = tilePopulation.Blocks[movingStartBlock - moveLength - moveTriggerAdjustment][groundspawns][1, 0].Location;
 
-			if (found)
-			{
-				tilePopulation.MoveTrigger.Location = tilePopulation.Tile.transform.Find(String.Format("Spawner/Block {0}/GroundSpawns/Line {1}/GroundSpawn{2}", movingStartBlock - moveLength, 1, 0));
-				tilePopulation.MoveTrigger.Object = moveTrigger;
-			}
-
-			for (int block = movingStartBlock - 1; block >= (movingStartBlock - moveLength); block--)
+			for (int block = movingStartBlock - 1; block > (movingStartBlock - moveLength - 1); block--)
 			{
 				for (int boxcount = 0; boxcount < 3; boxcount++)
 				{
 					tilePopulation.Blocks[block][boxes][movingLineStart, boxcount].Alive = false;
 				}
+                if (movingLineStart == 0)
+                {
+                    tilePopulation.Blocks[block][spawnobstacles][0, 0].Alive = false;
+                    tilePopulation.Blocks[block][airspawns][0, 0].Alive = false;
+                }
 
-				tilePopulation.Blocks[block][spawnobstacles][0, movingLineStart].Alive = false;
-				tilePopulation.Blocks[block][airspawns][0, movingLineStart].Alive = false;
-
-				for (int groundspawncount = 0; groundspawncount < 5; groundspawncount++)
+                tilePopulation.Blocks[block][spawnobstacles][0, movingLineStart].Alive = false;
+                tilePopulation.Blocks[block][airspawns][0, movingLineStart].Alive = false;
+                for (int groundspawncount = 0; groundspawncount < 5; groundspawncount++)
 				{
 					tilePopulation.Blocks[block][jumpoverobstacles][movingLineStart, groundspawncount].Alive = false;
 				}
@@ -597,7 +593,7 @@ namespace Assets.Scripts.Utilities
 					GameObject obstacle = tilePopulation.Blocks[e][spawnobstacles][0, i].Object;
 					if (tilePopulation.Blocks[e][spawnobstacles][0, i].Alive)
 					{
-						if (obstacle == cone | obstacle == bin | obstacle == container | obstacle == pizzaTruck)
+						if (obstacle == cone | obstacle == bin | obstacle == container | obstacle == pizzaTruck | alternativeBox)
 						{
 							roadbarier++;
 						}
@@ -609,8 +605,12 @@ namespace Assets.Scripts.Utilities
 					tilePopulation.Blocks[e][spawnobstacles][0, 0].Alive = false;
 					tilePopulation.Blocks[e][spawnobstacles][0, 1].Object = roadBarrier;
 					tilePopulation.Blocks[e][spawnobstacles][0, 2].Alive = false;
-				}
-				
+
+                    for (int b = 0; b < tilePopulation.Blocks[e][groundspawns].GetLength(1); b++)
+                    {
+                        tilePopulation.Blocks[e][groundspawns][guideline, b].Alive = false;
+                    }
+                }
 			}
 		}
 
@@ -641,18 +641,31 @@ namespace Assets.Scripts.Utilities
 
 			if (tilePopulation.MoveTrigger.Location != null)
 			{
+                GameObject parent = tilePopulation.Blocks[movingStartBlock][spawnobstacles][0, movingLineStart].Object;
+                string location;
+
+                if (parent == cartoonCar) { location = "Spawner/Car(Clone)"; }
+                else { location = "Spawner/Jeep(Clone)"; }
+
 				Instantiate(
 						tilePopulation.MoveTrigger.Object,
 						tilePopulation.MoveTrigger.Location.position,
 						tilePopulation.MoveTrigger.Location.rotation,
-						tilePopulation.Tile.transform.Find("Spawner"));
+						tilePopulation.Tile.transform.Find(location)); 
 			}
 
-			const string defaultName = "New Game Object";
+            const string defaultName = "New Game Object";
 			foreach (GameObject gameObject in FindObjectsOfType(typeof(GameObject)).Where(x => x.name == defaultName))
 			{
 				Destroy(gameObject);
 			}
-		}
+
+            movingCar = false;
+            rowBoxes = false;
+            rowLineStart = new int();
+            rowStartBlock = new int();
+            movingLineStart = new int();
+            movingStartBlock = new int();
+        }
 	}
 }

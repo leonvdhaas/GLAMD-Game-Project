@@ -2255,7 +2255,7 @@ MonoBehaviour:
   container: {fileID: 1271141269317222, guid: 99d4b2c166e3e8b46ba8f91d17fbd3e2, type: 2}
   cartoonCar: {fileID: 129892, guid: b7f262220eb08454cb74573cb40cd9e6, type: 2}
   jeep: {fileID: 149270, guid: 3f1a81100d0d7674dbd0c2d94e6d0c3b, type: 2}
-  box: {fileID: 154496, guid: 0d194ddaf516e5e46b54f439d19175bf, type: 2}
+  box: {fileID: 1963154815246816, guid: ccebc91db55e85a4dbeae4a9ef4e3894, type: 2}
   hotdogTruck: {fileID: 100008, guid: 4d54456f28c5642498222e5464a3596d, type: 2}
   pizzaTruck: {fileID: 105954, guid: 6b689d5ba6d2be94aafb7b71d42f1619, type: 2}
   cone: {fileID: 1847703011188664, guid: 0a65f16470a5fa842a1b0682efa49732, type: 2}
