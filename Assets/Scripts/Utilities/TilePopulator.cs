@@ -203,7 +203,8 @@ namespace Assets.Scripts.Utilities
 		{
 			return RandomUtilities.WeightedPick(
 			JumpableObstacle().ToWeightedItem(30),
-			pizzaTruck.ToWeightedItem(1));
+			pizzaTruck.ToWeightedItem(3),
+            hotdogTruck.ToWeightedItem(3));
 		}
 
 		private GameObject ObstacleOrBoth()
