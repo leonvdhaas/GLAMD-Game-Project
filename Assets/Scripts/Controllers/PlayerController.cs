@@ -352,7 +352,10 @@ namespace Assets.Scripts.Controllers
 			if (touching)
 			{
 				verticalSpeed = 0;
-                animator.Play("Run");
+                if (CurrentSpeed > minSpeed && CurrentSpeed <= maxSpeed)
+                {
+                    animator.Play("Run");
+                }
 			}
 
 			return touching;
