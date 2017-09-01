@@ -4,35 +4,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Controllers;
+using Assets.Scripts.Enumerations;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Triggers
 {
     class MoveTrigger : MonoBehaviour
     {
         private PlayerController con;
-        private GameObject Car;
-        private bool hasMoved;
-        private float speed = 5;
+        private GameObject car;
+        private bool triggert;
+        private float currentspeed, speed;
+        private float maxspeed = 14.5f;
+        private float acceleration = 0.5f;
+        private Orientation orientation;
+
+        private void Update()
+        {
+            if (triggert)
+            {
+                StartMove();
+            }
+        }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.GetComponent<PlayerController>() != null)
             {
-                hasMoved = true;
-                Car = transform.Find("CarGoed(Clone)").gameObject;
-                StartMove();
-            }
-            if (other.gameObject.tag == "Car(Clone)")
-            {
-                Destroy(this.Car);
+                currentspeed = other.GetComponent<PlayerController>().CurrentSpeed * 0.7f; // movementspeed accordig to character speed (die manier werkt slomo ook mee)
+                orientation = other.GetComponent<PlayerController>().Orientation;
+                orientation = orientation.GetOppositeOrientation();
+                if (gameObject.transform.parent.gameObject != null)
+                {
+                    car = gameObject.transform.parent.gameObject;
+                }
+                triggert = true;
             }
         }
         private void StartMove()
         {
-            float xDelta = transform.position.x - Car.transform.position.x;
-            float zDelta = transform.position.z - Car.transform.position.z;
-            Vector3 distance = Math.Abs(zDelta) > Math.Abs(xDelta) ? new Vector3(0, 0, zDelta) : new Vector3(xDelta, 0, 0);
-            iTween.MoveTo(Car, iTween.Hash("position", Car.transform.position + distance, "easetype", iTween.EaseType.linear, "time", 1.25f));
+            if (car != null)
+            {
+                speed = Mathf.MoveTowards(currentspeed, maxspeed, acceleration * Time.deltaTime);
+                car.transform.position += orientation.GetDirectionVector3() * speed * Time.deltaTime;
+            }
+            else
+            {
+                gameObject.SetActive(false);
+                Destroy(gameObject);
+                enabled = false;
+            }
         }
     }
 }

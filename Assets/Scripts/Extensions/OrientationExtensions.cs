@@ -41,5 +41,17 @@ namespace Assets.Scripts.Extensions
 				default: throw new ArgumentException("Invalid orientation provided.");
 			}
 		}
-	}
+
+        public static Orientation GetOppositeOrientation(this Orientation orientation)
+        {
+            switch (orientation)
+            {
+                case Orientation.North: return Orientation.South;
+                case Orientation.East: return Orientation.West;
+                case Orientation.South: return Orientation.North;
+                case Orientation.West: return Orientation.East;
+                default: throw new ArgumentException("Invalid orientation provided.");
+            }
+        }
+    }
 }
