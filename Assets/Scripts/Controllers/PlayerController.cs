@@ -321,6 +321,7 @@ namespace Assets.Scripts.Controllers
 			if ((swipe == Swipe.Up || Input.GetKeyDown(KeyCode.Space)) && IsAllowedToJump())
 			{
 				verticalSpeed = jumpSpeed;
+                animator.Play("Jump");
 			}
 		}
 
@@ -351,6 +352,7 @@ namespace Assets.Scripts.Controllers
 			if (touching)
 			{
 				verticalSpeed = 0;
+                animator.Play("Run");
 			}
 
 			return touching;
