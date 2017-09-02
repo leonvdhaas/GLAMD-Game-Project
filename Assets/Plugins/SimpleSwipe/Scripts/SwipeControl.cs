@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class SwipeControl : MonoBehaviour
 {
@@ -392,5 +393,11 @@ public class SwipeControl : MonoBehaviour
 		{
 			UpdateMouseBasedControl();
 		}
+	}
+
+	public void CancelCurrentSwipe()
+	{
+		m_vStarSwipePos = Vector3.zero;
+		m_bSwipePressed = false;
 	}
 }

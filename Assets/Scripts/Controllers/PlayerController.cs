@@ -14,7 +14,7 @@ namespace Assets.Scripts.Controllers
 	public class PlayerController : MonoBehaviour
 	{
 		private const float GRAVITY = 9.8f;
-		private const float INVINCIBLE_TIME_AFTER_DAMAGED = 1.0f;
+		private const float INVINCIBLE_TIME_AFTER_DAMAGED = 1.5f;
 
 		[SerializeField]
 		private float acceleration;
@@ -59,7 +59,6 @@ namespace Assets.Scripts.Controllers
 					Frozen = i >= 0;
 				}));
 			}));
-			//StartCoroutine(CoroutineHelper.Delay(1f, () => animator.SetFloat("Speed", 0.5f)));
 
 			if (GameManager.Instance.CurrentGame.GameType == GameType.MultiplayerCreate)
 			{
@@ -193,10 +192,6 @@ namespace Assets.Scripts.Controllers
 
 		public bool InhalerPowerupActive { get; set; }
 
-		public int HorizontalSwipeDirection { get; set; }
-
-		public int VerticalSwipeDirection { get; set; }
-
 		public bool Frozen { get; private set; }
 
 		public bool IsInvincible { get; private set; }
@@ -260,7 +255,8 @@ namespace Assets.Scripts.Controllers
 					CheckForJump(Swipe.Up);
 					break;
 				case SwipeControl.SWIPE_DIRECTION.SD_LEFT:
-					if (IsOnLeftCorner){
+					if (IsOnLeftCorner)
+					{
 						TakeCorner();
 					}
 					else
@@ -321,7 +317,7 @@ namespace Assets.Scripts.Controllers
 			if ((swipe == Swipe.Up || Input.GetKeyDown(KeyCode.Space)) && IsAllowedToJump())
 			{
 				verticalSpeed = jumpSpeed;
-                animator.Play("Jump");
+				animator.Play("Jump");
 			}
 		}
 
@@ -352,10 +348,10 @@ namespace Assets.Scripts.Controllers
 			if (touching)
 			{
 				verticalSpeed = 0;
-                if (CurrentSpeed > minSpeed && CurrentSpeed <= maxSpeed)
-                {
-                    animator.Play("Run");
-                }
+				if (CurrentSpeed > minSpeed && CurrentSpeed <= maxSpeed)
+				{
+					animator.Play("Run");
+				}
 			}
 
 			return touching;
@@ -459,10 +455,12 @@ namespace Assets.Scripts.Controllers
 
 		private void Move()
 		{
+			var regularMax = maxSpeed;
 			var acceleration = this.acceleration;
 			if (InhalerPowerupActive)
 			{
 				acceleration *= 3;
+				regularMax -= Inhaler.SPEED_BONUS;
 			}
 			else if (CurrentSpeed > maxSpeed)
 			{
@@ -470,13 +468,15 @@ namespace Assets.Scripts.Controllers
 			}
 
 			CurrentSpeed = Mathf.MoveTowards(CurrentSpeed, maxSpeed, acceleration * Time.deltaTime);
-			animator.SetFloat("Speed", CurrentSpeed / maxSpeed);
+			animator.SetFloat("Speed", CurrentSpeed / regularMax);
 			transform.position += Orientation.GetDirectionVector3() * CurrentSpeed * Time.deltaTime;
 		}
 
 		public void ActivateInhaler(float duration, float speedBonus)
 		{
 			const int steps = 100;
+
+			GetComponentInChildren<SwipeControl>().CancelCurrentSwipe();
 
 			if (InhalerUsable)
 			{

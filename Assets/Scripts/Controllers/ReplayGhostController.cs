@@ -42,6 +42,7 @@ namespace Assets.Scripts.Controllers
 					{
 						animator.SetFloat("Speed", 0);
 						iTween.MoveTo(gameObject, gameObject.transform.position.CreateNew(y: -0.5f), 0.5f);
+						StartCoroutine(CoroutineHelper.Delay(10, () => Destroy(gameObject)));
 					}));
 				iTween.MoveTo(gameObject, iTween.Hash("path", replay.Path, "time", replay.Count * REPLAY_INTERVAL, "easetype", iTween.EaseType.linear));
 			}
