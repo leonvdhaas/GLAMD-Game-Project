@@ -1,37 +1,38 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Enumerations;
+using Assets.Scripts.Extensions;
 using UnityEngine;
 
 
-namespace Assets.Scripts.Triggers
+namespace Assets.Scripts.Controllers
 {
-	public class CarController : MonoBehaviour
+	public class CarController
+		: MonoBehaviour
 	{
-		private Vector3 curPos, lastPos;
-		private bool moving = false;
+		[SerializeField]
+		private float currentSpeed;
+
+		[SerializeField]
+		private float maxSpeed;
+
+		[SerializeField]
+		private float acceleration;
+
+		private bool started;
+		private Orientation orientation;
+
+		public void StartDriving(Orientation orientation)
+		{
+			this.orientation = orientation;
+			started = true;
+		}
 
 		private void Update()
 		{
-			StartCoroutine(CheckMoving());
-			if (moving)
+			if (started)
 			{
-				StartCoroutine(Destroy());
+				currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
+				transform.position += orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
 			}
-		}
-
-		private IEnumerator Destroy()
-		{
-			yield return new WaitForSeconds(1.7f);
-			gameObject.SetActive(false);
-			Destroy(gameObject);
-			enabled = false;
-		}
-
-		private IEnumerator CheckMoving()
-		{
-			Vector3 startPos = transform.position;
-			yield return new WaitForSeconds(0.1f);
-			Vector3 finalPos = transform.position;
-			moving = startPos.x != finalPos.x || startPos.y != finalPos.y || startPos.z != finalPos.z;
 		}
 	}
 }

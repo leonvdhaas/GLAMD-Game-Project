@@ -29,6 +29,11 @@ namespace Assets.Scripts.Models.Codes
 
 		private bool CanActivate()
 		{
+			if (!Input.anyKeyDown)
+			{
+				return false;
+			}
+
 			foreach (var keyCode in usedKeyCodes)
 			{
 				if (Input.GetKeyDown(keyCode))
