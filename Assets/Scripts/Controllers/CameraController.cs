@@ -2,7 +2,8 @@
 
 namespace Assets.Scripts.Controllers
 {
-	public class CameraController : MonoBehaviour
+	public class CameraController
+		: MonoBehaviour
 	{
 		private const float PLAYER_MIN_SPEED = 12.5f;
 		private const float PLAYER_MAX_SPEED = 20.0f;

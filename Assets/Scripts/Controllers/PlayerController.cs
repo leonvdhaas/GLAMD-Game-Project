@@ -11,7 +11,8 @@ using Assets.Scripts.Models.Pickups;
 
 namespace Assets.Scripts.Controllers
 {
-	public class PlayerController : MonoBehaviour
+	public class PlayerController
+		: MonoBehaviour
 	{
 		private const float GRAVITY = 9.8f;
 		private const float INVINCIBLE_TIME_AFTER_DAMAGED = 1.5f;
