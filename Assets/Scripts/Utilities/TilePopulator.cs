@@ -633,9 +633,14 @@ namespace Assets.Scripts.Utilities
 					GameObject obstacle = tilePopulation.Blocks[e][spawnobstacles][0, i].Object;
 					if (tilePopulation.Blocks[e][spawnobstacles][0, i].Alive)
 					{
+						if (obstacle == cone ||
+							obstacle == bin ||
+							obstacle == container ||
+							obstacle == pizzaTruck ||
+							obstacle == hotdogTruck ||
+							obstacle == alternativeBox)
 						{
-							if (obstacle != cartoonCar && obstacle != box && obstacle != jeep)
-								roadBarrierCount++;
+							roadBarrierCount++;
 						}
 					}
 				}
