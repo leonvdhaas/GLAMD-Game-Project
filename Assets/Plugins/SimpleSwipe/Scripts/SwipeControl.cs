@@ -85,7 +85,9 @@ public class SwipeControl : MonoBehaviour
 		if (Input.GetKey(KeyCode.Mouse0))
 		{
 			m_iNumberOfPoints++;
+#pragma warning disable CS0618 // Type or member is obsolete
 			m_lLineRenderer.SetVertexCount(m_iNumberOfPoints);
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			Vector3 mousePos = new Vector3(0.0f, 0.0f, 0.0f);
 			mousePos = Input.mousePosition;
@@ -97,7 +99,9 @@ public class SwipeControl : MonoBehaviour
 		else
 		{
 			m_iNumberOfPoints = 0;
+#pragma warning disable CS0618 // Type or member is obsolete
 			m_lLineRenderer.SetVertexCount(0);
+#pragma warning restore CS0618 // Type or member is obsolete
 		}
 	}
 

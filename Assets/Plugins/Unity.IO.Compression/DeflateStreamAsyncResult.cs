@@ -12,8 +12,10 @@ namespace Unity.IO.Compression {
         public bool isWrite;
 #pragma warning restore 0414
 
-        private object m_AsyncObject;               // Caller's async object.
-        private object m_AsyncState;                // Caller's state object.
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
+		private object m_AsyncObject;               // Caller's async object.
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
+		private object m_AsyncState;                // Caller's state object.
         private AsyncCallback m_AsyncCallback;      // Caller's callback method.
 
         private object m_Result;                     // Final IO result to be returned byt the End*() method.

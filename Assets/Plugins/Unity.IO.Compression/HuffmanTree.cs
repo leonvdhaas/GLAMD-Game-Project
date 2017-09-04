@@ -29,7 +29,9 @@ namespace Unity.IO.Compression
         short[]      right;
         byte[]       codeLengthArray;
 #if DEBUG
-        uint[]       codeArrayDebug;
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
+		uint[]       codeArrayDebug;
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
 #endif
 
         int tableMask;         
@@ -46,7 +48,7 @@ namespace Unity.IO.Compression
 
         static public HuffmanTree StaticLiteralLengthTree {
             get {
-                return staticLiteralLengthTree;
+				return staticLiteralLengthTree;
             }
         }
 
