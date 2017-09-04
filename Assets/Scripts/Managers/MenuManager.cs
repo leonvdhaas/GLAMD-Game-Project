@@ -83,7 +83,7 @@ namespace Assets.Scripts.Managers
 		{
 			SceneManager.sceneLoaded += SceneManager_SceneLoaded;
 
-			GameManager.Instance.MenuManager = this;
+			StartCoroutine(CoroutineHelper.WaitUntil(() => GameManager.Instance != null, () => GameManager.Instance.MenuManager = this));
 			manualController = manualPanel.GetComponent<ManualController>();
 		}
 

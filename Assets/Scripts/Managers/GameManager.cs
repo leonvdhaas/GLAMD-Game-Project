@@ -151,38 +151,13 @@ namespace Assets.Scripts.Managers
 
 		private void StartGame(GameType gameType, Match match, Replay replay, Guid? opponentId)
 		{
-			var game = new Game
+			CurrentGame = new Game
 			{
 				GameType = gameType,
 				Match = match,
 				Replay = replay,
 				OpponentId = opponentId
 			};
-
-			if (ShowInstructions)
-			{
-				StartCoroutine(CoroutineHelper.For(
-					2,
-					() => 0,
-					i => i < 2 && MenuManager != null,
-					(ref int i) => i++,
-					i => MenuManager.ShowLoadingScreen(i),
-					() => StartGame(game)));
-			}
-			else
-			{
-				if (MenuManager != null)
-				{
-					MenuManager.ShowLoadingScreen();
-				}
-
-				StartGame(game);
-			}
-		}
-
-		private void StartGame(Game game)
-		{
-			CurrentGame = game;
 
 #if UNITY_ADS
 			if (adCounter++ % AD_SHOW_AMOUNT == 0)
@@ -196,17 +171,40 @@ namespace Assets.Scripts.Managers
 							Debug.LogWarning("Couldn't play advertisement");
 						}
 
-						SceneManager.LoadScene("Main");
+						StartGame();
 					}
 				});
 			}
 			else
 			{
-				SceneManager.LoadScene("Main");
+				StartGame();
 			}
 #else
-			SceneManager.LoadScene("Main");
+			StartGame();
 #endif
+		}
+
+		private void StartGame()
+		{
+			if (ShowInstructions)
+			{
+				StartCoroutine(CoroutineHelper.For(
+					2,
+					() => 0,
+					i => i < 2 && MenuManager != null,
+					(ref int i) => i++,
+					i => MenuManager.ShowLoadingScreen(i),
+					() => SceneManager.LoadScene("Main")));
+			}
+			else
+			{
+				if (MenuManager != null)
+				{
+					MenuManager.ShowLoadingScreen();
+				}
+
+				SceneManager.LoadScene("Main");
+			}
 		}
 
 		public void Logout()
