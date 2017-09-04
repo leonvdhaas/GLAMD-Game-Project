@@ -2278,6 +2278,7 @@ MonoBehaviour:
   inhaler: {fileID: 1817109485504760, guid: f024e9b4a78e64d4ea421afe09e9a6a8, type: 2}
   slowmotion: {fileID: 1749267138375046, guid: 8da269c559496914f9ccad051d724369, type: 2}
   heart: {fileID: 1326108627307978, guid: acebd88c07e24574d964cb440f403e8c, type: 2}
+  maxPowerup: 1
   coin: {fileID: 1530552356750620, guid: cd651e4fd702d5b42b91f9b75c9320f8, type: 2}
   diamond: {fileID: 1654676593943028, guid: 22b15716d5d43734380eb1369d1375e6, type: 2}
   moveTrigger: {fileID: 1480040401415728, guid: ce173a927b1dc1042a8f43651bbce170,
