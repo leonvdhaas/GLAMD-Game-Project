@@ -9,7 +9,6 @@ namespace Assets.Scripts.Triggers
 		: MonoBehaviour
 	{
 		private const int OBSTACLE_DESTROY_SCORE = 3;
-
 		private void OnTriggerEnter(Collider other)
 		{
 			var player = other.GetComponent<PlayerController>();
@@ -31,6 +30,8 @@ namespace Assets.Scripts.Triggers
 
 				gameObject.SetActive(false);
 				Destroy(gameObject);
+
+				player.ActivateParticleSystem(ParticleType.Crash);
 			}
 		}
 	}

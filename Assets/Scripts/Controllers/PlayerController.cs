@@ -30,7 +30,10 @@ namespace Assets.Scripts.Controllers
 		[Range(0.1f, 1.0f)]
 		[SerializeField]
 		private float minimumLaneSwapSpeed;
+		[SerializeField]
+		private Models.Particle[] particles;
 
+		private ParticleSystem instantiatedParticleSystem;
 		private Lane lane = Lane.Middle;
 		private Animator animator;
 		private CharacterController characterController;
@@ -482,6 +485,7 @@ namespace Assets.Scripts.Controllers
 			if (InhalerUsable)
 			{
 				SoundManager.Instance.PlaySoundEffect(Sound.InhalerActivate);
+				ActivateParticleSystem(ParticleType.Invincibility);
 				InhalerPowerupActive = true;
 				maxSpeed += speedBonus;
 				StartCoroutine(CoroutineHelper.For(
@@ -587,6 +591,28 @@ namespace Assets.Scripts.Controllers
 
 			animator.SetFloat("Speed", 0.0f);
 			CurrentSpeed = minSpeed;
+		}
+
+		public void ActivateParticleSystem(ParticleType type)
+		{
+			if (instantiatedParticleSystem != null &&
+				instantiatedParticleSystem.isPlaying &&
+				InhalerPowerupActive)
+			{
+				return;
+			}
+
+			var particleSystem = particles.Single(x => x.ParticleType == type).ParticleSystem;
+			instantiatedParticleSystem = Instantiate(particleSystem);
+			instantiatedParticleSystem.gameObject.SetActive(true);
+			if (!instantiatedParticleSystem.main.loop)
+			{
+				Destroy(instantiatedParticleSystem.gameObject, instantiatedParticleSystem.main.duration);
+			}
+
+			instantiatedParticleSystem.transform.SetParent(transform);
+			instantiatedParticleSystem.transform.localPosition = instantiatedParticleSystem.transform.position.Add(y: 0.75f);
+			instantiatedParticleSystem.transform.localRotation = instantiatedParticleSystem.transform.rotation;
 		}
 	}
 }

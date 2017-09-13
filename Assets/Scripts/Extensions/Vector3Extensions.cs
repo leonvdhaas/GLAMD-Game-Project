@@ -14,6 +14,26 @@ namespace Assets.Scripts.Extensions
 			};
 		}
 
+		public static Vector3 Add(this Vector3 vector, float x = 0, float y = 0, float z = 0)
+		{
+			return new Vector3
+			{
+				x = vector.x + x,
+				y = vector.y + y,
+				z = vector.z + z
+			};
+		}
+
+		public static Vector3 Subtract(this Vector3 vector, float x = 0, float y = 0, float z = 0)
+		{
+			return new Vector3
+			{
+				x = vector.x - x,
+				y = vector.y - y,
+				z = vector.z - z
+			};
+		}
+
 		public static Vector3 Multiply(this Vector3 value, Vector3 other)
 		{
 			return new Vector3
