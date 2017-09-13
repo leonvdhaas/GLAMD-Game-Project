@@ -14,6 +14,7 @@ namespace Assets.Scripts.Models.Pickups
 		{
 			player.ActivateSlowmotion(DURATION, FACTOR);
 			SoundManager.Instance.PlaySoundEffect(Sound.Slowmotion);
+			player.ActivateParticleSystem(ParticleType.SlowMotion);
 		}
 	}
 }

@@ -21,6 +21,8 @@ namespace Assets.Scripts.Models.Pickups
 			}
 
 			SoundManager.Instance.PlaySoundEffect(Sound.Heart);
+
+			player.ActivateParticleSystem(ParticleType.ExtraLife);
 		}
 	}
 }
