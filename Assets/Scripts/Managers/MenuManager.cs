@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Controllers;
 using Assets.Scripts.Enumerations;
 using Assets.Scripts.Helpers;
+using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System;
 using System.Linq;
@@ -95,6 +96,7 @@ namespace Assets.Scripts.Managers
 		private void SceneManager_SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
 			UpdateSettings();
+			CheckLoggedIn();
 
 			if (scene.name == "MainStartMenu" && GameManager.Instance.User != null)
 			{
@@ -104,6 +106,21 @@ namespace Assets.Scripts.Managers
 			else
 			{
 				loginPanel.SetActive(true);
+			}
+		}
+
+		private void CheckLoggedIn()
+		{
+			if (GameManager.Instance.User == null)
+			{
+				if (PlayerPrefs.HasKey("Id") && PlayerPrefs.HasKey("Username"))
+				{
+					GameManager.Instance.User = new User
+					{
+						Id = new Guid(PlayerPrefs.GetString("Id")),
+						Username = PlayerPrefs.GetString("Username")
+					};
+				}
 			}
 		}
 
@@ -224,8 +241,8 @@ namespace Assets.Scripts.Managers
 			isProcessingButton = true;
 			lblErrorLogin.enabled = false;
 
-			var username = loginUsername.text;
-			var password = loginPassword.text;
+			string username = loginUsername.text;
+			string password = loginPassword.text;
 
 			if (username.Length == 0 || password.Length == 0)
 			{
@@ -239,7 +256,7 @@ namespace Assets.Scripts.Managers
 				Hasher.Hash(password),
 				onSuccess: user =>
 				{
-					GameManager.Instance.User = user;
+					GameManager.Instance.Login(user);
 
 					SetUsername(username);
 					ClearInputFieldsAndErrors();
@@ -272,9 +289,9 @@ namespace Assets.Scripts.Managers
 			isProcessingButton = true;
 			lblErrorUsername.enabled = lblErrorPassword.enabled = lblErrorConfirmPassword.enabled = false;
 
-			var username = registerUsername.text;
-			var password = registerPassword.text;
-			var confirmPassword = registerConfirmPassword.text;
+			string username = registerUsername.text;
+			string password = registerPassword.text;
+			string confirmPassword = registerConfirmPassword.text;
 
 			if (username.Length < 4)
 			{
@@ -323,7 +340,7 @@ namespace Assets.Scripts.Managers
 						Hasher.Hash(password),
 						onSuccess: user =>
 						{
-							GameManager.Instance.User = user;
+							GameManager.Instance.Login(user);
 
 							SetUsername(username);
 							ClearInputFieldsAndErrors();

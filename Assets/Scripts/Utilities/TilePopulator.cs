@@ -676,10 +676,10 @@ namespace Assets.Scripts.Utilities
 					if (spawn != null && spawn.Alive && spawn.Object != null && spawn.Location != null)
 					{
 						Instantiate(
-								spawn.Object,
-								spawn.Location.position,
-								spawn.Location.rotation,
-								tilePopulation.Tile.transform.Find("Spawner"));
+							spawn.Object,
+							spawn.Location.position,
+							spawn.Location.rotation,
+							tilePopulation.Tile.transform.Find("Spawner"));
 					}
 				}
 			}

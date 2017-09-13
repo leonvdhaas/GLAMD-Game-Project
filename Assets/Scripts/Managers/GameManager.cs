@@ -71,17 +71,6 @@ namespace Assets.Scripts.Managers
 		private string id;
 		[SerializeField]
 		private string username;
-		public User DummyUser
-		{
-			get
-			{
-				return new User
-				{
-					Id = new Guid(id),
-					Username = username
-				};
-			}
-		}
 
 		private User _user;
 		public User User
@@ -90,7 +79,11 @@ namespace Assets.Scripts.Managers
 			{
 				if (SkipLogin && _user == null)
 				{
-					return DummyUser;
+					return new User
+					{
+						Id = new Guid(id),
+						Username = username
+					};
 				}
 
 				return _user;
@@ -176,12 +169,10 @@ namespace Assets.Scripts.Managers
 				});
 			}
 			else
+#endif
 			{
 				StartGame();
 			}
-#else
-			StartGame();
-#endif
 		}
 
 		private void StartGame()
@@ -207,9 +198,22 @@ namespace Assets.Scripts.Managers
 			}
 		}
 
+		public void Login(User user)
+		{
+			User = user;
+
+			PlayerPrefs.SetString("Id", user.Id.ToString());
+			PlayerPrefs.SetString("Username", user.Username);
+			PlayerPrefs.Save();
+		}
+
 		public void Logout()
 		{
 			User = null;
+
+			PlayerPrefs.DeleteKey("Id");
+			PlayerPrefs.DeleteKey("Username");
+			PlayerPrefs.Save();
 		}
 
 		public void Pause()

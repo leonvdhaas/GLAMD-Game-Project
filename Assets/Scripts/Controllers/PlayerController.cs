@@ -435,7 +435,7 @@ namespace Assets.Scripts.Controllers
 
 		private void MoveToCorrectLane()
 		{
-			var speed = laneSwapSpeed * Time.deltaTime * Mathf.Max(
+			float speed = laneSwapSpeed * Time.deltaTime * Mathf.Max(
 				(CurrentSpeed - minSpeed) / (maxSpeed - minSpeed),
 				InhalerPowerupActive ? 1 : minimumLaneSwapSpeed);
 			if (Orientation == Orientation.North || Orientation == Orientation.South)
@@ -456,8 +456,8 @@ namespace Assets.Scripts.Controllers
 
 		private void Move()
 		{
-			var regularMax = maxSpeed;
-			var acceleration = this.acceleration;
+			float regularMax = maxSpeed;
+			float acceleration = this.acceleration;
 			if (InhalerPowerupActive)
 			{
 				acceleration *= 3;
