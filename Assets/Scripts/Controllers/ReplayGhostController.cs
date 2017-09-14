@@ -25,31 +25,45 @@ namespace Assets.Scripts.Controllers
 				orientationQueue = replay.GetOrientationQueue();
 				orientation = orientationQueue.Dequeue();
 
-				StartCoroutine(CoroutineHelper.Delay(2.5f, () => animator.SetFloat("Speed", 15)));
-				StartCoroutine(CoroutineHelper.Repeat(
-					REPLAY_INTERVAL,
-					() =>
-					{
-						Orientation newOrientation = orientationQueue.Dequeue();
-						if (orientation != newOrientation)
-						{
-							iTween.RotateTo(gameObject, new Vector3(0, (int)newOrientation * 90, 0), 0.1f);
-							orientation = newOrientation;
-						}
-					},
-					() => orientationQueue.Count > 0,
-					() =>
-					{
-						animator.SetFloat("Speed", 0);
-						iTween.MoveTo(gameObject, gameObject.transform.position.CreateNew(y: -0.5f), 0.5f);
-						StartCoroutine(CoroutineHelper.Delay(10, () => Destroy(gameObject)));
-					}));
-				iTween.MoveTo(gameObject, iTween.Hash("path", replay.Path, "time", replay.Count * REPLAY_INTERVAL, "easetype", iTween.EaseType.linear));
+				ReadRotatingQueue();
+				StartCoroutine(CoroutineHelper.Delay(4, () => animator.SetFloat("Speed", 0.75f)));
+				StartCoroutine(CoroutineHelper.Delay(
+					0.0375f,
+					() => iTween.MoveTo(
+						gameObject,
+						iTween.Hash(
+							"path",
+							replay.Path,
+							"time", replay.Count * REPLAY_INTERVAL,
+							"easetype",
+							iTween.EaseType.linear))));
 			}
 			else
 			{
 				Destroy(gameObject);
 			}
+		}
+
+		private void ReadRotatingQueue()
+		{
+			StartCoroutine(CoroutineHelper.Repeat(
+				REPLAY_INTERVAL,
+				() =>
+				{
+					Orientation newOrientation = orientationQueue.Dequeue();
+					if (orientation != newOrientation)
+					{
+						iTween.RotateTo(gameObject, new Vector3(0, (int)newOrientation * 90, 0), 0);
+						orientation = newOrientation;
+					}
+				},
+				() => orientationQueue.Count > 0,
+				() =>
+				{
+					animator.SetFloat("Speed", 0);
+					iTween.MoveTo(gameObject, gameObject.transform.position.CreateNew(y: -0.5f), 0.5f);
+					StartCoroutine(CoroutineHelper.Delay(10, () => Destroy(gameObject)));
+				}));
 		}
 	}
 }
