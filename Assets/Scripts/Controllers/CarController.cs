@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Enumerations;
 using Assets.Scripts.Extensions;
+using Assets.Scripts.Managers;
 using UnityEngine;
 
 
@@ -28,7 +29,11 @@ namespace Assets.Scripts.Controllers
 
 		private void Update()
 		{
-			if (started)
+			if (GameManager.Instance.CurrentGame.GameOver)
+			{
+				Destroy(gameObject);
+			}
+			else if (started)
 			{
 				currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
 				transform.position += orientation.GetDirectionVector3() * currentSpeed * Time.deltaTime;
