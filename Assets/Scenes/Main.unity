@@ -2332,6 +2332,8 @@ MonoBehaviour:
   bin: {fileID: 1098298507755292, guid: bcf134bc3c3067b40ad95ff44ddbee11, type: 2}
   roadBarrier: {fileID: 1285103674476818, guid: 44892d434c949ad4bb5162ebb597a32c,
     type: 2}
+  singleBarrier: {fileID: 1616340007904556, guid: 8b7c0e6a0fb5b204185a92cf19646932,
+    type: 2}
   alternativeBox: {fileID: 1100135662662102, guid: 19940bf296638e448b08f03a5832a75f,
     type: 2}
   doubleCoins: {fileID: 1293149959539180, guid: 87c626787f796344a8713d675eac49de,
