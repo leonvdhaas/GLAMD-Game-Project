@@ -204,16 +204,16 @@ namespace Assets.Scripts.Utilities
 			if (block < 3)
 			{
 				return RandomUtilities.WeightedPick(
-					heart.ToWeightedItem(2),
-					slowmotion.ToWeightedItem(20),
-					inhaler.ToWeightedItem(50),
-					doubleCoins.ToWeightedItem(75));
+					heart.ToWeightedItem(1),
+					slowmotion.ToWeightedItem(40),
+					inhaler.ToWeightedItem(100),
+					doubleCoins.ToWeightedItem(150));
 			}
 			else
 			{
 				return RandomUtilities.WeightedPick(
-					heart.ToWeightedItem(2),
-					inhaler.ToWeightedItem(50));
+					heart.ToWeightedItem(1),
+					inhaler.ToWeightedItem(100));
 			}
 		}
 
