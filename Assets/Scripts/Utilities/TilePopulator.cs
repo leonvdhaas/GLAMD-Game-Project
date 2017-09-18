@@ -113,11 +113,11 @@ namespace Assets.Scripts.Utilities
 		{
 			Chances = new Generator();
 			StartCoroutine(CoroutineHelper.For(
-				15,
+				12.5f,
 				() => 25,
 				i => i <= 75,
 				(ref int i) => i += 3,
-				i => Chances.Fill(i, 20, 25, 35 - i)));
+				i => Chances.Fill(i, 20, 25, 75 - i)));
 		}
 
 		private GameObject JumpableObstacle()
